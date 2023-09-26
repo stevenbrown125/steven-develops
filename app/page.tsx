@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Home(): JSX.Element {
   return (
-    <main className="relative pt-20 md:pt-24 text-stone-800">
+    <main className="relative pt-20 md:pt-24 text-stone-800 flex flex-col justify-center flex-grow min-h-screen">
       <Image
         src="./images/rome-optimized.jpg"
         fill={true}
@@ -21,7 +21,7 @@ export default function Home(): JSX.Element {
           <p className="pb-4">
             I&#39;m a Full Stack Javascript developer from the US. Web Design &
             Development is my passion and I love working with Javascript. After
-            finishing off 9 years s a Russian Cryptologic Linguist for the US
+            finishing off 9 years as a Russian Cryptologic Linguist for the US
             Army, I have been on a mission to become an expert in all areas of
             software engineering. On the frontend, I have experience working
             with Angular and React. On the backend, I prefer NestJS and Express,
@@ -29,14 +29,17 @@ export default function Home(): JSX.Element {
             Architect and CompTia SEC+ Certifications and work almost daily in
             the cloud. I love building effective CI/CD pipelines using Github
             Actions and Jenkins and am constantly looking for ways to improve
-            processes. For the remainder of this year, I am focused on
-            continuing to learn C++, Golang, and build more products on AWS.
+            processes. Speaking of processes, I currently work as a Systems
+            Engineer and SIGINT/EW SME, subcontracting for General Dynamics
+            Mission Systems. For the remainder of this year, I am focused on
+            continuing to learn MBSE, C++, Golang, and building more products on
+            AWS.
           </p>
 
           <p className="pb-4">
             In the military, I worked in Signals Intelligence. I recently earned
             my HAM Amateur Radio License and enjoy working on projects that
-            connect the EMS world to Cloud Computing. Oh, I also love to travel
+            connect the EMS world to cloud computing. Oh, I also love to travel
             and make videos check out my blog to see some of my latest
             adventures!
           </p>

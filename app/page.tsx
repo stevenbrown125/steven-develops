@@ -40,7 +40,7 @@ export default function Home(): JSX.Element {
             In the military, I worked in Signals Intelligence. I recently earned
             my HAM Amateur Radio License and enjoy working on projects that
             connect the EMS world to cloud computing. Oh, I also love to travel
-            and make videos check out my blog to see some of my latest
+            and make videos so check out my blog to see some of my latest
             adventures!
           </p>
 

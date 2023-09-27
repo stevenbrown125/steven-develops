@@ -6,7 +6,7 @@ const client = createClient({
   token: process.env.SANITY_API_KEY,
   apiVersion: "2023-05-03",
   dataset: "production",
-  useCdn: true,
+  useCdn: false,
 });
 
 const clientFetch = cache(client.fetch.bind(client));

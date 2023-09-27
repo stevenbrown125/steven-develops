@@ -6,6 +6,6 @@ export interface Post {
   author: string;
   image: any;
   category: string[];
-  publishedAt: Date;
+  publishedAt: string;
   body: PortableTextBlock;
 }

@@ -1,6 +1,7 @@
 import { getAllPosts, getPostBySlug } from "@/app/lib/sanityQueries";
 import { Post } from "@/app/types/Post";
-import { PortableText } from "@portabletext/react";
+import BlogPost from "@/components/post/BlogPost";
+import Image from "next/image";
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
@@ -18,11 +19,17 @@ export default async function BlogPostPage({
   const post: Post = await getPostBySlug(params.slug);
 
   return (
-    <>
-      <main className="mx-auto max-w-7xl">
-        <h1 className="text-4xl font-bold text-stone-900">{post.title}</h1>
-        <PortableText value={post.body} />
-      </main>
-    </>
+    <main className="relative text-stone-800 flex-grow">
+      <Image
+        src="../../images/garda-optimized.jpg"
+        fill={true}
+        alt="Garda, Italy"
+        className="-z-10"
+        priority={true}
+      />
+      <div className="max-w-7xl mx-auto mt-10">
+        <BlogPost post={post} />
+      </div>
+    </main>
   );
 }

@@ -29,9 +29,10 @@ const getAllPosts = async (): Promise<Post[]> => {
   const query = groq`*[_type=="post"]{
         title,
         author,
-        category,
-        image,
+        category,     
+        "image": mainImage.asset->url,
         body,
+        publishedAt,
         "slug": slug.current  
       }`;
 
@@ -43,9 +44,10 @@ const getPostBySlug = async (slug: string): Promise<Post> => {
   const query = groq`*[_type == "post" && slug.current == '${slug}']{
         title,
         author,
-        category,
-        image,
+        category,     
+        "image": mainImage.asset->url,
         body,
+        publishedAt,
         "slug": slug.current  
     }[0]`;
 

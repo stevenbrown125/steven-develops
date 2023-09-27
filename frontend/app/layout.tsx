@@ -28,13 +28,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const siteInfo = await getSiteInfo();
-  console.log(siteInfo.logo);
   return (
     <html lang="en">
       <body className={inter.className}>
         <div className="flex flex-col justify-start flex-grow min-h-screen">
           <Header title={siteInfo.title} logo={siteInfo.logo} />
-
           {children}
         </div>
       </body>

@@ -32,8 +32,11 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Header title={siteInfo.title} logo={siteInfo.logo} />
-        {children}
+        <div className="flex flex-col justify-start flex-grow min-h-screen">
+          <Header title={siteInfo.title} logo={siteInfo.logo} />
+
+          {children}
+        </div>
       </body>
     </html>
   );

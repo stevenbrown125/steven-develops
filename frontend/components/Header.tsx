@@ -12,46 +12,51 @@ export default function Header({
   logo: string;
 }) {
   return (
-    <>
+    <header className="relative mt-28">
       <Disclosure
         as="nav"
-        className=" shadow fixed top-0 left-0 w-full bg-white z-20 bg-opacity-[90%] transition backdrop-filter backdrop-blur-md"
+        className="shadow fixed top-0 left-0 w-full bg-white text-stone-800 z-20 bg-opacity-[90%] transition backdrop-filter backdrop-blur-md"
       >
         {({ open }) => (
           <>
             <div className="px-2 mx-auto max-w-7xl sm:px-4 lg:px-8">
-              <div className="flex justify-between h-28">
+              <div className="flex justify-between lg:justify-center h-28">
                 <div className="flex px-2 lg:px-0">
+                  {/* Mobile Logo */}
                   <div className="flex items-center flex-shrink-0">
                     <Link href="/">
                       <Image
-                        className="block w-auto h-24 lg:hidden"
+                        className="block w-auto h-16 sm:h-20 lg:hidden"
                         src={logo}
-                        width={1170}
-                        height={1040}
-                        alt={title}
-                      />
-                      <Image
-                        className="hidden w-auto h-24 lg:block"
-                        src={logo}
-                        width={1170}
-                        height={1040}
+                        width={558}
+                        height={200}
                         alt={title}
                       />
                     </Link>
                   </div>
-                  <div className="hidden lg:ml-6 lg:flex lg:space-x-8">
+
+                  {/* Desktop Navigation */}
+                  <div className="hidden ml-6 lg:flex space-x-8 text-lg font-medium">
                     <Link
                       href="/"
-                      className="border-transparent text-stone-800
-                       inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium"
+                      className="border-transparent inline-flex items-center border-b-2 hover:border-orange-600"
                     >
                       Home
                     </Link>
+                    <div className="flex items-center flex-shrink-0 px-10">
+                      <Link href="/">
+                        <Image
+                          className="hidden w-auto h-24 lg:block"
+                          src={logo}
+                          width={558}
+                          height={200}
+                          alt={title}
+                        />
+                      </Link>
+                    </div>
                     <Link
                       href="/blog"
-                      className="border-transparent text-stone-800
-                        inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium"
+                      className="border-transparent inline-flex items-center border-b-2 hover:border-orange-600"
                     >
                       Blog
                     </Link>
@@ -95,6 +100,6 @@ export default function Header({
           </>
         )}
       </Disclosure>
-    </>
+    </header>
   );
 }

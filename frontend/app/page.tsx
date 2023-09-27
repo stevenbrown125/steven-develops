@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Home(): JSX.Element {
   return (
-    <main className="relative pt-20 md:pt-24 text-stone-800 flex flex-col justify-center flex-grow min-h-screen">
+    <main className="relative pt-20 md:pt-24  text-stone-800 flex-grow">
       <Image
         src="./images/rome-optimized.jpg"
         fill={true}

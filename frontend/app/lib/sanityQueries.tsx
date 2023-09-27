@@ -16,4 +16,18 @@ const getAllPosts = async (): Promise<Post[]> => {
   return data;
 };
 
-export { getAllPosts };
+const getPostBySlug = async (slug: string): Promise<Post> => {
+  const query = groq`*[_type == "post" && slug.current == '${slug}']{
+        title,
+        author,
+        category,
+        image,
+        body,
+        "slug": slug.current  
+    }`;
+
+  const data = await clientFetch(query);
+  return data[0];
+};
+
+export { getAllPosts, getPostBySlug };

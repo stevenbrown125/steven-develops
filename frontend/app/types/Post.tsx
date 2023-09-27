@@ -1,3 +1,5 @@
+import { PortableTextBlock } from "@portabletext/types";
+
 export interface Post {
   title: string;
   slug: string;
@@ -5,5 +7,5 @@ export interface Post {
   image: any;
   category: string[];
   publishedAt: Date;
-  body: string;
+  body: PortableTextBlock;
 }

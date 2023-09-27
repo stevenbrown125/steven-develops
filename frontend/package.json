@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@portabletext/react": "^3.0.7",
     "@sanity/block-content-to-react": "^3.0.0",
     "@sanity/client": "^6.4.12",
     "next": "latest",
@@ -17,6 +18,7 @@
     "react-dom": "latest"
   },
   "devDependencies": {
+    "@portabletext/types": "^2.0.6",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",

@@ -1,6 +1,29 @@
 import clientFetch from "@/client";
 import { groq } from "next-sanity";
 import { Post } from "../types/Post";
+import { Metadata } from "../types/Metadata";
+import { SiteData } from "../types/SiteData";
+
+const getSiteMetaData = async (): Promise<Metadata> => {
+  const query = groq`*[_type=="site"]{
+          title,
+          description,
+        }[0]`;
+
+  const data = await clientFetch(query);
+  return data;
+};
+
+const getSiteData = async (): Promise<SiteData> => {
+  const query = groq`*[_type=="site"]{
+            title,
+            description,
+            "logo": logo.asset->url
+          }[0]`;
+
+  const data = await clientFetch(query);
+  return data;
+};
 
 const getAllPosts = async (): Promise<Post[]> => {
   const query = groq`*[_type=="post"]{
@@ -24,10 +47,10 @@ const getPostBySlug = async (slug: string): Promise<Post> => {
         image,
         body,
         "slug": slug.current  
-    }`;
+    }[0]`;
 
   const data = await clientFetch(query);
-  return data[0];
+  return data;
 };
 
-export { getAllPosts, getPostBySlug };
+export { getSiteMetaData, getSiteData, getAllPosts, getPostBySlug };

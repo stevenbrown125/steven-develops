@@ -9,13 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.17",
     "@portabletext/react": "^3.0.7",
     "@sanity/block-content-to-react": "^3.0.0",
     "@sanity/client": "^6.4.12",
     "next": "latest",
     "next-sanity": "^5.5.4",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-icons": "^4.11.0"
   },
   "devDependencies": {
     "@portabletext/types": "^2.0.6",

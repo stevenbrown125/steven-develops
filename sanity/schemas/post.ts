@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import photo from './photo'
 
 export default defineType({
   name: 'post',
@@ -9,6 +10,13 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
+      validation: Rule => Rule.required()
+      
+    }),
+    defineField({
+      name: 'excerpt',
+      title: 'Excerpt',
+      type: 'string',
     }),
     defineField({
       name: 'slug',
@@ -18,20 +26,13 @@ export default defineType({
         source: 'title',
         maxLength: 96,
       },
-    }),
-    defineField({
-      name: 'author',
-      title: 'Author',
-      type: 'reference',
-      to: {type: 'author'},
+      validation: Rule => Rule.required()
     }),
     defineField({
       name: 'mainImage',
       title: 'Main image',
-      type: 'image',
-      options: {
-        hotspot: true,
-      },
+      type: 'reference',
+      to: {type: 'photo'}
     }),
     defineField({
       name: 'categories',
@@ -43,6 +44,7 @@ export default defineType({
       name: 'publishedAt',
       title: 'Published at',
       type: 'datetime',
+      validation: Rule => Rule.required()
     }),
     defineField({
       name: 'body',

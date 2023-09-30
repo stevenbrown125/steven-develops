@@ -3,7 +3,7 @@ import { FaLinkedin, FaSquareGithub, FaSquareTwitter } from "react-icons/fa6";
 
 const author = {
   name: "Steven Brown",
-  img: "/images/profile-pic.jpg",
+  img: `${process.env.NEXT_PUBLIC_BASE_PATH}/images/profile-pic.jpg`,
   description:
     "Javascript Enthusiast, Full Stack Developer, Systems & Cloud Architect, Unreal Engine Hobbiest, Investor, Linguist, Dad, Full Sail Alumni, CEO of @bliztek",
   social: {

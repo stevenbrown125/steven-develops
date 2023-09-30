@@ -25,24 +25,27 @@ export default function SplashImage({
     };
   }, [location]);
 
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH
+    ? process.env.NEXT_PUBLIC_BASE_PATH
+    : "";
   return (
     <>
       <Image
-        src="/images/rome-optimized.jpg"
+        src={`${basePath}/images/rome-optimized.jpg`}
         fill={true}
         alt="Steven Brown in Rome, Italy"
         className="-z-10 opacity-0 fade-transition"
         id="rome"
       />
       <Image
-        src="/images/garda-optimized.jpg"
+        src={`${basePath}/images/garda-optimized.jpg`}
         fill={true}
         alt="Garda, Italy"
         className="-z-10 opacity-0 fade-transition"
         id="garda"
       />
       <Image
-        src="/images/campaignia-optimized.jpg"
+        src={`${basePath}/images/campaignia-optimized.jpg`}
         fill={true}
         alt="Campaignia, Italy"
         className="-z-10 opacity-0 fade-transition"

@@ -52,7 +52,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16"
-          cache: ${{ steps.detect-package-manager.outputs.manager }}
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ./frontend/node_modules
+          key: ${{ runner.OS }}-node-${{ hashFiles('./frontend/package-lock.json') }}
+          restore-keys: ${{ runner.OS }}-node-
       - name: Setup Pages
         uses: actions/configure-pages@v3
         with:

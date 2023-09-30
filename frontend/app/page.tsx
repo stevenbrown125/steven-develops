@@ -1,23 +1,18 @@
-import Image from "next/image";
+import SplashImage from "@/components/SplashImage";
+import { Location } from "./lib/enums";
 
 export default function Home(): JSX.Element {
   return (
-    <main className="relative pt-20 md:pt-24 text-stone-800 flex flex-col justify-center flex-grow min-h-screen">
-      <Image
-        src="./images/rome-optimized.jpg"
-        fill={true}
-        alt="Steven Brown in Rome, Italy"
-        className="-z-10"
-        priority={true}
-      />
+    <main className="relative pt-20 md:pt-24 text-neutral-800 flex-grow">
+      <SplashImage location={Location.Rome} />
       <section>
-        <h1 className="px-4 py-6 mx-auto text-4xl font-black tracking-wide text-center shadow-lg bg-stone-50 -skew-y-2 sm:text-5xl max-w-max sm:px-12 md:rounded-md opacity-90 xl:text-7xl ">
+        <h1 className="px-4 py-6 mx-auto text-4xl font-black tracking-wide text-center shadow-lg bg-neutral-50 -skew-y-2 sm:text-5xl max-w-max sm:px-12 md:rounded-md opacity-90 xl:text-7xl ">
           Hey, I&#39;m Steven Brown
         </h1>
         <h2 className="px-4 py-2 mx-auto mb-8 -mt-2 text-2xl font-medium text-center transform bg-yellow-500 rounded-sm shadow-xl md:px-8 max-w-max -skew-y-2 xl:text-4xl">
           I bring your ideas to the web!
         </h2>
-        <div className="max-w-5xl px-4 py-6 mx-auto text-lg bg-stone-50 md:px-8 md:my-12 lg:rounded-md md:leading-relaxed md:text-xl md:opacity-90 xl:max-w-7xl xl:text-2xl text-slate-900">
+        <div className="max-w-5xl px-4 py-6 mx-auto text-lg bg-neutral-50 md:px-8 md:my-12 lg:rounded-md md:leading-relaxed md:text-xl md:opacity-90 xl:max-w-7xl xl:text-2xl text-slate-900">
           <p className="pb-4">
             I&#39;m a Full Stack Javascript developer from the US. Web Design &
             Development is my passion and I love working with Javascript. After

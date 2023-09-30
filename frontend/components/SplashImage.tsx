@@ -25,9 +25,7 @@ export default function SplashImage({
     };
   }, [location]);
 
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH
-    ? process.env.NEXT_PUBLIC_BASE_PATH
-    : "steven-develops";
+  const basePath = "/steven-develops";
   return (
     <>
       <Image

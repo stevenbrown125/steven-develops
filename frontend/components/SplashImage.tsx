@@ -23,7 +23,7 @@ export default function SplashImage({
       img.classList.add("opacity-0");
       img.classList.remove("opacity-100");
     };
-  }, []);
+  }, [location]);
 
   return (
     <>

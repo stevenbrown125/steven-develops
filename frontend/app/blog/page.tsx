@@ -30,8 +30,8 @@ export default async function Home(): Promise<JSX.Element> {
             <FaNewspaper />
             All Blog Posts
           </h1>
-          {posts.map((post) => (
-            <PostListing post={post} />
+          {posts.map((post, i) => (
+            <PostListing post={post} key={`post-${i}`} />
           ))}
         </div>
       </div>

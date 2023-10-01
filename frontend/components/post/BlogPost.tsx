@@ -39,7 +39,7 @@ export default function BlogPost({ post }: { post: Post }) {
             {format(date, "EEEE MMMM do, yyyy")}
           </time>
         </small>
-        <section className="prose lg:prose-xl">
+        <section className="prose lg:prose-xl py-4 lg:py-8">
           <PortableText value={post.body} />
         </section>
       </div>

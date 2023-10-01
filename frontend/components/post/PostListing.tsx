@@ -26,7 +26,7 @@ export default function PostListing({ post }: { post: Post }) {
       {mainImage}
 
       <div className="px-4 py-6 md:px-8">
-        <Link href={`blog/${slug}`}>
+        <Link href={`/blog/${slug}`}>
           <h2
             itemType="headline"
             className="border-b-2 border-orange-600 hover:text-orange-600"
@@ -48,7 +48,7 @@ export default function PostListing({ post }: { post: Post }) {
           <p className="text-lg">
             {excerpt}..{" "}
             <Link
-              href={`blog/${slug}`}
+              href={`/blog/${slug}`}
               className="italic hover:text-orange-600 text-sm"
             >
               {" "}

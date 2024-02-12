@@ -24,7 +24,7 @@ export default async function Home(): Promise<JSX.Element> {
     <main className="relative text-neutral-800 flex-grow">
       <SplashImage location={Location.Garda} />
       <div className="max-w-7xl mx-auto mt-4 md:mt-8 sm:grid sm:grid-cols-12 gap-4 px-4">
-        <Sidebar posts={latestPosts} />
+        {/* <Sidebar posts={latestPosts} /> */}
         <div className="col-span-9">
           <h1 className="text-xl font-medium bg-yellow-400 rounded-md p-4 flex gap-x-2 items-center opacity-90 backdrop-blur-md mb-4 ">
             <FaNewspaper />

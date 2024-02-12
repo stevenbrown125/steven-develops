@@ -48,7 +48,7 @@ export default async function BlogPostPage({
     <main className="relative text-neutral-800 flex-grow">
       <SplashImage location={Location.Campaignia} />
       <div className="max-w-7xl mx-auto mt-4 md:mt-8 sm:grid sm:grid-cols-12 gap-4 px-4">
-        <Sidebar posts={latestPosts} />
+        {/* <Sidebar posts={latestPosts} /> */}
         <div className="col-span-9">
           <BlogPost post={post} />
           <Bio />

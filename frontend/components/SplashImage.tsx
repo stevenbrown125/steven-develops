@@ -28,7 +28,7 @@ export default function SplashImage({
   const basePath = "/steven-develops";
   return (
     <div className="">
-      <Image
+      {/* <Image
         src={`${basePath}/images/rome-optimized.jpg`}
         fill={true}
         alt="Steven Brown in Rome, Italy"
@@ -49,7 +49,7 @@ export default function SplashImage({
         className="-z-10 opacity-0 fade-transition max-h-screen shadow-md"
         id="campaignia"
       />
-      <div className="absolute -z-10 inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-stone-200 to-transparent via-stone-300 pointer-events-none"></div>
+      <div className="absolute -z-10 inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-stone-200 to-transparent via-stone-300 pointer-events-none"></div> */}
     </div>
   );
 }

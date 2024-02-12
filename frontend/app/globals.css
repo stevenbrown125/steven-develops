@@ -4,8 +4,39 @@
 
 @layer base {
   body {
-    @apply bg-neutral-400;
+    @apply dark:text-white
   }
+
+  header {
+  }
+
+  main {
+    @apply dark:bg-zinc-800
+  }
+
+  h1 {
+    @apply text-3xl font-bold leading-10	
+  }
+
+  h2 {
+    @apply text-2xl font-semibold;
+  }
+  h3 {
+    @apply text-lg font-semibold;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading 
+  }
+
+  a, p {
+    @apply font-content
+  }
+
+  main p {
+    @apply py-4 indent-4;
+  }
+
 }
 
 @layer components {
@@ -15,4 +46,26 @@
 }
 
 @layer utilities {
+  .title-link-underline::after, .content-link-underline::after {
+    @apply absolute bg-zinc-800 dark:bg-zinc-200 h-[2px] shadow-md z-20; 
+    content: '';
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    transition: all 0.3s ease;
+  }
+
+  .title-link-underline::after:hover, .content-link-underline::after:hover {
+    @apply bg-primary
+  }
+  .title-link-underline::after {
+    @apply w-[100px] bg-primary; 
+    bottom: -2px;
+  }
+  .content-link-underline::after {
+    @apply w-[50px]; 
+    bottom: 0px;
+  }
+
 }

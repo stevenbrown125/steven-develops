@@ -3,7 +3,6 @@ import { groq } from "next-sanity";
 import { Post } from "../../types/Post";
 import { Metadata } from "../../types/Metadata";
 import { SiteData } from "../../types/SiteData";
-import { da } from "date-fns/locale";
 
 const getSiteMetaData = async (): Promise<Metadata> => {
   const query = groq`*[_type=="site"]{
@@ -33,7 +32,11 @@ const getAllPosts = async (): Promise<Post[]> => {
         "alt": mainImage -> title,
         excerpt,
         publishedAt,
-        categories,
+        "category": category -> {
+          title,
+          "slug": slug.current,
+        },
+        "tags": tags -> tag,
         "slug": slug.current  
       }`;
 
@@ -44,7 +47,14 @@ const getAllPosts = async (): Promise<Post[]> => {
 const getPostBySlug = async (slug: string): Promise<Post> => {
   const query = groq`*[_type == "post" && slug.current == '${slug}']{
         title,
-        category,             
+        "category": category -> {
+          title,
+          "slug": slug.current,
+        },
+        "tags": tags[] -> {
+          title,
+          "slug": slug.current
+        },             
         "image":mainImage -> image.asset -> url,
         "alt": mainImage -> title,
         body,

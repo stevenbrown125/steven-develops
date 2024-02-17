@@ -6,11 +6,9 @@ import Link from "next/link";
 import { FaTag } from "react-icons/fa6";
 import Breadcrumbs from "@/components/Breadcrumb";
 
-const tags = ['temp', 'temp2']
 export default function Post({ post }: { post: Post }) {
-  const { title, image, publishedAt, alt, category, slug } = post;
+  const { title, image, publishedAt, alt, category, tags, slug } = post;
   const date = format(new Date(publishedAt), "EEEE MMMM do, yyyy");
-
   return (
     <>
       <Breadcrumbs breadcrumbs={[{ href: '/blog', title: 'Blog' }, { href: slug, title }]} />
@@ -27,7 +25,7 @@ export default function Post({ post }: { post: Post }) {
             >
               {date}
             </time>
-            in <Link href={`/categories/${category}`} itemProp="articleSection">{category}</Link>
+            in <Link href={`/categories/${category.slug}`} itemProp="articleSection">{category.title}</Link>
             <span className="sr-only">by <span itemProp="author">Steven Brown</span></span>
           </small>
           <Figure figure={{ href: image, alt }} />
@@ -37,7 +35,7 @@ export default function Post({ post }: { post: Post }) {
         </section>
         <footer>
           <ul itemProp="keywords">
-            {tags.map(tag => <li key={`tag-${tag}`}><Link href={`/tags/${tag}`}><FaTag />{tag}</Link></li>)}
+            {tags.map(tag => <li key={`tag-${tag.title}`}><FaTag /><Link href={`/tags/${tag.slug}`}>{tag.title}</Link></li>)}
           </ul>
         </footer>
       </article>

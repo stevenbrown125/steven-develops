@@ -1,4 +1,4 @@
-import {defineField, defineType} from 'sanity'
+import { defineField, defineType } from 'sanity'
 import photo from './photo'
 
 export default defineType({
@@ -11,12 +11,6 @@ export default defineType({
       title: 'Title',
       type: 'string',
       validation: Rule => Rule.required()
-      
-    }),
-    defineField({
-      name: 'excerpt',
-      title: 'Excerpt',
-      type: 'string',
     }),
     defineField({
       name: 'slug',
@@ -29,16 +23,28 @@ export default defineType({
       validation: Rule => Rule.required()
     }),
     defineField({
+      name: 'excerpt',
+      title: 'Excerpt',
+      description: 'Used for post listings as well as for SEO.',
+      type: 'string',
+    }),
+    defineField({
       name: 'mainImage',
       title: 'Main image',
       type: 'reference',
-      to: {type: 'photo'}
+      to: { type: 'photo' }
     }),
     defineField({
-      name: 'categories',
-      title: 'Categories',
+      name: 'category',
+      title: 'Category',
+      type: 'reference',
+      to: [{ type: 'category' }]
+    }),
+    defineField({
+      name: 'tags',
+      title: 'tags',
       type: 'array',
-      of: [{type: 'reference', to: {type: 'category'}}],
+      of: [{ type: 'reference', to: { type: 'tag' } }],
     }),
     defineField({
       name: 'publishedAt',
@@ -60,8 +66,8 @@ export default defineType({
       media: 'mainImage',
     },
     prepare(selection) {
-      const {author} = selection
-      return {...selection, subtitle: author && `by ${author}`}
+      const { author } = selection
+      return { ...selection, subtitle: author && `by ${author}` }
     },
   },
 })

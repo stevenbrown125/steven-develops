@@ -1,4 +1,6 @@
 import { PortableTextBlock } from "@portabletext/types";
+import { Tag } from "./Tag";
+import { Category } from "./Category";
 
 export interface Post {
   title: string;
@@ -7,7 +9,8 @@ export interface Post {
   author: string;
   image: string;
   alt: string;
-  category: string[];
+  category: Category;
+  tags: Tag[];
   publishedAt: string;
   body: PortableTextBlock;
 }

@@ -14,6 +14,7 @@ export default function Breadcrumbs({ breadcrumbs = [] }: BreadcrumbProps) {
     const homeBreadcrumb = {
         title: 'Home',
         href: '/home',
+        current: breadcrumbs.length === 0
     }
     breadcrumbs.unshift(homeBreadcrumb);
 

@@ -75,6 +75,10 @@
     @apply border-b-2 border-primary pt-4 mb-1;
   }
 
+  a.listing header {
+    @apply mb-2;
+  }
+
   a.listing header h3 {
     @apply mx-4 border-b-2 border-primary hover:text-primary text-center;
   }
@@ -85,6 +89,10 @@
 
   article header time {
     @apply px-1;
+  }
+
+  article a {
+    @apply border-b border-primary hover:text-primary border-dashed
   }
 
   a.listing section {
@@ -109,6 +117,10 @@
 
   article footer ul {
     @apply flex items-center gap-2
+  }
+
+  article footer li {
+    @apply flex items-center gap-1 hover:text-primary
   }
 
   article footer ul li a {

@@ -1,8 +1,8 @@
 import clientFetch from "@/client";
 import { groq } from "next-sanity";
-import { Post } from "../types/Post";
-import { Metadata } from "../types/Metadata";
-import { SiteData } from "../types/SiteData";
+import { Post } from "../../types/Post";
+import { Metadata } from "../../types/Metadata";
+import { SiteData } from "../../types/SiteData";
 import { da } from "date-fns/locale";
 
 const getSiteMetaData = async (): Promise<Metadata> => {
@@ -33,6 +33,7 @@ const getAllPosts = async (): Promise<Post[]> => {
         "alt": mainImage -> title,
         excerpt,
         publishedAt,
+        categories,
         "slug": slug.current  
       }`;
 

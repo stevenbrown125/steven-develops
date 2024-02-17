@@ -1,5 +1,3 @@
-import SplashImage from "@/components/SplashImage";
-import { Location } from "./lib/enums";
 
 export default function Home(): JSX.Element {
   return (

@@ -3,8 +3,136 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-neutral-400;
+
+  body,
+  main {
+    @apply bg-zinc-100 dark:bg-zinc-800 dark:text-white
+  }
+
+  h1 {
+    @apply text-3xl font-bold leading-10
+  }
+
+  h2 {
+    @apply text-2xl font-semibold leading-8;
+  }
+
+  h3 {
+    @apply text-lg font-semibold;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading dark:text-zinc-200;
+  }
+
+  a,
+  p {
+    @apply font-content
+  }
+
+  figure {
+    @apply relative z-10 shadow-xl mb-4;
+  }
+
+  figure div {
+    @apply h-48 md:h-96 flex flex-col w-full relative;
+  }
+
+  figure.listing div {
+    @apply md:h-72;
+  }
+
+  figure img {
+    @apply object-cover object-center rounded-md;
+  }
+
+  figure.listing img {
+    @apply rounded-none rounded-t-md;
+  }
+
+  figure figcaption {
+    @apply px-4 mt-2 absolute right-0 text-xs italic truncate overflow-hidden whitespace-nowrap max-w-full;
+  }
+
+  main p:not('prose') {
+    @apply py-4 indent-4;
+  }
+
+  main>article {
+    @apply mx-auto max-w-7xl mb-4
+  }
+
+  a.listing {
+    @apply mx-auto max-w-7xl my-4 pb-6 bg-zinc-300/40 dark:bg-zinc-700/40 lg:rounded-b-md shadow-xl z-10 relative grow-0 max-w-full transition duration-300 ease-in-out hover:-translate-y-2;
+  }
+
+  article header h2 {
+    @apply border-b-2 border-primary mb-1;
+  }
+
+  a.listing header {
+    @apply mb-2;
+  }
+
+  a.listing header h3 {
+    @apply mx-4 border-b-2 border-primary hover:text-primary text-center;
+  }
+
+  a.listing small {
+    @apply px-6;
+  }
+
+  article header time {
+    @apply px-1;
+  }
+
+  article a {
+    @apply border-b border-primary hover:text-primary border-dashed
+  }
+
+  a.listing section {
+    @apply px-8;
+  }
+
+  main>article section {
+    @apply prose dark:prose-invert max-w-full;
+  }
+
+  main>article figure {
+    @apply mt-4
+  }
+
+  a.listing section span {
+    @apply text-sm italic border-b border-primary hover:text-primary;
+  }
+
+  article footer {
+    @apply flex justify-between text-sm;
+  }
+
+  article footer ul {
+    @apply flex items-center gap-2
+  }
+
+  article footer li {
+    @apply flex items-center gap-1 hover:text-primary
+  }
+
+  article footer ul li a {
+    @apply flex items-center gap-1
+  }
+
+  article footer ul li a:hover {
+    @apply text-primary
+  }
+
+  article footer ul li svg {
+    @apply mt-1
   }
 }
 
@@ -15,4 +143,75 @@
 }
 
 @layer utilities {
+
+  .title-link-underline::after,
+  .content-link-underline::after {
+    @apply absolute bg-zinc-800 dark:bg-zinc-200 h-[2px] shadow-md z-20;
+    content: '';
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    transition: all 0.3s ease;
+  }
+
+  .title-link-underline::after:hover,
+  .content-link-underline::after:hover {
+    @apply bg-primary
+  }
+
+  .title-link-underline::after {
+    @apply w-[100px] bg-primary;
+    bottom: -2px;
+  }
+
+  .content-link-underline::after {
+    @apply w-auto;
+    bottom: 0px;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    @apply bg-zinc-800;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gradient-to-b from-primary to-yellow-600 rounded-md;
+
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #c0a0b9;
+  }
+
+  .breadcrumb-item a {
+    @apply hover:text-primary/60 font-medium;
+  }
+
+  .breadcrumb-item:last-child {
+    @apply dark:text-zinc-500 disabled;
+  }
+
+  .disabled {
+    @apply pointer-events-none;
+  }
 }

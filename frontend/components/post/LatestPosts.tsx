@@ -1,4 +1,4 @@
-import { Post } from "@/app/types/Post";
+import { Post } from "@/types/Post";
 import { format } from "date-fns";
 import Link from "next/link";
 import { FaBlog } from "react-icons/fa6";

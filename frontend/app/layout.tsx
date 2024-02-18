@@ -9,11 +9,15 @@ import Header from "@/components/layout/Header";
 const notoSans = Noto_Sans({
   subsets: ['latin'],
   variable: '--font-noto-sans',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  style: ['normal', 'italic']
 })
 
 const robotoSlab = Roboto_Slab({
   subsets: ['latin'],
   variable: '--font-roboto-slab',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  style: ['normal']
 })
 
 export async function generateMetadata() {

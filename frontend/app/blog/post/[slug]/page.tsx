@@ -1,8 +1,7 @@
 import {
   getAllPosts,
   getPostBySlug,
-  getSiteMetaData,
-} from "@/app/lib/sanityQueries";
+} from "@/lib/sanityQueries";
 import { Post as IPost } from "@/types/Post";
 import Post from "@/components/ui/Blog/Post";
 
@@ -20,12 +19,10 @@ export async function generateMetadata({
 }) {
   const { slug } = params;
   const post: IPost = await getPostBySlug(slug);
-  const { title, description } = await getSiteMetaData();
-  const pageTitle = `${title} | ${post.title}`;
-  const pageDescription = post.excerpt ? post.excerpt : description;
+  // const { title, description } = await getSiteMetaData();
+  // const pageTitle = `${title} | ${post.title}`;
+  // const pageDescription = post.excerpt ? post.excerpt : description;
   return {
-    title: pageTitle,
-    description: pageDescription,
   };
 }
 

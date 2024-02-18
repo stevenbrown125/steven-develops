@@ -1,13 +1,13 @@
-import { getAllPosts, getSiteMetaData } from "../lib/sanityQueries";
+import { getAllPosts } from "@/lib/sanityQueries";
 import Listing from "@/components/ui/Blog/Listing";
 
 export async function generateMetadata() {
-  const { title, description } = await getSiteMetaData();
-  const pageTitle = `${title} | All Blog Posts`;
-  return {
-    title: pageTitle,
-    description,
-  };
+  // const { title, description } = await getSiteMetaData();
+  // const pageTitle = `${title} | All Blog Posts`;
+  // return {
+  //   title: pageTitle,
+  //   description,
+  // };
 }
 
 export default async function Home(): Promise<JSX.Element> {

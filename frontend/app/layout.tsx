@@ -1,6 +1,6 @@
 import "./globals.css";
 import { Noto_Sans, Roboto_Slab } from "next/font/google";
-import { getSiteData, getSiteMetaData } from "./lib/sanityQueries";
+import { getSiteData } from "../lib/sanityQueries";
 import Sidebar from "@/components/layout/Sidebar";
 import Footer from "@/components/layout/Footer";
 import Providers from "@/providers";
@@ -17,11 +17,11 @@ const robotoSlab = Roboto_Slab({
 })
 
 export async function generateMetadata() {
-  const { title, description } = await getSiteMetaData();
-  return {
-    title,
-    description,
-  };
+  // const { title, description } = await getSiteMetaData();
+  // return {
+  //   title,
+  //   description,
+  // };
 }
 
 async function getSiteInfo() {

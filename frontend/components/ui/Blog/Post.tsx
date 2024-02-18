@@ -25,7 +25,7 @@ export default function Post({ post }: { post: Post }) {
             >
               {date}
             </time>
-            in <Link href={`/categories/${category.slug}`} itemProp="articleSection">{category.title}</Link>
+            in <Link href={`/blog/categories/${category.slug}`} itemProp="articleSection">{category.title}</Link>
             <span className="sr-only">by <span itemProp="author">Steven Brown</span></span>
           </small>
           <Figure figure={{ href: image, alt }} />
@@ -35,7 +35,7 @@ export default function Post({ post }: { post: Post }) {
         </section>
         <footer>
           <ul itemProp="keywords">
-            {tags.map(tag => <li key={`tag-${tag.title}`}><FaTag /><Link href={`/tags/${tag.slug}`}>{tag.title}</Link></li>)}
+            {tags.map(tag => <li key={`tag-${tag.title}`}><FaTag /><Link href={`/blog/tags/${tag.slug}`}>{tag.title}</Link></li>)}
           </ul>
         </footer>
       </article>

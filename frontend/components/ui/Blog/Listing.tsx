@@ -8,7 +8,7 @@ export default function Listing({ post }: { post: Post }) {
   const date = new Date(publishedAt);
 
   return (
-    <Link href={`/blog/${slug}`} className="listing" itemProp="url">
+    <Link href={`/blog/post/${slug}`} className="listing" itemProp="url">
       <article itemProp="itemListElement" itemScope itemType="http://schema.org/Article">
         <header>
           <Figure figure={{ href: image, alt, classes: 'listing' }} />

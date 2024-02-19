@@ -62,7 +62,8 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
             if (isVisible) {
                 closeSidebar();
             } else {
-                openSidebar();
+                setIsVisible(true)
+                maximizeSidebar(viewWidth)
             }
         }
     }

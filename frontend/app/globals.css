@@ -71,8 +71,13 @@
     @apply mx-auto max-w-7xl my-4 pb-6 bg-zinc-300/40 dark:bg-zinc-700/40 lg:rounded-b-md shadow-xl z-10 relative grow-0 max-w-full transition duration-300 ease-in-out hover:-translate-y-2;
   }
 
-  article header h2 {
+  article header h2,
+  section header h2 {
     @apply border-b-2 border-primary mb-1;
+  }
+
+  section header h2 {
+    @apply mb-4;
   }
 
   a.listing header {
@@ -133,6 +138,18 @@
 
   article footer ul li svg {
     @apply mt-1
+  }
+
+  input, textarea {
+    @apply p-1 mb-2
+  }
+
+  label {
+    @apply mt-1
+  }
+
+  button {
+    @apply mt-2;
   }
 }
 
@@ -213,5 +230,23 @@
 
   .disabled {
     @apply pointer-events-none;
+  }
+
+  .vertical-hr {
+    @apply relative
+  }
+
+  .vertical-hr::before {
+    content: '';
+    @apply absolute hidden 2xl:block left-0 top-10 bottom-10 w-[1px] bg-zinc-600
+  }
+
+
+
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 }

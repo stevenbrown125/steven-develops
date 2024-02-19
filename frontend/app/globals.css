@@ -139,6 +139,18 @@
   article footer ul li svg {
     @apply mt-1
   }
+
+  input, textarea {
+    @apply p-1 mb-2
+  }
+
+  label {
+    @apply mt-1
+  }
+
+  button {
+    @apply mt-2;
+  }
 }
 
 @layer components {
@@ -218,5 +230,23 @@
 
   .disabled {
     @apply pointer-events-none;
+  }
+
+  .vertical-hr {
+    @apply relative
+  }
+
+  .vertical-hr::before {
+    content: '';
+    @apply absolute hidden 2xl:block left-0 top-10 bottom-10 w-[1px] bg-zinc-600
+  }
+
+
+
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 }

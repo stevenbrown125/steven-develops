@@ -19,7 +19,7 @@ export default function Breadcrumbs({ breadcrumbs = [] }: BreadcrumbProps) {
     breadcrumbs.unshift(homeBreadcrumb);
 
     return (
-        <div className="text-xs dark:text-zinc-400 shadow-inner uppercase mb-2">
+        <div className="text-xs dark:text-zinc-400 uppercase mb-2">
             <ul className="flex gap-x-1">
                 {breadcrumbs.map(({ href, title }, i) => {
                     const isDisabled = i === breadcrumbs.length - 1;

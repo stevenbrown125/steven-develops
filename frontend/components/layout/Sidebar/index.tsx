@@ -27,7 +27,7 @@ export default function Sidebar() {
   return (
     <animated.div
       {...(bind() as any)}
-      className={`z-30 min-h-full fixed bg-center shadow-heavy-right bg-cover bg-gray-800 text-zinc-900 dark:text-white transition ease-in-out duration-700  ${isDragging ? `cursor-grabbing` : `cursor-grab`}`}
+      className={`z-10 min-h-full fixed bg-center shadow-heavy-right bg-cover bg-gray-800 text-zinc-900 dark:text-white transition ease-in-out duration-700  ${isDragging ? `cursor-grabbing` : `cursor-grab`}`}
       style={{
         backgroundImage: "url('/images/bg-2.jpg')",
         width: width.to(w => `${w}px`),

@@ -1,10 +1,11 @@
 "use client"
 import { useFormik } from 'formik';
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { contactSchema } from '@/lib/validation';
+import { useRecaptcha } from '@/providers/RecaptchaProvider';
+import { RecaptchaText } from './RecaptchaText';
 
 export default function ContactForm() {
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  const { executeRecaptcha } = useRecaptcha();
 
   const formik = useFormik({
     initialValues: {
@@ -14,26 +15,26 @@ export default function ContactForm() {
       message: '',
       city: ''
     },
-    // validationSchema: contactSchema,
+    validationSchema: contactSchema,
     onSubmit: async (values) => {
       try {
         if (!executeRecaptcha) throw "Execute recaptcha not yet available";
         const gReCaptchaToken = await executeRecaptcha("contactFormSubmit");
-
+        console.log(gReCaptchaToken)
         if (values.city !== '') { // Failed Honeypot
           throw "Invalid input"
         }
-        // const response = await fetch('/api/contact', {
-        //   method: "POST",
-        //   headers: {
-        //     Accept: "application/json, text/plain, */*",
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     ...values,
-        //     gRecaptchaToken: gReCaptchaToken,
-        //   }),
-        // })
+        const response = await fetch('/api/contact', {
+          method: "POST",
+          headers: {
+            Accept: "application/json, text/plain, */*",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ...values,
+            gRecaptchaToken: gReCaptchaToken,
+          }),
+        })
         console.log('sent')
 
       } catch (error) {
@@ -76,6 +77,7 @@ export default function ContactForm() {
       <button type="submit" className="inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:bg-primary dark:hover:bg-primary">
         Send Message
       </button>
+      <RecaptchaText />
     </form>
   );
 }

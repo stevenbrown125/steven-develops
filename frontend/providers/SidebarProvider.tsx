@@ -31,7 +31,7 @@ export const SidebarContext =
     createContext<SidebarContextProps>(defaultSidebarContext);
 
 export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) => {
-    const MIN_WINDOW_BREAKPOINT = 640;
+    const MIN_WINDOW_BREAKPOINT = 768;
     const WINDOW_BREAKPOINT = 1536;
     const SIDEBAR_MIN_WIDTH = 325;
     const SIDEBAR_MAX_WIDTH = 550;
@@ -62,7 +62,6 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
             if (isVisible) {
                 closeSidebar();
             } else {
-                setIsVisible(true)
                 maximizeSidebar(viewWidth)
             }
         }
@@ -73,9 +72,13 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
         api.start({
             width: viewWidth,
             immediate: false,
-            onRest: () => setIsAnimating(false),
+            onRest: () => {
+                setIsAnimating(false); setIsMaximized(true)
+
+            },
         })
-        setIsMaximized(true)
+        setIsVisible(true);
+
     }
 
     const minimizeSidebar = (viewWidth: number) => {
@@ -84,9 +87,11 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
             api.start({ width: SIDEBAR_MAX_WIDTH, immediate: false })
         else
             api.start({ width: SIDEBAR_MIN_WIDTH, immediate: false })
+
     }
 
     const updateSidebar = (viewWidth: number) => {
+        console.log(isMaximized, isAnimating)
         if (isMaximized) {
             if (!isAnimating)
                 api.start({ width: viewWidth, immediate: true })
@@ -114,12 +119,12 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
             onDrag: ({ movement: [mx] }) => {
                 const viewWidth = window.innerWidth
                 const sidebarWidth = getSidebarWidth(viewWidth)
-                const newWidth = isMaximized ? Math.min(viewWidth, viewWidth + mx) : Math.max(sidebarWidth, sidebarWidth + mx);
-                api.start({ width: newWidth, immediate: true, }), { axis: 'x', threshold: 150 };;
+                const newWidth = isMaximized || isAnimating ? Math.min(viewWidth, viewWidth + mx) : Math.max(sidebarWidth, sidebarWidth + mx);
+                api.start({ width: newWidth, immediate: true, }), { axis: 'x', threshold: 150 };
             },
 
             onDragEnd: ({ movement: [mx], intentional, distance: [dx] }) => {
-                setIsDragging(false)
+
                 const viewWidth = window.innerWidth
                 const sidebarWidth = getSidebarWidth(viewWidth)
                 if (intentional && dx > 30) {
@@ -135,6 +140,7 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
                     else
                         api.start({ width: sidebarWidth, immediate: false })
                 }
+                setIsDragging(false)
             }
         }
     );
@@ -142,7 +148,7 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
     useEffect(() => {
         const handleResize = () => {
             const viewWidth = document.documentElement.clientWidth
-            if (isVisible) {
+            if (isVisible && !isAnimating) {
                 updateSidebar(viewWidth)
             } else {
                 if (viewWidth > MIN_WINDOW_BREAKPOINT) openSidebar()

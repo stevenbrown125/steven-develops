@@ -49,9 +49,9 @@ export default async function RootLayout({
         <Providers>
           <div className="flex min-h-screen relative">
             <Sidebar />
-            <div className="relative z-0 ml-0 sm:ml-[325px] 2xl:ml-[550px] flex-1 bg-zinc-100 dark:bg-zinc-800 flex flex-col h-screen transition transition-all ease-in-out duration-300">
+            <div className="relative z-0 ml-0 md:ml-[325px] 2xl:ml-[550px] flex-1 bg-zinc-100 dark:bg-zinc-800 flex flex-col h-screen transition transition-all ease-in-out duration-300 mt-[80px] md:mt-0 ">
               <Header />
-              <main className="px-8 py-4 flex-1">
+              <main className="px-4 lg:px-8 py-4 flex-1">
                 {children}
               </main>
               <Footer />

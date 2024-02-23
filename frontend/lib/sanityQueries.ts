@@ -14,7 +14,7 @@ const getSiteData = async (): Promise<SiteData> => {
 const postFields = `
   title,
   "image": mainImage -> image.asset -> url,
-  "alt": mainImage.alt,
+  "alt": mainImage -> title,
   excerpt,
   body,
   publishedAt,
@@ -34,7 +34,7 @@ const getPostBySlug = async (slug: string): Promise<Post> => {
 };
 
 const getAllDocuments = async (type: string): Promise<Category[] | Tag[]> => {
-  const query = groq`*[_type == "${type}"]{title, "slug": slug.current}`;
+  const query = groq`*[_type == "${type}"]{title, "slug": slug.current, "image": image-> image.asset -> url, "alt": image -> title, description}`;
   return await clientFetch(query);
 };
 

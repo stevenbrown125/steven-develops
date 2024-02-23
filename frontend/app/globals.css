@@ -36,7 +36,7 @@
   }
 
   figure {
-    @apply relative z-10 shadow-xl mb-4;
+    @apply relative z-10 shadow-xl mb-8;
   }
 
   figure div {
@@ -67,10 +67,6 @@
     @apply mx-auto max-w-7xl mb-4
   }
 
-  a.listing {
-    @apply mx-auto max-w-7xl my-4 pb-6 bg-zinc-300/40 dark:bg-zinc-700/40 lg:rounded-b-md shadow-xl z-10 relative grow-0 max-w-full transition duration-300 ease-in-out hover:-translate-y-2;
-  }
-
   article header h2,
   section header h2 {
     @apply border-b-2 border-primary mb-1;
@@ -78,18 +74,6 @@
 
   section header h2 {
     @apply mb-4;
-  }
-
-  a.listing header {
-    @apply mb-2;
-  }
-
-  a.listing header h3 {
-    @apply mx-4 border-b-2 border-primary hover:text-primary text-center;
-  }
-
-  a.listing small {
-    @apply px-6;
   }
 
   article header time {
@@ -100,20 +84,12 @@
     @apply border-b border-primary hover:text-primary border-dashed
   }
 
-  a.listing section {
-    @apply px-8;
-  }
-
   main>article section {
     @apply prose dark:prose-invert max-w-full;
   }
 
   main>article figure {
     @apply mt-4
-  }
-
-  a.listing section span {
-    @apply text-sm italic border-b border-primary hover:text-primary;
   }
 
   article footer {
@@ -151,6 +127,10 @@
   button {
     @apply mt-2;
   }
+
+  main p a {
+    @apply border-b border-primary hover:text-primary border-dashed
+  }
 }
 
 @layer components {
@@ -160,6 +140,9 @@
 }
 
 @layer utilities {
+  .heading-hr {
+    @apply border-b-2 border-primary
+  }
 
   .title-link-underline::after,
   .content-link-underline::after {
@@ -220,6 +203,10 @@
     background: #c0a0b9;
   }
 
+  .breadcrumb-item {
+    @apply flex gap-x-1
+  }
+
   .breadcrumb-item a {
     @apply hover:text-primary/60 font-medium;
   }
@@ -241,12 +228,14 @@
     @apply absolute hidden 2xl:block left-0 top-10 bottom-10 w-[1px] bg-zinc-600
   }
 
-
-
   .modal-content {
     background: white;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
+}
+
+.grecaptcha-badge {
+  visibility: hidden;
 }

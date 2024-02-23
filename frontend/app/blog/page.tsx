@@ -19,7 +19,7 @@ export default async function Home(): Promise<JSX.Element> {
   return (
     <div className="relative flex-grow max-w-screen-2xl mx-auto animate-fade-in-slide-down">
       <h2>All Blog Posts</h2>
-      <section className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 4xl:grid-cols-4 gap-6" itemScope itemType="http://schema.org/ItemList">
+      <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 4xl:grid-cols-4 gap-4 lg:gap-6" itemScope itemType="http://schema.org/ItemList">
         {posts.map((post, i) => (
           <Listing post={post} key={`post-${i}`} />
         ))}

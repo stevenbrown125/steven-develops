@@ -14,7 +14,7 @@ const getSiteData = async (): Promise<SiteData> => {
 const postFields = `
   title,
   "image": mainImage -> image.asset -> url,
-  "alt": mainImage.alt,
+  "alt": mainImage -> title,
   excerpt,
   body,
   publishedAt,

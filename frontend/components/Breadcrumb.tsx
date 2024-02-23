@@ -20,7 +20,7 @@ export default function Breadcrumbs({ breadcrumbs = [] }: BreadcrumbProps) {
 
     return (
         <div className="text-xs dark:text-zinc-400 uppercase mb-2">
-            <ul className="flex gap-x-1">
+            <ul className="inline-flex gap-x-1">
                 {breadcrumbs.map(({ href, title }, i) => {
                     const isDisabled = i === breadcrumbs.length - 1;
                     return (

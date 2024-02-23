@@ -26,5 +26,12 @@ export default defineType({
       type: 'reference',
       to: { type: 'photo' }
     }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      description: 'Used for category listings as well as for SEO.',
+      type: 'string',
+      validation: Rule => Rule.max(255).error(`SEO rules dictate descriptions should not be more than 255 characters.`)
+    }),
   ],
 })

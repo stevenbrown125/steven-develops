@@ -127,6 +127,10 @@
   button {
     @apply mt-2;
   }
+
+  main p a {
+    @apply border-b border-primary hover:text-primary border-dashed
+  }
 }
 
 @layer components {

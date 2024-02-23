@@ -1,4 +1,7 @@
 export interface Category {
     title: string,
-    slug: string
+    slug: string,
+    image: string,
+    alt: string,
+    description: string
 }

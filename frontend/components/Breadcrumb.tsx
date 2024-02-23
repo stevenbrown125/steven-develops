@@ -13,7 +13,7 @@ interface BreadcrumbProps {
 export default function Breadcrumbs({ breadcrumbs = [] }: BreadcrumbProps) {
     const homeBreadcrumb = {
         title: 'Home',
-        href: '/home',
+        href: '/',
         current: breadcrumbs.length === 0
     }
     breadcrumbs.unshift(homeBreadcrumb);

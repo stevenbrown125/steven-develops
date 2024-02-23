@@ -26,7 +26,7 @@ export default function Listing({ post }: { post: Post }) {
         <section className="px-4 md:px-8">
           <p itemProp="description">
             {excerpt}..{" "}
-            <span className="text-sm italic border-b border-primary hover:text-primary">Read more</span>
+            <span className="text-sm italic border-b border-primary border-dotted hover:text-primary">Read more</span>
           </p>
         </section>
       </article>

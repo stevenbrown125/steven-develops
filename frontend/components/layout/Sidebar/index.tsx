@@ -37,7 +37,7 @@ export default function Sidebar() {
       dir="rtl"
     >
       <div className={`bg-zinc-200/80 dark:bg-zinc-900/60 w-screen md:w-full`}>
-        <div className={`h-screen flex flex-col justify-center text-center select-none transition ease-in-out duration-300 ${!isVisible ? 'opacity-0 -translate-x-full translate-y-0' : 'opacity-100 translate-x-0 translate-y-0 '}`}>
+        <div className={`h-screen flex flex-col justify-center text-center select-none transition ease-in-out duration-300 ${!isVisible ? '-translate-x-full translate-y-0' : 'opacity-100 translate-x-0 translate-y-0 '} `}>
           <Link href="/" className="group pb-1 mb-4 relative title-link-underline w-max mx-auto" onClick={closeSidebar}>
             <Image
               src={`/images/logo_icon.png`}

@@ -26,5 +26,11 @@ export default defineType({
             type: 'reference',
             to: { type: 'photo' }
         }),
+        defineField({
+            name: 'description',
+            title: 'Description',
+            description: 'Used for tag listings as well as for SEO.',
+            type: 'string',
+        }),
     ]
 })

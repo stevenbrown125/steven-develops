@@ -8,7 +8,7 @@ export default function Listing({ post }: { post: Post }) {
   const date = new Date(publishedAt);
 
   return (
-    <Link href={`/blog/post/${slug}`} itemProp="url" className="mx-auto max-w-7xl mt-4 pb-6 bg-zinc-300/40 dark:bg-zinc-700/40 lg:rounded-b-md shadow-xl z-10 relative grow-0 max-w-full transition duration-300 ease-in-out hover:-translate-y-2">
+    <Link href={`/blog/post/${slug}`} itemProp="url" className="mx-auto max-w-7xl mt-4 pb-6 bg-zinc-300/40 dark:bg-zinc-700/40 lg:rounded-b-md shadow-xl z-10 relative grow-0 group max-w-full transition duration-300 ease-in-out hover:-translate-y-2">
       <article itemProp="itemListElement" itemScope itemType="http://schema.org/Article">
         <header className="mb-2">
           <Figure figure={{ href: image, alt, classes: 'listing' }} />

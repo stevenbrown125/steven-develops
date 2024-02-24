@@ -1,4 +1,4 @@
 export type Photo = {
-  title: string;
+  alt: string;
   image: string;
 };

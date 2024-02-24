@@ -1,5 +1,6 @@
-export interface Tag {
+export interface Technology {
     title: string;
     slug: string;
     icon: string;
 }
+

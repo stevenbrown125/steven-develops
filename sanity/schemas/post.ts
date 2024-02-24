@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity'
-import photo from './photo'
+
 
 export default defineType({
   name: 'post',

@@ -1,17 +1,6 @@
 import clientFetch from "@/client";
 import { groq } from "next-sanity";
-import { Post, SiteData, Category, Tag } from "@/types";
-import { Project } from "@/types/Project";
-import { Technology } from "@/types/Technology";
-
-const getSiteData = async (): Promise<SiteData> => {
-  const query = groq`*[_type == "site"]{
-    title,
-    description,
-    "logo": logo.asset->url
-  }[0]`;
-  return await clientFetch(query);
-};
+import { Post, SiteData, Category, Tag, Project, Technology } from "@/types";
 
 const postFields = `
   title,
@@ -27,86 +16,113 @@ const postFields = `
 
 const projectFields = `
   title,
-  "slug": slug.current
-  "image": image -> image,
+  "slug": slug.current,
+  "image": {
+    "href": image->image.asset->url,
+    "dimensions": image->image.asset->metadata.dimensions,
+    "alt": image->title
+  },
   description,
   body,
   startDate,
   completionDate,
   "category": category->{title, "slug": slug.current},
-  "technologies": technology[]->{title, "slug": slug.current},
+  "technologies": technologies[]->{title, "slug": slug.current},
   "liveURL": liveURL.current
 `;
 
-const technologyFields = `
+const technologyAndTagFields = `
 title,
 "slug": slug.current,
 icon,
 `
+const buildQuery = (type: string, slug: string, fields: string) => {
+  const slugFilter = slug ? `&& slug.current == '${slug}'` : '';
+  return groq`*[_type == "${type}" ${slugFilter}]{${fields}}`;
+};
 
+// SiteData
+const getSiteData = async (): Promise<SiteData> => {
+  const query = buildQuery("site", '', `title, description, "logo": logo.asset->url`);
+  const results = await clientFetch<SiteData[]>(query);
+  return results[0];
+};
+
+// Posts
 const getAllPosts = async (): Promise<Post[]> => {
-  const query = groq`*[_type == "post"]{${postFields}}`;
-  return await clientFetch(query);
-};
-
-const getAllProjects = async (): Promise<Project[]> => {
-  const query = groq`*[_type == "project"]{${projectFields}}`;
-  return await clientFetch(query);
-};
-
-const getProjectBySlug = async (slug: string): Promise<Project> => {
-  const query = groq`*[_type == "project" && slug.current == '${slug}'][0]{${projectFields}}`;
-  return await clientFetch(query);
+  const query = buildQuery("post", '', postFields);
+  return await clientFetch<Post[]>(query);
 };
 
 const getPostBySlug = async (slug: string): Promise<Post> => {
-  const query = groq`*[_type == "post" && slug.current == '${slug}'][0]{${postFields}}`;
-  return await clientFetch(query);
+  const query = buildQuery("post", slug, postFields);
+  const results = await clientFetch<Post[]>(query);
+  return results[0];
 };
 
-const getAllTechnologies = async (): Promise<Project[]> => {
-  const query = groq`*[_type == "technology"]{${technologyFields}}`;
-  return await clientFetch(query);
+const getPostsByCategory = async (slug: string): Promise<Post[]> => {
+  const query = groq`*[_type == "post" && category->slug.current == '${slug}']{${postFields}}`;
+  return await clientFetch<Post[]>(query);
 };
 
-const getAllDocuments = async (type: string): Promise<Category[] | Tag[]> => {
-  const query = groq`*[_type == "${type}"]{title, "slug": slug.current, "image": image-> image.asset -> url, "alt": image -> title, description}`;
-  return await clientFetch(query);
+// Projects
+const getAllProjects = async (): Promise<Project[]> => {
+  const query = buildQuery("project", '', projectFields);
+  return await clientFetch<Project[]>(query);
 };
 
-const getDocumentBySlug = async (type: string, slug: string): Promise<Category | Tag> => {
-  const query = groq`*[_type == "${type}" && slug.current == '${slug}'][0]{title, "slug": slug.current}`;
-  return await clientFetch(query);
-};
-
-const getPostsByFilter = async (filterType: string, slug: string): Promise<Post[]> => {
-  const filterPath = filterType === 'category' ? 'category->slug.current match' : 'tags[]->slug.current match';
-  const query = groq`*[_type == "post" && ${filterPath} '${slug}']{${postFields}}`;
-  return await clientFetch(query);
+const getProjectBySlug = async (slug: string): Promise<Project> => {
+  const query = buildQuery("project", slug, projectFields);
+  const results = await clientFetch<Project[]>(query);
+  return results[0];
 };
 
 const getProjectsByTechnology = async (slug: string): Promise<Project[]> => {
-  const filterPath = 'technology->slug.current match';
-  const query = groq`*[_type == "project" && ${filterPath} '${slug}']{${projectFields}}`;
-  return await clientFetch(query);
+  const query = groq`*[_type == "project" && technology[]->slug.current == '${slug}']{${projectFields}}`;
+  return await clientFetch<Project[]>(query);
+};
+
+// Technologies
+const getAllTechnologies = async (): Promise<Technology[]> => {
+  const query = buildQuery("technology", '', technologyAndTagFields);
+  return await clientFetch<Technology[]>(query);
 };
 
 const getTechnologyBySlug = async (slug: string): Promise<Technology> => {
-  const query = groq`*[_type == "technology" && slug.current == '${slug}'][0]{title, "slug": slug.current}`;
-  return await clientFetch(query);
+  const query = buildQuery("technology", slug, 'title, "slug": slug.current');
+  const results = await clientFetch<Technology[]>(query);
+  return results[0];
 };
 
-const getAllCategories = async (): Promise<Category[]> => getAllDocuments("category");
+// Tags
+const getAllTags = async (): Promise<Tag[]> => {
+  const query = buildQuery("tag", '', technologyAndTagFields);
+  return await clientFetch<Tag[]>(query);
+};
 
-const getCategoryBySlug = async (slug: string): Promise<Category> => getDocumentBySlug("category", slug);
+const getTagBySlug = async (slug: string): Promise<Tag> => {
+  const query = buildQuery("tag", slug, 'title, "slug": slug.current');
+  const results = await clientFetch<Tag[]>(query);
+  return results[0];
+};
 
-const getAllTags = async (): Promise<Tag[]> => getAllDocuments("tag");
+const getPostsByTag = async (slug: string): Promise<Post[]> => {
+  const query = groq`*[_type == "post" && tags[]->slug.current == '${slug}']{${postFields}}`;
+  return await clientFetch<Post[]>(query);
+};
 
-const getTagBySlug = async (slug: string): Promise<Tag> => getDocumentBySlug("tag", slug);
+// Categories
+const getAllCategories = async (): Promise<Category[]> => {
+  const query = buildQuery("category", '', 'title, "slug": slug.current, description,  "image": image -> image.asset -> url, "alt": image -> title');
+  return await clientFetch<Category[]>(query);
+};
 
-const getPostsByCategory = async (slug: string): Promise<Post[]> => getPostsByFilter("category", slug);
+const getCategoryBySlug = async (slug: string): Promise<Category> => {
+  const query = buildQuery("category", slug, 'title, "slug": slug.current, description');
+  const results = await clientFetch<Category[]>(query);
+  return results[0];
+};
 
-const getPostsByTag = async (slug: string): Promise<Post[]> => getPostsByFilter("tag", slug);
 
 export {
   getSiteData,

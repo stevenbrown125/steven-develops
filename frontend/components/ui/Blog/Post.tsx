@@ -5,6 +5,7 @@ import Figure from "../Figure";
 import Link from "next/link";
 import { FaTag } from "react-icons/fa6";
 import Breadcrumbs from "@/components/Breadcrumb";
+import RichText from "@/components/RichText";
 
 export default function Post({ post }: { post: Post }) {
   const { title, image, publishedAt, alt, category, tags, slug } = post;
@@ -31,7 +32,7 @@ export default function Post({ post }: { post: Post }) {
           <Figure figure={{ href: image, alt }} />
         </header>
         <section itemProp="articleBody">
-          <PortableText value={post.body} />
+          <RichText content={post.body} />
         </section>
         <footer>
           <ul itemProp="keywords">

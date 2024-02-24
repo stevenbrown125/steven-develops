@@ -6,10 +6,10 @@ export interface Project {
     title: string;
     slug: string;
     description: string;
-    icon: Photo;
+    image: Photo;
     technologies: Technology[];
     startDate: string;
-    endDcompletionDate: string;
+    completionDate: string;
     liveURL: string;
     body: PortableTextBlock;
 

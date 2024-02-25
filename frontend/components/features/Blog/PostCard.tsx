@@ -1,6 +1,6 @@
+import { PostProps } from "@/types";
 import { Card, CardBody, CardHeader, CardLink } from "@/components/core/Card/Card"
 import Figure from "@/components/core/Figure/Figure";
-import { PostProps } from "@/types";
 import { format } from "date-fns";
 
 const PostCard = ({ post }: PostProps) => {

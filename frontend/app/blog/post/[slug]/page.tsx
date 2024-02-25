@@ -2,23 +2,19 @@ import {
   getAllPosts,
   getPostBySlug,
 } from "@/lib/sanityQueries";
-import { Post as IPost } from "@/types/Post";
 import Post from "@/components/features/Blog/Post";
+import { Page } from "@/types/Page";
+import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  return posts.map(({ slug }) => ({ slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export async function generateMetadata({ params }: Page) {
+  if (!params) return {}
   const { slug } = params;
-  const post: IPost = await getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   // const { title, description } = await getSiteMetaData();
   // const pageTitle = `${title} | ${post.title}`;
   // const pageDescription = post.excerpt ? post.excerpt : description;
@@ -26,18 +22,20 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPostPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const posts = await getAllPosts();
-  const post: IPost = await getPostBySlug(params.slug);
-  const latestPosts = posts
-    .sort((a, b) => +new Date(b.publishedAt) - +new Date(a.publishedAt))
-    .slice(0, 3);
+export default async function BlogPostPage({ params }: Page) {
+  if (!params) return <></>
+  const { slug } = params
+
+  const post = await getPostBySlug(slug);
+
+  const { title } = post
+
+  const breadcrumbs = [{ href: '/blog', title: 'Blog' }, { href: slug, title }]
 
   return (
-    <Post post={post} />
+    <section>
+      <Breadcrumbs breadcrumbs={breadcrumbs} />
+      <Post post={post} />
+    </section>
   );
 }

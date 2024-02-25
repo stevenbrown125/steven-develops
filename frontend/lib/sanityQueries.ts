@@ -78,7 +78,7 @@ const getProjectBySlug = async (slug: string): Promise<Project> => {
 };
 
 const getProjectsByTechnology = async (slug: string): Promise<Project[]> => {
-  const query = groq`*[_type == "project" && technology[]->slug.current == '${slug}']{${projectFields}}`;
+  const query = groq`*[_type == "project" && '${slug}' in technologies[]->slug.current]{${projectFields}}`;
   return await clientFetch<Project[]>(query);
 };
 
@@ -107,7 +107,7 @@ const getTagBySlug = async (slug: string): Promise<Tag> => {
 };
 
 const getPostsByTag = async (slug: string): Promise<Post[]> => {
-  const query = groq`*[_type == "post" && tags[]->slug.current == '${slug}']{${postFields}}`;
+  const query = groq`*[_type == "post" && '${slug}' in tags[]->slug.current]{${postFields}}`;
   return await clientFetch<Post[]>(query);
 };
 

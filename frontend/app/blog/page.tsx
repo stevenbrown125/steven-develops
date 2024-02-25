@@ -1,6 +1,6 @@
 import { getAllPosts } from "@/lib/sanityQueries";
 import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
-import PostCard from "@/components/features/Blog/PostCard";
+import PostGrid from "@/components/shared/layout/PostGrid";
 
 export async function generateMetadata() {
   // const { title, description } = await getSiteMetaData();
@@ -11,25 +11,15 @@ export async function generateMetadata() {
   // };
 }
 
-export default async function Home(): Promise<JSX.Element> {
+export default async function BlogPage() {
   const posts = await getAllPosts();
-  const latestPosts = posts
-    .sort((a, b) => +new Date(b.publishedAt) - +new Date(a.publishedAt))
-    .slice(0, 3);
 
   const breadcrumbs = [{ href: '/blog', title: 'Blog' }]
 
   return (
     <>
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <div className="relative flex-grow max-w-screen-2xl mx-auto animate-fade-in-slide-down">
-        <h2 className="heading-hr">All Blog Posts</h2>
-        <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 4xl:grid-cols-4 gap-4 lg:gap-6" itemScope itemType="http://schema.org/ItemList">
-          {posts.map((post, i) => (
-            <PostCard post={post} key={`post-${i}`} />
-          ))}
-        </section>
-      </div>
+      <PostGrid title="Blog" posts={posts} />
     </>
   );
 }

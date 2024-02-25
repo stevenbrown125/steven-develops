@@ -1,6 +1,6 @@
+import { ProjectProps } from "@/types";
 import { Card, CardBody, CardHeader, CardLink } from "@/components/core/Card/Card"
 import Figure from "@/components/core/Figure/Figure";
-import { ProjectProps } from "@/types";
 import { format } from "date-fns";
 
 const ProjectCard = ({ project }: ProjectProps) => {
@@ -18,7 +18,7 @@ const ProjectCard = ({ project }: ProjectProps) => {
     }
 
     return (
-        <CardLink href={`/blog/categories/${slug}`} schemaProps={cardLinkSchema}>
+        <CardLink href={`/portfolio/project/${slug}`} schemaProps={cardLinkSchema}>
             <Card schemaProps={cardSchema}>
                 <CardHeader>
                     <Figure figure={{ href, alt, classes: 'listing' }} />

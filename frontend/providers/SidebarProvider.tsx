@@ -91,7 +91,6 @@ export const SidebarProvider: React.FC<SidebarProviderProps> = ({ children }) =>
     }
 
     const updateSidebar = (viewWidth: number) => {
-        console.log(isMaximized, isAnimating)
         if (isMaximized) {
             if (!isAnimating)
                 api.start({ width: viewWidth, immediate: true })

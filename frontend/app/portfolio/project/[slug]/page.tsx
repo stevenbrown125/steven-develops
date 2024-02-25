@@ -3,22 +3,19 @@ import {
     getProjectBySlug,
 } from "@/lib/sanityQueries";
 import { Page } from "@/types/Page";
-import { Project as IProject } from "@/types/Project";
 import Project from "@/components/features/Portfolio/Project";
-import { Metadata } from "next";
+import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
 
 export async function generateStaticParams() {
     const projects = await getAllProjects();
-    return projects.map((project) => ({
-        slug: project.slug,
-    }));
+    return projects.map(({ slug }) => ({ slug }));
 }
 
-export async function generateMetadata({ params }: Page): Promise<Metadata> {
+export async function generateMetadata({ params }: Page) {
     if (!params) return {}
 
     const { slug } = params;
-    const project: IProject = await getProjectBySlug(slug);
+    const project = await getProjectBySlug(slug);
     // const { title, description } = await getSiteMetaData();
     // const pageTitle = `${title} | ${post.title}`;
     // const pageDescription = post.excerpt ? post.excerpt : description;
@@ -26,13 +23,21 @@ export async function generateMetadata({ params }: Page): Promise<Metadata> {
     };
 }
 
-export default async function AllProjectsPage({ params }: Page) {
-    if (!params) return {}
+export default async function ProjectPage({ params }: Page) {
+    if (!params) return <></>
 
-    const project: IProject = await getProjectBySlug(params.slug);
+    const project = await getProjectBySlug(params.slug);
 
+    const { title, slug } = project
+
+    const breadcrumbs = [
+        { href: '/portfolio', title: 'Portfolio' }, { href: slug, title }
+    ]
 
     return (
-        <Project project={project}></Project>
+        <section>
+            <Breadcrumbs breadcrumbs={breadcrumbs} />
+            <Project project={project}></Project>
+        </section>
     );
 }

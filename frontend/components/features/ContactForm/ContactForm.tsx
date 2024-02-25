@@ -38,7 +38,7 @@ export default function ContactForm() {
         console.log('sent')
 
       } catch (error) {
-        console.log(error)
+        console.error(error)
       }
     }
   });

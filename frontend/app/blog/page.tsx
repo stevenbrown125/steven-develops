@@ -17,9 +17,9 @@ export default async function BlogPage() {
   const breadcrumbs = [{ href: '/blog', title: 'Blog' }]
 
   return (
-    <>
+    <div className="max-w-7xl mx-auto relative flex-grow">
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <PostGrid title="Blog" posts={posts} />
-    </>
+    </div>
   );
 }

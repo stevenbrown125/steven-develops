@@ -5,7 +5,7 @@ const NotFound = () => {
     const breadcrumbs = [{ href: '/not-found', title: 'Not Found' }]
 
     return (
-        <>
+        <div className="animate-fade-in-slide-down max-w-7xl mx-auto relative flex-grow mt-4 px-4">
             <Breadcrumbs breadcrumbs={breadcrumbs} />
             <section className="grid min-h-full place-items-center px-6 py-24 sm:py-32 lg:px-8">
                 <div className="text-center">
@@ -23,7 +23,7 @@ const NotFound = () => {
                     </div>
                 </div>
             </section>
-        </>
+        </div>
     )
 }
 

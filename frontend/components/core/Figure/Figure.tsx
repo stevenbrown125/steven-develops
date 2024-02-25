@@ -8,7 +8,7 @@ interface FigureProps {
 const Figure = ({ figure: { href, alt, classes } }: FigureProps) => {
     if (!href) return <></>
     return (
-        <figure className={`${classes} relative z-10 shadow-xl mb-8`}>
+        <figure className={`${classes} relative z-10 shadow-xl mb-8 mt-2`}>
             <div className="h-48 md:h-96 flex flex-col w-full relative">
                 <Image
                     src={href}

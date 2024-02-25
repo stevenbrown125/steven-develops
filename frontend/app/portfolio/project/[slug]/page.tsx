@@ -35,9 +35,9 @@ export default async function ProjectPage({ params }: Page) {
     ]
 
     return (
-        <section>
+        <div className="max-w-7xl mx-auto relative flex-grow">
             <Breadcrumbs breadcrumbs={breadcrumbs} />
             <Project project={project}></Project>
-        </section>
+        </div>
     );
 }

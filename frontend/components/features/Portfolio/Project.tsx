@@ -12,7 +12,7 @@ export default function Project({ project }: ProjectProps) {
     return (
         <article className="animate-fade-in-slide-down" itemScope itemType="http://schema.org/BlogPosting">
             <header>
-                <h2 itemProp="headline">
+                <h2 itemProp="headline" className="heading-hr">
                     {title}
                 </h2>
                 <small>
@@ -28,12 +28,12 @@ export default function Project({ project }: ProjectProps) {
                 </small>
                 <Figure figure={{ href, alt }} />
             </header>
-            <section itemProp="articleBody">
+            <section itemProp="articleBody" className="prose dark:prose-invert max-w-full">
                 <RichText content={body as any} />
             </section>
-            <footer>
-                <ul itemProp="keywords">
-                    {technologies.map(technology => <li key={`tag-${technology.title}`}><FaTag /><Link href={`/portfolio/technologies/${technology.slug}`}>{technology.title}</Link></li>)}
+            <footer className="flex justify-between text-sm mt-4">
+                <ul itemProp="keywords" className="flex items-center gap-2">
+                    {technologies.map(technology => <li key={`tag-${technology.title}`} className="flex items-center gap-1 hover:text-primary"><FaTag /><Link href={`/portfolio/technologies/${technology.slug}`} className=" flex items-center gap-1 hover:text-primary">{technology.title}</Link></li>)}
                 </ul>
             </footer>
         </article>

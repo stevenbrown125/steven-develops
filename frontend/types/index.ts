@@ -6,3 +6,6 @@ export * from './Figure';
 export * from './Project';
 export * from './Technology';
 export * from './Photo';
+export * from './Layout'
+export * from './Page'
+export * from './Contact'

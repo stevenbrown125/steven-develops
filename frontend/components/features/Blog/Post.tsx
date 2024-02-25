@@ -11,7 +11,7 @@ export default function Post({ post }: PostProps) {
   return (
     <article className="animate-fade-in-slide-down" itemScope itemType="http://schema.org/BlogPosting">
       <header>
-        <h2 itemProp="headline">
+        <h2 itemProp="headline" className="heading-hr">
           {title}
         </h2>
         <small>
@@ -27,12 +27,12 @@ export default function Post({ post }: PostProps) {
         </small>
         <Figure figure={{ href: image, alt }} />
       </header>
-      <section itemProp="articleBody">
+      <section itemProp="articleBody" className="prose dark:prose-invert max-w-full">
         <RichText content={post.body} />
       </section>
-      <footer>
-        <ul itemProp="keywords">
-          {tags.map(tag => <li key={`tag-${tag.title}`}><FaTag /><Link href={`/blog/tags/${tag.slug}`}>{tag.title}</Link></li>)}
+      <footer className="flex justify-between text-sm mt-4">
+        <ul itemProp="keywords" className="flex items-center gap-2">
+          {tags.map(tag => <li key={`tag-${tag.title}`} className="flex items-center gap-1 hover:text-primary"><FaTag /><Link href={`/blog/tags/${tag.slug}`} className=" flex items-center gap-1 hover:text-primary">{tag.title}</Link></li>)}
         </ul>
       </footer>
     </article>

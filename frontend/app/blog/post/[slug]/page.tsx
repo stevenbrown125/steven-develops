@@ -33,9 +33,9 @@ export default async function BlogPostPage({ params }: Page) {
   const breadcrumbs = [{ href: '/blog', title: 'Blog' }, { href: slug, title }]
 
   return (
-    <section>
+    <div className="max-w-7xl mx-auto relative flex-grow">
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <Post post={post} />
-    </section>
+    </div>
   );
 }

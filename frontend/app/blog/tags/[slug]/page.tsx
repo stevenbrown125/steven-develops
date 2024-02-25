@@ -24,12 +24,12 @@ export default async function BlogTagPage({ params }: Page) {
     const { title } = await getTagBySlug(slug)
     const posts = await getPostsByTag(slug);
 
-    const breadcrumbs = [{ href: '/blog', title: 'Blog' }, { href: '/tags', title: 'Tags' }, { href: slug, title }]
+    const breadcrumbs = [{ href: '/blog', title: 'Blog' }, { href: '/blog/tags', title: 'Tags' }, { href: slug, title }]
 
     return (
-        <>
+        <div className="max-w-7xl mx-auto relative flex-grow">
             <Breadcrumbs breadcrumbs={breadcrumbs} />
             <PostGrid title={title} posts={posts} />
-        </>
+        </div>
     );
 }

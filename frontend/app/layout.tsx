@@ -5,6 +5,7 @@ import Sidebar from "@/components/shared/layout/Sidebar";
 import Footer from "@/components/shared/layout/Footer";
 import Providers from "@/providers";
 import Header from "@/components/shared/layout/Header";
+import { Layout } from "@/types";
 
 const notoSans = Noto_Sans({
   subsets: ['latin'],
@@ -37,11 +38,7 @@ async function getSiteInfo() {
   };
 }
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: Layout) {
   const siteInfo = await getSiteInfo();
   return (
     <html lang="en" className="dark">

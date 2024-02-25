@@ -1,7 +1,7 @@
 
 export default function Home(): JSX.Element {
   return (
-    <div className="animate-fade-in-slide-down">
+    <div className="animate-fade-in-slide-down  relative flex-grow">
       <section className="w-full flex flex-row ">
         <div className="slanted-div h-min flex justify-center w-full">
           <div className="flex gap-x-5 px-4 max-w-2xl">
@@ -23,7 +23,7 @@ export default function Home(): JSX.Element {
           </div>
         </div>
       </section>
-      <section className="px-8">
+      <section className="px-8 max-w-7xl mx-auto">
         <h2>My Values</h2>
 
         <p className="pb-4">

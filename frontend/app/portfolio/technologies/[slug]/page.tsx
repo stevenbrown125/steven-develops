@@ -29,9 +29,9 @@ export default async function TechnologiesPage({ params }: Page) {
     const breadcrumbs = [{ href: '/portfolio', title: 'Portfolio' }, { href: '/portfolio/technologies', title: 'Technologies' }, { href: slug, title }]
 
     return (
-        <>
+        <div className="max-w-7xl mx-auto relative flex-grow">
             <Breadcrumbs breadcrumbs={breadcrumbs} />
             <ProjectGrid title={title} projects={projects} />
-        </>
+        </div>
     );
 }

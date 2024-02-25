@@ -17,9 +17,9 @@ export default async function PortfolioPage(): Promise<JSX.Element> {
 
     const breadcrumbs = [{ href: '/portfolio', title: 'Portfolio' }]
     return (
-        <>
+        <div className="max-w-7xl mx-auto relative flex-grow">
             <Breadcrumbs breadcrumbs={breadcrumbs} />
             <ProjectGrid title="Portfolio" projects={projects} />
-        </>
+        </div>
     );
 }

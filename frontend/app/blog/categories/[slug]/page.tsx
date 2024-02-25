@@ -28,9 +28,9 @@ export default async function BlogCategoryPage({ params }: Page) {
   const breadcrumbs = [{ href: '/blog', title: 'Blog' }, { href: '/blog/categories', title: 'Categories' }, { href: slug, title }];
 
   return (
-    <>
+    <div className="max-w-7xl mx-auto relative flex-grow">
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <PostGrid title={title} posts={posts} />
-    </>
+    </div>
   );
 }

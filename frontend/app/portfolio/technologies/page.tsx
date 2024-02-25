@@ -15,7 +15,7 @@ export default async function AllTechnologiesPage(): Promise<JSX.Element> {
 
     const breadcrumbs = [{ href: '/portfolio', title: 'Portfolio' }, { href: '/porfolio/technologies', title: 'Technologies' }]
     return (
-        <div className="relative flex-grow max-w-screen-2xl mx-auto animate-fade-in-slide-down">
+        <div className="max-w-7xl mx-auto relative flex-grow">
             <Breadcrumbs breadcrumbs={breadcrumbs} />
             <h2 className="heading-hr">All Technologies</h2>
             <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 4xl:grid-cols-4 gap-4 lg:gap-6" itemScope itemType="http://schema.org/ItemList">

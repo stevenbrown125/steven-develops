@@ -1,11 +1,10 @@
-import { PortableText } from "@portabletext/react";
 import { format } from "date-fns";
-import Figure from "../Figure";
+import Figure from "../../core/Figure/Figure";
 import Link from "next/link";
 import { FaTag } from "react-icons/fa6";
-import Breadcrumbs from "@/components/Breadcrumb";
+import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
 import { Project } from "@/types";
-import RichText from "@/components/RichText";
+import RichText from "@/components/shared/utilities/RichText";
 
 export default function Project({ project }: { project: Project }) {
     const { title, image, startDate, completionDate, technologies, slug, body } = project;

@@ -35,28 +35,12 @@
     @apply font-content
   }
 
-  figure {
-    @apply relative z-10 shadow-xl mb-8;
-  }
-
-  figure div {
-    @apply h-48 md:h-96 flex flex-col w-full relative;
-  }
-
   figure.listing div {
     @apply md:h-72;
   }
 
-  figure img {
-    @apply object-cover object-center rounded-md;
-  }
-
   figure.listing img {
     @apply rounded-none rounded-t-md;
-  }
-
-  figure figcaption {
-    @apply px-4 mt-2 absolute right-0 text-xs italic truncate overflow-hidden whitespace-nowrap max-w-full;
   }
 
   main p:not('prose') {
@@ -84,7 +68,7 @@
     @apply border-b border-primary hover:text-primary border-dashed
   }
 
-  main>article section {
+  main article section {
     @apply prose dark:prose-invert max-w-full;
   }
 
@@ -238,6 +222,25 @@
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
+
+  .slanted-div {
+    @apply relative bg-zinc-900 relative text-white py-8 px-4 mb-4;
+    clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 90%);
+    box-shadow: 0px 0px 35px 5px rgba(0, 0, 0, 0.25) inset,
+      0px 2px 1px 1px rgba(0, 0, 0, 0.1) inset,
+      0px -2px 1px 0px rgba(0, 0, 0, 0.25) inset;
+
+  }
+
+  .profile {
+    clip-path: polygon(50% 0%, 90% 20%, 100% 60%, 75% 100%, 25% 100%, 0% 60%, 10% 20%);
+  }
+
+  .profile-wrap {
+    filter: drop-shadow(-1px 6px 3px rgba(0, 0, 0, 0.5));
+
+  }
+
 }
 
 .grecaptcha-badge {

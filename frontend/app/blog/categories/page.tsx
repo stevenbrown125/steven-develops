@@ -1,6 +1,6 @@
 import { getAllCategories } from "@/lib/sanityQueries";
-import CategoryCard from "@/components/ui/CategoryCard";
-import Breadcrumbs from "@/components/Breadcrumb";
+import CategoryCard from "@/components/features/CategoryCard";
+import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
 
 export async function generateMetadata() {
     // const { title, description } = await getSiteMetaData();

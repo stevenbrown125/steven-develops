@@ -1,4 +1,4 @@
-import Breadcrumbs from '@/components/Breadcrumb';
+import Breadcrumbs from '@/components/shared/utilities/Breadcrumb';
 import Link from 'next/link'
 
 const NotFound = () => {

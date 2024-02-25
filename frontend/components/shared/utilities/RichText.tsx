@@ -1,10 +1,8 @@
-import React from 'react';
 import { PortableText as PortableTextComponent } from '@portabletext/react';
 import hljs from 'highlight.js';
 import 'highlight.js/styles/github.css';
 import { urlFor } from '@/client';
 import { SanityImageSource } from '@sanity/image-url/lib/types/types';
-
 
 interface PortableTextProps {
   content: any;
@@ -15,7 +13,6 @@ if (typeof window !== 'undefined') {
 }
 
 const serializers = {
-
   types: {
     codeBlock: ({ value }: { value: any }) => {
       const highlightedCode = hljs.highlight(value.code, { language: value.language }).value;

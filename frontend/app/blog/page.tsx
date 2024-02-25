@@ -1,6 +1,6 @@
 import { getAllPosts } from "@/lib/sanityQueries";
-import Listing from "@/components/ui/Blog/Listing";
-import Breadcrumbs from "@/components/Breadcrumb";
+import Listing from "@/components/features/Blog/Listing";
+import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
 
 export async function generateMetadata() {
   // const { title, description } = await getSiteMetaData();

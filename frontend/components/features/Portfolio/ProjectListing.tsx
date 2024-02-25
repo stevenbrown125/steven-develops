@@ -1,7 +1,7 @@
 
 import { format } from "date-fns";
 import Link from "next/link";
-import Figure from "../Figure";
+import Figure from "../../core/Figure/Figure";
 import { Project } from "@/types/Project";
 
 export default function ProjectListing({ project }: { project: Project }) {

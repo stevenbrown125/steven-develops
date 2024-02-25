@@ -1,4 +1,4 @@
-export const RecaptchaText = () => {
+const RecaptchaText = () => {
     return (
         <aside className='recaptcha-privacy text-xs py-4 max-w-[280px]'>
             <p>This site is protected by reCAPTCHA and the Google
@@ -7,3 +7,5 @@ export const RecaptchaText = () => {
         </aside>
     )
 }
+
+export default RecaptchaText;

@@ -4,7 +4,7 @@ import {
 } from "@/lib/sanityQueries";
 import { Page } from "@/types/Page";
 import { Project as IProject } from "@/types/Project";
-import Project from "@/components/ui/Portfolio/Project";
+import Project from "@/components/features/Portfolio/Project";
 import { Metadata } from "next";
 
 export async function generateStaticParams() {

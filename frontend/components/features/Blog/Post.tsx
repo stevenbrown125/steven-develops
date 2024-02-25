@@ -1,11 +1,10 @@
 import { Post } from "@/types/Post";
-import { PortableText } from "@portabletext/react";
 import { format } from "date-fns";
-import Figure from "../Figure";
+import Figure from "../../core/Figure/Figure";
 import Link from "next/link";
 import { FaTag } from "react-icons/fa6";
-import Breadcrumbs from "@/components/Breadcrumb";
-import RichText from "@/components/RichText";
+import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
+import RichText from "@/components/shared/utilities/RichText";
 
 export default function Post({ post }: { post: Post }) {
   const { title, image, publishedAt, alt, category, tags, slug } = post;

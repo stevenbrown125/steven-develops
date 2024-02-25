@@ -3,7 +3,7 @@ import {
   getPostBySlug,
 } from "@/lib/sanityQueries";
 import { Post as IPost } from "@/types/Post";
-import Post from "@/components/ui/Blog/Post";
+import Post from "@/components/features/Blog/Post";
 
 export async function generateStaticParams() {
   const posts = await getAllPosts();

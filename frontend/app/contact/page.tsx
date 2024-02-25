@@ -1,7 +1,7 @@
 
-import Breadcrumbs from '@/components/Breadcrumb';
-import ContactForm from '@/components/ui/ContactForm';
-import Figure from '@/components/ui/Figure';
+import Breadcrumbs from '@/components/shared/utilities/Breadcrumb';
+import ContactForm from '@/components/features/ContactForm';
+import Figure from '@/components/core/Figure/Figure';
 
 export default function ContactPage() {
     return (

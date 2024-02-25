@@ -1,5 +1,5 @@
 import { getAllTechnologies, getProjectsByTechnology, getTechnologyBySlug } from "@/lib/sanityQueries";
-import Breadcrumbs from "@/components/Breadcrumb";
+import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
 import { generateTechnologyListingSEOData } from "@/lib/seo";
 import { Page } from "@/types/Page";
 

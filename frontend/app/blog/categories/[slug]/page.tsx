@@ -1,6 +1,6 @@
 import { getAllCategories, getCategoryBySlug, getPostsByCategory } from "@/lib/sanityQueries";
-import Listing from "@/components/ui/Blog/Listing";
-import Breadcrumbs from "@/components/Breadcrumb";
+import Listing from "@/components/features/Blog/Listing";
+import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
 import { generateCategoryListingSEOData } from "@/lib/seo";
 
 type Props = {

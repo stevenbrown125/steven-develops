@@ -1,7 +1,7 @@
 import { Post } from "@/types/Post";
 import { format } from "date-fns";
 import Link from "next/link";
-import Figure from "../Figure";
+import Figure from "../../core/Figure/Figure";
 
 export default function Listing({ post }: { post: Post }) {
   const { title, excerpt, slug, image, alt, publishedAt } = post;

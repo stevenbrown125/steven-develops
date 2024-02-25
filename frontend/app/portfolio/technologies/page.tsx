@@ -1,5 +1,5 @@
 import { getAllTechnologies } from "@/lib/sanityQueries";
-import Breadcrumbs from "@/components/Breadcrumb";
+import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
 
 export async function generateMetadata() {
     // const { title, description } = await getSiteMetaData();

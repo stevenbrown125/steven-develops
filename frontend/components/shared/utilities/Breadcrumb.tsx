@@ -24,7 +24,7 @@ export default function Breadcrumbs({ breadcrumbs = [] }: BreadcrumbProps) {
                 {breadcrumbs.map(({ href, title }, i) => {
                     const isDisabled = i === breadcrumbs.length - 1;
                     return (
-                        <li className="breadcrumb-item" key={`breadcrumb-${i}`}>{i > 0 && ' / '}<Link href={href} aria-disabled={isDisabled} tabIndex={isDisabled ? -1 : undefined} className={isDisabled ? 'disabled' : ''}>{title}</Link></li>
+                        <li className="flex gap-x-1" key={`breadcrumb-${i}`}>{i > 0 && ' / '}<Link href={href} aria-disabled={isDisabled} tabIndex={isDisabled ? -1 : undefined} className={`${isDisabled ? 'disabled' : 'hover:text-primary/60'} font-medium`}>{title}</Link></li>
                     )
                 })}
             </ul>

@@ -2,7 +2,7 @@
 import { useFormik } from 'formik';
 import { contactSchema } from '@/lib/validation';
 import { useRecaptcha } from '@/providers/RecaptchaProvider';
-import { RecaptchaText } from './RecaptchaText';
+import RecaptchaText from '@/components/shared/utilities/RecaptchaText';
 
 export default function ContactForm() {
   const { executeRecaptcha } = useRecaptcha();

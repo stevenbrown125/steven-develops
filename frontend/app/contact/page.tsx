@@ -1,11 +1,11 @@
 
-import Breadcrumbs from '@/components/Breadcrumb';
-import ContactForm from '@/components/ui/ContactForm';
-import Figure from '@/components/ui/Figure';
+import Breadcrumbs from '@/components/shared/utilities/Breadcrumb';
+import ContactForm from '@/components/features/ContactForm/ContactForm';
+import Figure from '@/components/core/Figure/Figure';
 
 export default function ContactPage() {
     return (
-        <>
+        <div className="max-w-7xl mx-auto relative flex-grow">
             <Breadcrumbs breadcrumbs={[{ href: '/contact', title: 'Contact' }]} />
             <section className='animate-fade-in-slide-down'>
                 <header>
@@ -21,10 +21,10 @@ export default function ContactPage() {
 
                     </div>
                     <div className='w-full 2xl:w-[540px] order-1 2xl:order-2'>
-                        <Figure figure={{ href: "/images/rome-optimized.jpg", alt: "Rome, Italy 2020", classes: '2xl:mt-6 opacity-80 relative z-10 vertical-hr md:pl-6' }} />
+                        <Figure figure={{ href: "/images/rome-optimized.jpg", alt: "Rome, Italy 2020", classes: '2xl:mt-6 opacity-80 relative z-10 vertical-hr md:ml-6' }} />
                     </div>
                 </div>
             </section>
-        </>
+        </div>
     );
 }

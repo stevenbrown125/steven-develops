@@ -1,10 +1,31 @@
 
 export default function Home(): JSX.Element {
   return (
-    <div className="w-full pt-4 flex flex-row animate-fade-in-slide-down">
-      <section className="">
-        <h2>Hey, I&#39;m Steven Brown</h2>
-        <h3 className="pl-4">I bring your ideas to the web!</h3>
+    <div className="animate-fade-in-slide-down  relative flex-grow">
+      <section className="w-full flex flex-row ">
+        <div className="slanted-div h-min flex justify-center w-full">
+          <div className="flex gap-x-5 px-4 max-w-2xl">
+            <figure className="shrink-0">
+              <div className="profile-wrap relative">
+                <img src="https://pbs.twimg.com/profile_images/1614466022932680705/YK824Gte_400x400.jpg" className="profile w-auto h-48" />
+              </div>
+              <figcaption className="sr-only">
+                Steven Brown
+              </figcaption>
+            </figure>
+            <div>
+              <h1 className="heading-hr">Steven Brown</h1>
+              <h3 className="pb-4">Software Engineer | Cloud Architect</h3>
+              <p className="text-sm">Self-motivated team lead seeking to develop efficient, effective, and innovative solutions to modern
+                problems. Passionate about constructing intuitive interfaces that meet project requirements in less
+                interactions. Proven ability to think critically in fast paced environments.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className="px-8 max-w-7xl mx-auto">
+        <h2>My Values</h2>
+
         <p className="pb-4">
           I&#39;m a Full Stack Javascript developer from the US. Web Design &
           Development is my passion and I love working with Javascript. After

@@ -1,4 +1,9 @@
-export type Photo = {
-  title: string;
-  image: string;
+export interface Photo {
+  href: string;
+  dimensions: {
+    width: number;
+    aspectRatio: number;
+    height: number;
+  }
+  alt: string;
 };

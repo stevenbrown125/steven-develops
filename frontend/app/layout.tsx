@@ -1,10 +1,11 @@
 import "./globals.css";
 import { Noto_Sans, Roboto_Slab } from "next/font/google";
 import { getSiteData } from "../lib/sanityQueries";
-import Sidebar from "@/components/layout/Sidebar";
-import Footer from "@/components/layout/Footer";
+import Sidebar from "@/components/shared/layout/Sidebar";
+import Footer from "@/components/shared/layout/Footer";
 import Providers from "@/providers";
-import Header from "@/components/layout/Header";
+import Header from "@/components/shared/layout/Header";
+import { Layout } from "@/types";
 
 const notoSans = Noto_Sans({
   subsets: ['latin'],
@@ -37,11 +38,7 @@ async function getSiteInfo() {
   };
 }
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: Layout) {
   const siteInfo = await getSiteInfo();
   return (
     <html lang="en" className="dark">
@@ -51,7 +48,7 @@ export default async function RootLayout({
             <Sidebar />
             <div className="relative z-0 ml-0 md:ml-[325px] 2xl:ml-[550px] flex-1 bg-zinc-100 dark:bg-zinc-800 flex flex-col h-screen transition transition-all ease-in-out duration-300 mt-[80px] md:mt-0 ">
               <Header />
-              <main className="px-4 lg:px-8 py-4 flex-1">
+              <main className="flex-1">
                 {children}
               </main>
               <Footer />

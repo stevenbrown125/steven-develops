@@ -19,12 +19,12 @@ export default function Breadcrumbs({ breadcrumbs = [] }: BreadcrumbProps) {
     breadcrumbs.unshift(homeBreadcrumb);
 
     return (
-        <div className="text-xs dark:text-zinc-400 uppercase mb-2">
+        <div className="text-xs text-zinc-400 dark:text-zinc-400 uppercase mb-2">
             <ul className="inline-flex gap-x-1">
                 {breadcrumbs.map(({ href, title }, i) => {
                     const isDisabled = i === breadcrumbs.length - 1;
                     return (
-                        <li className="breadcrumb-item" key={`breadcrumb-${i}`}>{i > 0 && ' / '}<Link href={href} aria-disabled={isDisabled} tabIndex={isDisabled ? -1 : undefined} className={isDisabled ? 'disabled' : ''}>{title}</Link></li>
+                        <li className="flex gap-x-1 breadcrumb-item" key={`breadcrumb-${i}`}>{i > 0 && ' / '}<Link href={href} aria-disabled={isDisabled} tabIndex={isDisabled ? -1 : undefined} className={`${isDisabled ? 'disabled' : 'hover:text-primary/60'} font-medium`}>{title}</Link></li>
                     )
                 })}
             </ul>

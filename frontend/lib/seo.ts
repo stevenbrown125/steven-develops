@@ -1,5 +1,6 @@
 import { Category } from "@/types/Category"
 import { Tag } from "@/types/Tag"
+import { Technology } from "@/types/Technology"
 
 interface SEOData {
     title: string,
@@ -83,6 +84,25 @@ export const generateCategoryListingSEOData = (category: Category, image: string
     const description = `Discover articles in our ${category.title} category and join in the discussion as we explore various aspects of technology.`
     const keywords = generateKeywords(`${category.title.toLowerCase()}`)
     const slug = `/blog/categories/${category.slug}`
+    const og = generateOpenGraphData(title, slug, description, image);
+    const twitter = generateTwitterData(title, description, image)
+
+    return {
+        title,
+        description,
+        keywords,
+        og,
+        twitter
+    }
+}
+
+/* Technology Listing Page */
+
+export const generateTechnologyListingSEOData = (technology: Technology, image: string = defaultImage): SEOData => {
+    const title = generatePageTitle(`${technology.title} Projects`)
+    const description = `Browse projects I've created using ${technology.title} and connect with me as I continue to develop myself as an engineer.`
+    const keywords = generateKeywords(`${technology.title.toLowerCase()}`)
+    const slug = `/portfolio/technologies/${technology.slug}`
     const og = generateOpenGraphData(title, slug, description, image);
     const twitter = generateTwitterData(title, description, image)
 

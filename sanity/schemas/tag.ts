@@ -21,16 +21,9 @@ export default defineType({
             validation: Rule => Rule.required()
         }),
         defineField({
-            name: 'image',
-            title: 'Image',
-            type: 'reference',
-            to: { type: 'photo' }
-        }),
-        defineField({
-            name: 'description',
-            title: 'Description',
-            description: 'Used for tag listings as well as for SEO.',
-            type: 'string',
+            name: 'icon',
+            title: 'Icon',
+            type: 'string'
         }),
     ]
 })

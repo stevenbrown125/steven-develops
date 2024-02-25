@@ -15,7 +15,6 @@ if (typeof window !== 'undefined') {
 const serializers = {
   types: {
     codeBlock: ({ value }: { value: any }) => {
-      console.log(value)
       const language = value.language ? value.language : 'shell';
       const highlightedCode = hljs.highlight(value.code, { language }).value;
       return (

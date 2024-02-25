@@ -1,5 +1,5 @@
 import { getAllCategories } from "@/lib/sanityQueries";
-import CategoryCard from "@/components/features/CategoryCard";
+import CategoryCard from "@/components/features/Blog/CategoryCard";
 import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
 
 export async function generateMetadata() {

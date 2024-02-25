@@ -12,5 +12,8 @@ export interface Project {
     completionDate: string;
     liveURL: string;
     body: PortableTextBlock;
+}
 
+export interface ProjectProps {
+    project: Project;
 }

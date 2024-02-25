@@ -3,10 +3,10 @@ import Figure from "../../core/Figure/Figure";
 import Link from "next/link";
 import { FaTag } from "react-icons/fa6";
 import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
-import { Project } from "@/types";
+import { ProjectProps } from "@/types";
 import RichText from "@/components/shared/utilities/RichText";
 
-export default function Project({ project }: { project: Project }) {
+export default function Project({ project }: ProjectProps) {
     const { title, image, startDate, completionDate, technologies, slug, body } = project;
     const start = format(new Date(startDate), "EEEE MMMM do, yyyy");
     const { href, alt } = image

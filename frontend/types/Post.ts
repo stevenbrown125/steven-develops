@@ -14,3 +14,7 @@ export interface Post {
   publishedAt: string;
   body: PortableTextBlock;
 }
+
+export interface PostProps {
+  post: Post
+}

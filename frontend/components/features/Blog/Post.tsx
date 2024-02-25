@@ -1,4 +1,4 @@
-import { Post } from "@/types/Post";
+import { PostProps } from "@/types/Post";
 import { format } from "date-fns";
 import Figure from "../../core/Figure/Figure";
 import Link from "next/link";
@@ -6,7 +6,7 @@ import { FaTag } from "react-icons/fa6";
 import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
 import RichText from "@/components/shared/utilities/RichText";
 
-export default function Post({ post }: { post: Post }) {
+export default function Post({ post }: PostProps) {
   const { title, image, publishedAt, alt, category, tags, slug } = post;
   const date = format(new Date(publishedAt), "EEEE MMMM do, yyyy");
   return (

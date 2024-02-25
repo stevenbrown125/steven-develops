@@ -5,3 +5,7 @@ export interface Category {
     alt: string;
     description: string;
 }
+
+export interface CategegoryProps {
+    category: Category
+}

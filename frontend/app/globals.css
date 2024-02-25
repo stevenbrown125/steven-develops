@@ -191,13 +191,6 @@
     background: #c0a0b9;
   }
 
-  .breadcrumb-item {
-    @apply flex gap-x-1
-  }
-
-  .breadcrumb-item a {
-    @apply hover:text-primary/60 font-medium;
-  }
 
   .breadcrumb-item:last-child {
     @apply dark:text-zinc-500 disabled;

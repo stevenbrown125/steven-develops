@@ -1,6 +1,6 @@
 import { getAllPosts } from "@/lib/sanityQueries";
-import Listing from "@/components/features/Blog/Listing";
 import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
+import PostCard from "@/components/features/Blog/PostCard";
 
 export async function generateMetadata() {
   // const { title, description } = await getSiteMetaData();
@@ -26,7 +26,7 @@ export default async function Home(): Promise<JSX.Element> {
         <h2 className="heading-hr">All Blog Posts</h2>
         <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 4xl:grid-cols-4 gap-4 lg:gap-6" itemScope itemType="http://schema.org/ItemList">
           {posts.map((post, i) => (
-            <Listing post={post} key={`post-${i}`} />
+            <PostCard post={post} key={`post-${i}`} />
           ))}
         </section>
       </div>

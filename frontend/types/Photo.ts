@@ -1,9 +1,9 @@
 export interface Photo {
-  href: string;
+  href: string
   dimensions: {
-    width: number;
-    aspectRatio: number;
-    height: number;
+    width: number
+    aspectRatio: number
+    height: number
   }
-  alt: string;
-};
+  alt: string
+}

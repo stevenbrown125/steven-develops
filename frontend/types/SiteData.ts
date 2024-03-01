@@ -1,5 +1,5 @@
 export type SiteData = {
-  title: string;
-  description: string;
-  logo: any;
-};
+  title: string
+  description: string
+  logo: any
+}

@@ -1,5 +1,5 @@
 export interface Figure {
-    href: string;
-    alt: string;
-    classes?: string;
+  href: string
+  alt: string
+  classes?: string
 }

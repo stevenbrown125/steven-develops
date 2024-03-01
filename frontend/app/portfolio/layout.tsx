@@ -1,7 +1,7 @@
 export default function PortfolioLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode
 }) {
-    return <div className="px-4 lg:px-8 py-4">{children}</div>;
+  return <div className="px-4 py-4 lg:px-8">{children}</div>
 }

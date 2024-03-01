@@ -1,19 +1,19 @@
-import { Post } from "@/types/Post";
-import { format } from "date-fns";
-import Link from "next/link";
-import { FaBlog } from "react-icons/fa6";
+import { Post } from "@/types/Post"
+import { format } from "date-fns"
+import Link from "next/link"
+import { FaBlog } from "react-icons/fa6"
 
 export default function LatestPosts({ posts }: { posts: Post[] }) {
   return (
     <div>
-      <h3 className="flex items-center justify-center p-4 text-xl font-medium text-center shadow-md bg-yellow-400 rounded-md md:text-left md:justify-start">
+      <h3 className="flex items-center justify-center p-4 text-xl font-medium text-center bg-yellow-400 rounded-md shadow-md md:text-left md:justify-start">
         <FaBlog className="mr-2" />
         Latest Blog Posts
       </h3>
       <div className="">
         {/* Posts */}
         {posts.map((post, i) => {
-          const date = new Date(post.publishedAt);
+          const date = new Date(post.publishedAt)
           return (
             <article
               className="pb-2 border-b border-neutral-200 last:border-none"
@@ -28,7 +28,7 @@ export default function LatestPosts({ posts }: { posts: Post[] }) {
                     {post.title}
                   </Link>
                 </h2>
-                <p className="px-8 pb-2 sm:text-xs font-light text-center md:px-4 md:text-left">
+                <p className="px-8 pb-2 font-light text-center sm:text-xs md:px-4 md:text-left">
                   Written on
                   <time
                     dateTime={post.publishedAt}
@@ -46,9 +46,9 @@ export default function LatestPosts({ posts }: { posts: Post[] }) {
                 </div>
               </div>
             </article>
-          );
+          )
         })}
       </div>
     </div>
-  );
+  )
 }

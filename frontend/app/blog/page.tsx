@@ -1,6 +1,6 @@
-import { getAllPosts } from "@/lib/sanityQueries";
-import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
-import PostGrid from "@/components/shared/layout/PostGrid";
+import { getAllPosts } from "@/lib/sanityQueries"
+import Breadcrumbs from "@/components/shared/utilities/Breadcrumb"
+import PostGrid from "@/components/shared/layout/PostGrid"
 
 export async function generateMetadata() {
   // const { title, description } = await getSiteMetaData();
@@ -12,14 +12,14 @@ export async function generateMetadata() {
 }
 
 export default async function BlogPage() {
-  const posts = await getAllPosts();
+  const posts = await getAllPosts()
 
-  const breadcrumbs = [{ href: '/blog', title: 'Blog' }]
+  const breadcrumbs = [{ href: "/blog", title: "Blog" }]
 
   return (
-    <div className="max-w-7xl mx-auto relative flex-grow">
+    <div className="relative flex-grow mx-auto max-w-7xl">
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <PostGrid title="Blog" posts={posts} />
     </div>
-  );
+  )
 }

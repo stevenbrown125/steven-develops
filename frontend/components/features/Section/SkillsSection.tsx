@@ -43,7 +43,7 @@ const SkillsSection = () => {
           href="/contact"
           className="flex items-center justify-center px-4 py-3 font-semibold tracking-wide border rounded-md shadow-xl gap-x-1 text-primary hover:opacity-90 border-primary hover:dark:bg-primary/30 hover:text-zinc-50"
         >
-          Let's talk <FaEnvelope className="ml-1" />
+          Let&apos;s talk <FaEnvelope className="ml-1" />
         </Link>
       </div>
     </section>

@@ -30,9 +30,9 @@ const AboutSection = () => {
             development workflows and enhance productivity. In my current role
             as a Systems Engineer and SIGINT/EW Subject Matter Expert (SME) for
             General Dynamics Mission Systems, I bring a Model-Based Systems
-            Engineering (MBSE) approach to developing and improving the Army's
-            Intelligence Electronic Warfare Tactical Proficiency Trainer
-            (IEWTPT).
+            Engineering (MBSE) approach to developing and improving the
+            Army&apos;s Intelligence Electronic Warfare Tactical Proficiency
+            Trainer (IEWTPT).
           </p>
           <p>
             I believe in being part of something bigger than myself, so

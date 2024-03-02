@@ -4,12 +4,21 @@ import Link from "next/link"
 import { FaTag } from "react-icons/fa6"
 import { ProjectProps } from "@/types"
 import RichText from "@/components/shared/utilities/RichText"
+import ExternalLink from "@/components/shared/utilities/ExternalLink"
 
 export default function Project({ project }: ProjectProps) {
-  const { title, image, startDate, completionDate, technologies, body } =
-    project
+  const {
+    title,
+    image,
+    startDate,
+    completionDate,
+    technologies,
+    body,
+    liveURL,
+  } = project
   const start = format(new Date(startDate), "EEEE MMMM do, yyyy")
   const { href, alt } = image
+
   return (
     <article
       className="animate-fade-in-slide-down"
@@ -33,6 +42,13 @@ export default function Project({ project }: ProjectProps) {
           </span>
         </p>
         <Figure figure={{ href, alt }} />
+
+        {liveURL && (
+          <p className="pb-4 text-lg font-semibold">
+            View this project live at{" "}
+            <ExternalLink href={liveURL} title={liveURL} />
+          </p>
+        )}
       </header>
       <section
         itemProp="articleBody"

@@ -18,7 +18,7 @@ export default function Post({ post }: PostProps) {
         <h2 itemProp="headline" className="heading-hr">
           {title}
         </h2>
-        <small>
+        <p className="py-2 text-xs tracking-wide">
           Published on
           <time dateTime={publishedAt} itemProp="datePublished">
             {date}
@@ -33,7 +33,7 @@ export default function Post({ post }: PostProps) {
           <span className="sr-only">
             by <span itemProp="author">Steven Brown</span>
           </span>
-        </small>
+        </p>
         <Figure figure={{ href: image, alt }} />
       </header>
       <section
@@ -52,7 +52,7 @@ export default function Post({ post }: PostProps) {
               <FaTag />
               <Link
                 href={`/blog/tags/${tag.slug}`}
-                className="flex items-center gap-1  hover:text-primary"
+                className="flex items-center gap-1 hover:text-primary"
               >
                 {tag.title}
               </Link>

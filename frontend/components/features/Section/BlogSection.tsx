@@ -9,10 +9,10 @@ interface BlogSectionProps {
 const BlogSection: React.FC<BlogSectionProps> = ({ posts }) => {
   return (
     <section className="relative z-30 pb-8 shadow-lg dark:bg-zinc-800">
-      <header className="flex px-8 mx-auto max-w-7xl">
+      <header className="flex px-4 mx-auto xl:px-8 max-w-7xl">
         <h2 className="px-12 mb-4 leading-10 heading-hr">My Blog</h2>
       </header>
-      <div className="grid grid-cols-3 gap-4 px-16">
+      <div className="grid gap-4 sm:px-4 xl:px-16 lg:grid-cols-3">
         {posts.map((post, i) => {
           return <PostCard post={post} key={`post-${i}`} />
         })}

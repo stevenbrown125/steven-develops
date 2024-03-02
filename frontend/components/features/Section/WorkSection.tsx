@@ -33,7 +33,7 @@ const WorkSection = () => {
       <header className="flex px-8 mx-auto max-w-7xl">
         <h2 className="px-12 pt-4 leading-10 heading-hr">My Work</h2>
       </header>
-      <div className="grid items-start grid-cols-4 px-8 my-8">
+      <div className="grid items-start grid-cols-2 px-8 my-8 gap-y-4 lg:grid-cols-4">
         {values.map((value, i) => (
           <HexagonCard
             Icon={value.Icon}

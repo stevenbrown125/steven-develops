@@ -10,7 +10,7 @@ const AboutSection = () => {
       <header className="flex px-8 mx-auto max-w-7xl">
         <h2 className="px-12 leading-10 heading-hr">About</h2>
       </header>
-      <article className="">
+      <article className="text-center lg:text-left">
         <div className="px-8 mx-auto my-2 leading-7 max-w-7xl">
           <p className="py-2">
             I am a Software Engineer based in the United States, passionate
@@ -46,7 +46,7 @@ const AboutSection = () => {
               <span className="sr-only">love</span>
             </span>{" "}
             using{" "}
-            <span className="inline-flex items-center">
+            <span className="inline-flex flex-wrap items-center justify-center">
               <Chip
                 Icon={TbBrandNextjs}
                 title="NextJS"
@@ -63,8 +63,9 @@ const AboutSection = () => {
                 title="Tailwind CSS"
                 slug="/portfolio/technologies/tailwindcss"
               />
-            </span>
-            . I hope you like it!
+              .
+            </span>{" "}
+            I hope you like it!
           </p>
         </div>
       </article>

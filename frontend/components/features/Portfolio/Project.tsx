@@ -20,7 +20,7 @@ export default function Project({ project }: ProjectProps) {
         <h2 itemProp="headline" className="heading-hr">
           {title}
         </h2>
-        <small>
+        <p className="py-2 text-xs tracking-wide">
           Started on
           <time dateTime={startDate} itemProp="datePublished">
             {start}
@@ -31,7 +31,7 @@ export default function Project({ project }: ProjectProps) {
           <span className="sr-only">
             by <span itemProp="author">Steven Brown</span>
           </span>
-        </small>
+        </p>
         <Figure figure={{ href, alt }} />
       </header>
       <section
@@ -50,7 +50,7 @@ export default function Project({ project }: ProjectProps) {
               <FaTag />
               <Link
                 href={`/portfolio/technologies/${technology.slug}`}
-                className="flex items-center gap-1  hover:text-primary"
+                className="flex items-center gap-1 hover:text-primary"
               >
                 {technology.title}
               </Link>

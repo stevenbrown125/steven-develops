@@ -6,7 +6,7 @@ import { ProjectProps } from "@/types"
 import RichText from "@/components/shared/utilities/RichText"
 import ExternalLink from "@/components/shared/utilities/ExternalLink"
 
-export default function Project({ project }: ProjectProps) {
+const Project: React.FC<ProjectProps> = ({ project }) => {
   const {
     title,
     image,
@@ -77,3 +77,5 @@ export default function Project({ project }: ProjectProps) {
     </article>
   )
 }
+
+export default Project

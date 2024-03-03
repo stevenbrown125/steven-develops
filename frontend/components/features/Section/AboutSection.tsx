@@ -4,7 +4,7 @@ import { FaHeart } from "react-icons/fa6"
 import { SiSanity, SiTailwindcss } from "react-icons/si"
 import { TbBrandNextjs } from "react-icons/tb"
 
-const AboutSection = () => {
+const AboutSection: React.FC = () => {
   return (
     <section className="px-4 py-4 mb-4">
       <header className="flex px-8 mx-auto max-w-7xl">

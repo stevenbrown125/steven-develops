@@ -5,7 +5,7 @@ interface ProjectGridProps {
   title: string
   projects: Project[]
 }
-const ProjectGrid = ({ title, projects }: ProjectGridProps) => {
+const ProjectGrid: React.FC<ProjectGridProps> = ({ title, projects }) => {
   return (
     <div className="relative flex-grow mx-auto max-w-screen-2xl animate-fade-in-slide-down">
       <h2 className="heading-hr">All {title} Projects</h2>

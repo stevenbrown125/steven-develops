@@ -5,7 +5,7 @@ interface PageGridProps {
   children: ReactNode
 }
 
-const PageGrid = ({ title, children }: PageGridProps) => {
+const PageGrid: React.FC<PageGridProps> = ({ title, children }) => {
   if (!children) return <></>
   return (
     <div className="relative flex-grow mx-auto max-w-screen-2xl animate-fade-in-slide-down">

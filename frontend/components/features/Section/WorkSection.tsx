@@ -27,7 +27,7 @@ const values = [
   },
 ]
 
-const WorkSection = () => {
+const WorkSection: React.FC = () => {
   return (
     <section className="relative bg-zinc-200 dark:bg-zinc-900 slanted-div">
       <header className="flex px-8 mx-auto max-w-7xl">

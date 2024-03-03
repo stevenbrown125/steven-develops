@@ -1,4 +1,4 @@
-const ProfileSection = () => {
+const ProfileSection: React.FC = () => {
   return (
     <section className="flex flex-row w-full">
       <div className="flex flex-wrap justify-center w-full py-4 pb-8 md:py-8 bg-zinc-200 dark:bg-zinc-900 h-min">

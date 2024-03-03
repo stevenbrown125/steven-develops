@@ -1,6 +1,6 @@
 import Link from "next/link"
 
-interface BreadcrumbLink {
+export interface BreadcrumbLink {
   title: string
   href: string
   current?: boolean
@@ -10,7 +10,7 @@ interface BreadcrumbProps {
   breadcrumbs?: BreadcrumbLink[]
 }
 
-export default function Breadcrumbs({ breadcrumbs = [] }: BreadcrumbProps) {
+const Breadcrumbs: React.FC<BreadcrumbProps> = ({ breadcrumbs = [] }) => {
   const homeBreadcrumb = {
     title: "Home",
     href: "/",
@@ -44,3 +44,5 @@ export default function Breadcrumbs({ breadcrumbs = [] }: BreadcrumbProps) {
     </div>
   )
 }
+
+export default Breadcrumbs

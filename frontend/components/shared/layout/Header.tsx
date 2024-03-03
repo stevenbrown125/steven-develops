@@ -6,7 +6,7 @@ import { useContext } from "react"
 import { FaBars, FaMagnifyingGlass } from "react-icons/fa6"
 import { ImBrightnessContrast } from "react-icons/im"
 
-export default function Header() {
+const Header: React.FC = () => {
   const { toggleSidebar } = useContext(SidebarContext)
   const { toggleTheme } = useTheme()
 
@@ -23,3 +23,5 @@ export default function Header() {
     </nav>
   )
 }
+
+export default Header

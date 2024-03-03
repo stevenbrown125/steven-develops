@@ -7,7 +7,7 @@ import {
 import Figure from "@/components/core/Figure/Figure"
 import { CategegoryProps } from "@/types"
 
-const CategoryCard = ({ category }: CategegoryProps) => {
+const CategoryCard: React.FC<CategegoryProps> = ({ category }) => {
   const { title, slug, image, alt } = category
 
   const cardLinkSchema = {

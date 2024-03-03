@@ -112,6 +112,10 @@
     @apply mx-auto lg:max-w-2xl;
   }
 
+  .engraved {
+    text-shadow: rgba(0, 0, 0, 0.2) 2px 4px 2px;
+  }
+
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     @apply hidden;

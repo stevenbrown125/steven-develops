@@ -21,7 +21,7 @@ const links = [
   },
 ]
 
-export default function Sidebar() {
+const Sidebar: React.FC = () => {
   const { isDragging, bind, width, closeSidebar, isVisible } =
     useContext(SidebarContext)
 
@@ -108,3 +108,5 @@ export default function Sidebar() {
     </animated.div>
   )
 }
+
+export default Sidebar

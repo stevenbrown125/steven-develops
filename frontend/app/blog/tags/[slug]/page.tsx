@@ -2,7 +2,7 @@ import { getAllTags, getPostsByTag, getTagBySlug } from "@/lib/sanityQueries"
 import Breadcrumbs from "@/components/shared/utilities/Breadcrumb"
 import { generateTagListingSEOData } from "@/lib/seo"
 import { Page } from "@/types/Page"
-import PostGrid from "@/components/shared/layout/PostGrid"
+import PostGrid from "@/components/features/Blog/PostGrid"
 
 export async function generateStaticParams() {
   const categories = await getAllTags()

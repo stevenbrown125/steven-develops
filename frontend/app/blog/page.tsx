@@ -1,6 +1,7 @@
 import { getAllPosts } from "@/lib/sanityQueries"
-import Breadcrumbs from "@/components/shared/utilities/Breadcrumb"
-import PostGrid from "@/components/shared/layout/PostGrid"
+import { groupPostsByYears } from "@/lib/postHelpers"
+import { Page } from "@/types"
+import ListingPage from "@/components/features/Blog/ListingPage"
 
 export async function generateMetadata() {
   // const { title, description } = await getSiteMetaData();
@@ -11,15 +12,18 @@ export async function generateMetadata() {
   // };
 }
 
-export default async function BlogPage() {
+export default async function BlogPage({ searchParams }: Page) {
   const posts = await getAllPosts()
-
   const breadcrumbs = [{ href: "/blog", title: "Blog" }]
+  const groupedPosts = groupPostsByYears(posts)
+  const isReversed = searchParams?.sort === "asc"
 
   return (
-    <div className="relative flex-grow mx-auto max-w-7xl">
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <PostGrid title="Blog" posts={posts} />
-    </div>
+    <ListingPage
+      title="All Posts"
+      breadcrumbs={breadcrumbs}
+      groupedPosts={groupedPosts}
+      isReversed={isReversed}
+    />
   )
 }

@@ -4,7 +4,7 @@ import { contactSchema } from "@/lib/validation"
 import { useRecaptcha } from "@/providers/RecaptchaProvider"
 import RecaptchaText from "@/components/shared/utilities/RecaptchaText"
 
-export default function ContactForm() {
+const ContactForm = () => {
   const { executeRecaptcha } = useRecaptcha()
 
   const formik = useFormik({
@@ -150,3 +150,5 @@ export default function ContactForm() {
     </form>
   )
 }
+
+export default ContactForm

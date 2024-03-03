@@ -5,7 +5,7 @@ import Link from "next/link"
 import { FaTag } from "react-icons/fa6"
 import RichText from "@/components/shared/utilities/RichText"
 
-export default function Post({ post }: PostProps) {
+const Post: React.FC<PostProps> = ({ post }: PostProps) => {
   const { title, image, publishedAt, alt, category, tags } = post
   const date = format(new Date(publishedAt), "EEEE MMMM do, yyyy")
   return (
@@ -63,3 +63,5 @@ export default function Post({ post }: PostProps) {
     </article>
   )
 }
+
+export default Post

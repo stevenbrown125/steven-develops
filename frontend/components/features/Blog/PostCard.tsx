@@ -8,7 +8,7 @@ import {
 import Figure from "@/components/core/Figure/Figure"
 import { format } from "date-fns"
 
-const PostCard = ({ post }: PostProps) => {
+const PostCard: React.FC<PostProps> = ({ post }) => {
   const { title, excerpt, slug, image, alt, publishedAt } = post
   const date = new Date(publishedAt)
 

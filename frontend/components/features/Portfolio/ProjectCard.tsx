@@ -8,7 +8,7 @@ import {
 import Figure from "@/components/core/Figure/Figure"
 import { format } from "date-fns"
 
-const ProjectCard = ({ project }: ProjectProps) => {
+const ProjectCard: React.FC<ProjectProps> = ({ project }) => {
   const { title, description, slug, image, startDate, technologies } = project
   const date = new Date(startDate)
   const { href, alt } = image

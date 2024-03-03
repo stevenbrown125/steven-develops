@@ -78,7 +78,7 @@ const technologies = {
   slack: { Icon: SiSlack, title: "Slack", slug: `${basePath}slack` },
 }
 
-const SkillChipset = () => {
+const SkillChipset: React.FC = () => {
   return (
     <div className="flex flex-wrap justify-center px-12 py-4 gap-y-4 gap-x-2">
       {Object.values(technologies).map((tech, index) => (

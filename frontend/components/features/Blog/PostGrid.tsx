@@ -2,13 +2,11 @@ import PostCard from "@/components/features/Blog/PostCard"
 import { Post } from "@/types"
 
 interface PostGridProps {
-  title: string
   posts: Post[]
 }
-const PostGrid = ({ title, posts }: PostGridProps) => {
+const PostGrid: React.FC<PostGridProps> = ({ posts }) => {
   return (
     <div className="animate-fade-in-slide-down">
-      <h2 className="heading-hr">All {title} Posts</h2>
       <section
         className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3 4xl:grid-cols-4"
         itemScope

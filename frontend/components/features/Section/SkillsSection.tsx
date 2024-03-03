@@ -2,7 +2,7 @@ import SkillChipset from "@/components/SkillChipset/SkillChipset"
 import Link from "next/link"
 import { FaEnvelope } from "react-icons/fa6"
 
-const SkillsSection = () => {
+const SkillsSection: React.FC = () => {
   return (
     <section className="relative z-10 pb-8 overflow-hidden border-t shadow-inner border-zinc-500/30 dark:bg-zinc-800 bg-zinc-100 isolate h-fit">
       <svg

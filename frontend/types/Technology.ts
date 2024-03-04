@@ -1,6 +1,5 @@
 export interface Technology {
-    title: string;
-    slug: string;
-    icon: string;
+  title: string
+  slug: string
+  icon: string
 }
-

@@ -1,30 +1,31 @@
 "use client"
-import { useFormik } from 'formik';
-import { contactSchema } from '@/lib/validation';
-import { useRecaptcha } from '@/providers/RecaptchaProvider';
-import RecaptchaText from '@/components/shared/utilities/RecaptchaText';
+import { useFormik } from "formik"
+import { contactSchema } from "@/lib/validation"
+import { useRecaptcha } from "@/providers/RecaptchaProvider"
+import RecaptchaText from "@/components/shared/utilities/RecaptchaText"
 
-export default function ContactForm() {
-  const { executeRecaptcha } = useRecaptcha();
+const ContactForm = () => {
+  const { executeRecaptcha } = useRecaptcha()
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      email: '',
-      phone: '',
-      message: '',
-      city: ''
+      name: "",
+      email: "",
+      phone: "",
+      message: "",
+      city: "",
     },
     validationSchema: contactSchema,
     onSubmit: async (values) => {
       try {
-        if (!executeRecaptcha) throw "Execute recaptcha not yet available";
-        const gReCaptchaToken = await executeRecaptcha("contactFormSubmit");
+        if (!executeRecaptcha) throw "Execute recaptcha not yet available"
+        const gReCaptchaToken = await executeRecaptcha("contactFormSubmit")
         console.log(gReCaptchaToken)
-        if (values.city !== '') { // Failed Honeypot
+        if (values.city !== "") {
+          // Failed Honeypot
           throw "Invalid input"
         }
-        const response = await fetch('/api/contact', {
+        const response = await fetch("/api/contact", {
           method: "POST",
           headers: {
             Accept: "application/json, text/plain, */*",
@@ -35,49 +36,119 @@ export default function ContactForm() {
             gRecaptchaToken: gReCaptchaToken,
           }),
         })
-        console.log('sent')
-
+        console.log("sent")
       } catch (error) {
         console.error(error)
       }
-    }
-  });
+    },
+  })
 
   return (
     <form onSubmit={formik.handleSubmit}>
       <div>
-        <label htmlFor="name" className="block text-sm font-medium text-zinc-700 dark:text-zinc-200">Name</label>
-        <input id="name" type="text" {...formik.getFieldProps('name')} className="mt-1 block w-full rounded-md border-zinc-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm dark:border-zinc-600 dark:bg-zinc-700 dark:text-white" />
-        {formik.touched.name && formik.errors.name ? <div className="text-red-500 text-xs mt-1 dark:text-red-400">{formik.errors.name}</div> : null}
+        <label
+          htmlFor="name"
+          className="block text-sm font-medium text-zinc-700 dark:text-zinc-200"
+        >
+          Name
+        </label>
+        <input
+          id="name"
+          type="text"
+          {...formik.getFieldProps("name")}
+          className="block w-full mt-1 rounded-md shadow-sm border-zinc-300 focus:border-primary focus:ring-primary sm:text-sm dark:border-zinc-600 dark:bg-zinc-700 dark:text-white"
+        />
+        {formik.touched.name && formik.errors.name ? (
+          <div className="mt-1 text-xs text-red-500 dark:text-red-400">
+            {formik.errors.name}
+          </div>
+        ) : null}
       </div>
 
       <div>
-        <label htmlFor="email" className="block text-sm font-medium text-zinc-700 dark:text-zinc-200">Email</label>
-        <input id="email" type="email" {...formik.getFieldProps('email')} className="mt-1 block w-full rounded-md border-zinc-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm dark:border-zinc-600 dark:bg-zinc-700 dark:text-white" />
-        {formik.touched.email && formik.errors.email ? <div className="text-red-500 text-xs mt-1 dark:text-red-400">{formik.errors.email}</div> : null}
+        <label
+          htmlFor="email"
+          className="block text-sm font-medium text-zinc-700 dark:text-zinc-200"
+        >
+          Email
+        </label>
+        <input
+          id="email"
+          type="email"
+          {...formik.getFieldProps("email")}
+          className="block w-full mt-1 rounded-md shadow-sm border-zinc-300 focus:border-primary focus:ring-primary sm:text-sm dark:border-zinc-600 dark:bg-zinc-700 dark:text-white"
+        />
+        {formik.touched.email && formik.errors.email ? (
+          <div className="mt-1 text-xs text-red-500 dark:text-red-400">
+            {formik.errors.email}
+          </div>
+        ) : null}
       </div>
 
       <div>
-        <label htmlFor="phone" className="block text-sm font-medium text-zinc-700 dark:text-zinc-200">Phone</label>
-        <input id="phone" type="text" {...formik.getFieldProps('phone')} className="mt-1 block w-full rounded-md border-zinc-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm dark:border-zinc-600 dark:bg-zinc-700 dark:text-white" />
-        {formik.touched.phone && formik.errors.phone ? <div className="text-red-500 text-xs mt-1 dark:text-red-400">{formik.errors.phone}</div> : null}
+        <label
+          htmlFor="phone"
+          className="block text-sm font-medium text-zinc-700 dark:text-zinc-200"
+        >
+          Phone
+        </label>
+        <input
+          id="phone"
+          type="text"
+          {...formik.getFieldProps("phone")}
+          className="block w-full mt-1 rounded-md shadow-sm border-zinc-300 focus:border-primary focus:ring-primary sm:text-sm dark:border-zinc-600 dark:bg-zinc-700 dark:text-white"
+        />
+        {formik.touched.phone && formik.errors.phone ? (
+          <div className="mt-1 text-xs text-red-500 dark:text-red-400">
+            {formik.errors.phone}
+          </div>
+        ) : null}
       </div>
 
-      <div className='invisible absolute h-[1px] w-[1px]'>
-        <label htmlFor="city" className="block text-sm font-medium text-zinc-700 dark:text-zinc-200">City</label>
-        <input id="city" type="text" {...formik.getFieldProps('city')} className="mt-1 block w-full rounded-md border-zinc-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm dark:border-zinc-600 dark:bg-zinc-700 dark:text-white" />
+      <div className="invisible absolute h-[1px] w-[1px]">
+        <label
+          htmlFor="city"
+          className="block text-sm font-medium text-zinc-700 dark:text-zinc-200"
+        >
+          City
+        </label>
+        <input
+          id="city"
+          type="text"
+          {...formik.getFieldProps("city")}
+          className="block w-full mt-1 rounded-md shadow-sm border-zinc-300 focus:border-primary focus:ring-primary sm:text-sm dark:border-zinc-600 dark:bg-zinc-700 dark:text-white"
+        />
       </div>
 
       <div>
-        <label htmlFor="message" className="block text-sm font-medium text-zinc-700 dark:text-zinc-200">Message</label>
-        <textarea id="message" {...formik.getFieldProps('message')} className="mt-1 block w-full rounded-md border-zinc-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm dark:border-zinc-600 dark:bg-zinc-700 dark:text-white" rows={4}></textarea>
-        {formik.touched.message && formik.errors.message ? <div className="text-red-500 text-xs mt-1 dark:text-red-400">{formik.errors.message}</div> : null}
+        <label
+          htmlFor="message"
+          className="block text-sm font-medium text-zinc-700 dark:text-zinc-200"
+        >
+          Message
+        </label>
+        <textarea
+          id="message"
+          {...formik.getFieldProps("message")}
+          className="block w-full mt-1 rounded-md shadow-sm border-zinc-300 focus:border-primary focus:ring-primary sm:text-sm dark:border-zinc-600 dark:bg-zinc-700 dark:text-white"
+          rows={4}
+        ></textarea>
+        {formik.touched.message && formik.errors.message ? (
+          <div className="mt-1 text-xs text-red-500 dark:text-red-400">
+            {formik.errors.message}
+          </div>
+        ) : null}
       </div>
 
-      <button type="submit" className="inline-flex justify-center py-2 px-8 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:bg-primary dark:hover:bg-primary">
+      <button
+        type="submit"
+        className="inline-flex justify-center px-8 py-2 text-sm font-medium text-white border border-transparent rounded-md shadow-sm bg-primary hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary dark:bg-primary dark:hover:bg-primary"
+      >
         Send Message
       </button>
       <RecaptchaText />
     </form>
-  );
+  )
 }
+
+export default ContactForm

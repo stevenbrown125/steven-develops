@@ -23,12 +23,12 @@ const ContactCard = () => {
             <figcaption className="sr-only">Steven Brown</figcaption>
           </figure>
           <div className="text-center sm:text-left md:text-center lg:text-left">
-            <h2 className="mb-2 heading-hr">Let's Connect</h2>
+            <h2 className="mb-2 heading-hr">Let&apos;s Connect</h2>
             <p className="text-base">
-              If you've journeyed this deep into my site, you're exactly who I
-              want to connect with—whether it's about a fresh project or just a
-              friendly chat. Feel free to reach out through social media or my
-              contact page!
+              If you&apos;ve journeyed this deep into my site, you&apos;re
+              exactly who I want to connect with—whether it&apos;s about a fresh
+              project or just a friendly chat. Feel free to reach out through
+              social media or my contact page!
             </p>
             <div className="flex items-center justify-between pr-10">
               <span className="flex justify-center text-xl">

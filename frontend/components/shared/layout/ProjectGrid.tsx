@@ -14,9 +14,15 @@ const ProjectGrid: React.FC<ProjectGridProps> = ({ title, projects }) => {
         itemScope
         itemType="http://schema.org/ItemList"
       >
-        {projects.map((project, i) => (
-          <ProjectCard project={project} key={`post-${i}`} />
-        ))}
+        {projects.length > 0 ? (
+          projects.map((project, i) => (
+            <ProjectCard project={project} key={`post-${i}`} />
+          ))
+        ) : (
+          <p className="col-span-3 px-2 pt-4">
+            Nothing yet! Stay tuned.. perhaps subscribe to my RSS feed?
+          </p>
+        )}
       </section>
     </div>
   )

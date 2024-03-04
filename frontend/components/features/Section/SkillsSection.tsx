@@ -1,10 +1,13 @@
 import SkillChipset from "@/components/SkillChipset/SkillChipset"
-import Link from "next/link"
-import { FaEnvelope } from "react-icons/fa6"
 
-const SkillsSection: React.FC = () => {
+interface SkillsSectionProps {
+  title?: string
+}
+const SkillsSection: React.FC<SkillsSectionProps> = ({
+  title = "My Skills",
+}) => {
   return (
-    <section className="relative z-10 pb-8 overflow-hidden border-t shadow-inner border-zinc-500/30 dark:bg-zinc-800 bg-zinc-100 isolate h-fit">
+    <section className="relative z-10 pb-8 overflow-hidden border-t shadow-inner border-zinc-500/30 dark:bg-zinc-800 animate-fade-in-slide-down bg-zinc-100 isolate h-fit">
       <svg
         className="absolute inset-0 -z-10 h-auto w-full stroke-white/10 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
         aria-hidden="true"
@@ -35,7 +38,7 @@ const SkillsSection: React.FC = () => {
         />
       </svg>
       <header className="flex px-8 mx-auto max-w-7xl">
-        <h2 className="px-12 pt-4 mb-4 leading-10 heading-hr">My Skills</h2>
+        <h2 className="px-12 pt-4 mb-4 leading-10 heading-hr">{title}</h2>
       </header>
       <SkillChipset />
     </section>

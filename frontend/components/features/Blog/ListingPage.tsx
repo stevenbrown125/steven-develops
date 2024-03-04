@@ -36,7 +36,10 @@ const ListingPage: React.FC<ListingPageProps> = ({
               <PostGrid posts={posts} />
             </div>
           )
-        } else return <></>
+        } else
+          return (
+            <p>Nothing yet! Stay tuned.. perhaps subscribe to my RSS feed?</p>
+          )
       })}
     </div>
   )

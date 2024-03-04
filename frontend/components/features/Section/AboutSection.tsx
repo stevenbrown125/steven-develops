@@ -1,8 +1,5 @@
-import Chip from "@/components/shared/utilities/Chip"
 import Link from "next/link"
 import { FaHeart } from "react-icons/fa6"
-import { SiSanity, SiTailwindcss } from "react-icons/si"
-import { TbBrandNextjs } from "react-icons/tb"
 
 const AboutSection: React.FC = () => {
   return (
@@ -45,27 +42,7 @@ const AboutSection: React.FC = () => {
               <FaHeart className="text-red-500"></FaHeart>
               <span className="sr-only">love</span>
             </span>{" "}
-            using{" "}
-            <span className="inline-flex flex-wrap items-center justify-center">
-              <Chip
-                Icon={TbBrandNextjs}
-                title="NextJS"
-                slug="/portfolio/technologies/nextjs"
-              />
-              <Chip
-                Icon={SiSanity}
-                title="Sanity"
-                slug="/portfolio/technologies/sanity"
-              />
-              and
-              <Chip
-                Icon={SiTailwindcss}
-                title="Tailwind CSS"
-                slug="/portfolio/technologies/tailwindcss"
-              />
-              .
-            </span>{" "}
-            I hope you like it!
+            using NextJS, Sanity, and Tailwind CSS. I hope you like it!
           </p>
         </div>
       </article>

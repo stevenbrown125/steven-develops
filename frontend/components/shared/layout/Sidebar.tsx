@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useContext } from "react"
 import { FaLinkedinIn, FaGithub, FaXTwitter } from "react-icons/fa6"
-
+import logo from "../../../public/images/logo_icon.png"
 const links = [
   {
     title: "Blog",
@@ -46,9 +46,7 @@ const Sidebar: React.FC = () => {
             onClick={closeSidebar}
           >
             <Image
-              src={`/images/logo_icon.png`}
-              width={200}
-              height={250}
+              src={logo}
               alt="Steven Develops Icon"
               className="w-20 h-24 mx-auto"
             />

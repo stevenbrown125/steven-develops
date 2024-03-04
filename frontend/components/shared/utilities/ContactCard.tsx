@@ -1,7 +1,6 @@
 import Button from "@/components/core/Button/Button"
-import { Card, CardBody } from "@/components/core/Card/Card"
 import Image from "next/image"
-import Link from "next/link"
+import profilePic from "../../../public/images/profile_milan.jpg"
 
 import { FaEnvelope, FaGithub, FaLinkedinIn, FaXTwitter } from "react-icons/fa6"
 
@@ -11,10 +10,11 @@ const ContactCard = () => {
       <div className="flex flex-wrap justify-center w-full py-4 pb-8 md:py-8 bg-zinc-200 dark:bg-zinc-900 h-min">
         <div className="px-8 sm:flex gap-x-5 max-w-7xl md:block lg:inline-flex">
           <figure className="relative z-10 mb-4 shrink-0 profile-wrap">
-            <div className="w-48 h-48 profile">
+            <div className="relative w-48 h-48 profile">
               <Image
-                src={`/images/profile_milan.jpg`}
+                src={profilePic}
                 fill
+                sizes="400px"
                 alt="Steven Brown in Milan"
                 className="object-cover object-center rounded-md"
               />
@@ -23,7 +23,7 @@ const ContactCard = () => {
             <figcaption className="sr-only">Steven Brown</figcaption>
           </figure>
           <div className="text-center sm:text-left md:text-center lg:text-left">
-            <h1 className="mb-2 heading-hr">Let's connect</h1>
+            <h2 className="mb-2 heading-hr">Let's Connect</h2>
             <p className="text-base">
               If you've journeyed this deep into my site, you're exactly who I
               want to connect with—whether it's about a fresh project or just a

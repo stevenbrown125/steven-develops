@@ -14,6 +14,7 @@ const Figure = ({ figure: { href, alt, classes } }: FigureProps) => {
           src={href}
           alt={alt}
           fill
+          sizes={"307px"}
           className="object-cover object-center rounded-md"
         />
         <div className="z-10 w-full h-full transition duration-500 ease-in-out transform border-b opacity-100 bg-zinc-200/30 dark:bg-zinc-700/40 group-hover:opacity-0 border-black/20" />

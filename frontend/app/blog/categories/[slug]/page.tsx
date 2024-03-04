@@ -3,10 +3,8 @@ import {
   getCategoryBySlug,
   getPostsByCategory,
 } from "@/lib/sanityQueries"
-import Breadcrumbs from "@/components/shared/utilities/Breadcrumb"
 import { generateCategoryListingSEOData } from "@/lib/seo"
 import { Page } from "@/types/Page"
-import PostGrid from "@/components/features/Blog/PostGrid"
 import { groupPostsByYears } from "@/lib/postHelpers"
 import ListingPage from "@/components/features/Blog/ListingPage"
 

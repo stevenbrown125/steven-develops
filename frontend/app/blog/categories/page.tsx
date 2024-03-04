@@ -20,7 +20,7 @@ export default async function AllCategoryPage() {
   ]
 
   return (
-    <div className="relative flex-grow mx-auto max-w-7xl">
+    <div className="relative flex-grow px-4 py-4 mx-auto max-w-7xl lg:px-8">
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <PageGrid title="All Categories">
         {catgories.map((category, i) => (

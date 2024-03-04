@@ -18,7 +18,7 @@ export default async function AllTechnologiesPage(): Promise<JSX.Element> {
     { href: "/porfolio/technologies", title: "Technologies" },
   ]
   return (
-    <div className="relative flex-grow mx-auto max-w-7xl">
+    <div className="relative flex-grow px-4 py-4 mx-auto max-w-7xl lg:px-8">
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <h2 className="heading-hr">All Technologies</h2>
       <section

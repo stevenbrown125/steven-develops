@@ -22,7 +22,7 @@ const ListingPage: React.FC<ListingPageProps> = ({
     ? sortPostYears(groupedPosts).reverse()
     : sortPostYears(groupedPosts)
   return (
-    <div className="relative flex-grow mx-auto max-w-7xl">
+    <div className="relative flex-grow px-4 py-4 mx-auto max-w-7xl lg:px-8">
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <ListingHeader title={title} isAscending={isReversed} />
       {sortedYears.map((year) => {

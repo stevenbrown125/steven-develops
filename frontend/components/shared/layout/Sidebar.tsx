@@ -4,7 +4,7 @@ import { animated } from "@react-spring/web"
 import Image from "next/image"
 import Link from "next/link"
 import { useContext } from "react"
-import { FaTwitter, FaLinkedinIn, FaGithub } from "react-icons/fa6"
+import { FaLinkedinIn, FaGithub, FaXTwitter } from "react-icons/fa6"
 
 const links = [
   {
@@ -74,15 +74,15 @@ const Sidebar: React.FC = () => {
             </Link>
           ))}
 
-          <span className="flex justify-center my-8 text-xl">
+          <span className="flex justify-center my-8 text-xl ltr">
             <a
               href="https://twitter.com/Design4TheWeb"
               target="_blank"
               className="px-4 transition duration-300 ease-in-out delay-150 hover:text-twitter hover:-translate-y-1 hover:scale-110"
               rel="noreferrer"
             >
-              <FaTwitter />
-              <span className="sr-only">Twitter</span>
+              <FaXTwitter />
+              <span className="sr-only">X Twitter</span>
             </a>
             <a
               href="https://www.linkedin.com/in/stevenbrown125/"

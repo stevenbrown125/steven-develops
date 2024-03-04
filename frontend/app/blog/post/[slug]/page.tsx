@@ -32,7 +32,7 @@ export default async function BlogPostPage({ params }: Page) {
   ]
 
   return (
-    <div className="relative flex-grow mx-auto max-w-7xl">
+    <div className="relative flex-grow px-4 py-4 mx-auto max-w-7xl lg:px-8">
       <Breadcrumbs breadcrumbs={breadcrumbs} />
       <Post post={post} />
     </div>

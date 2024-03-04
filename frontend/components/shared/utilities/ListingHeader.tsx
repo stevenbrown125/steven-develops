@@ -27,7 +27,7 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
       {title}
       <Link
         href={sortLinkProps.href}
-        className="text-base text-zinc-600 dark:text-zinc-200 hover:text-primary"
+        className="text-base text-zinc-600 dark:text-zinc-200 hover:text-primary dark:hover:text-primary"
         role="button"
         aria-label={sortLinkProps.ariaLabel}
       >

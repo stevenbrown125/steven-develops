@@ -38,14 +38,6 @@ const SkillsSection: React.FC = () => {
         <h2 className="px-12 pt-4 mb-4 leading-10 heading-hr">My Skills</h2>
       </header>
       <SkillChipset />
-      <div className="flex justify-center pb-6 mt-12">
-        <Link
-          href="/contact"
-          className="flex items-center justify-center px-4 py-3 font-semibold tracking-wide border rounded-md shadow-xl gap-x-1 text-primary hover:opacity-90 border-primary hover:dark:bg-primary/30 hover:text-zinc-50"
-        >
-          Let&apos;s talk <FaEnvelope className="ml-1" />
-        </Link>
-      </div>
     </section>
   )
 }

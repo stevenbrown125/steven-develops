@@ -7,6 +7,8 @@ import Breadcrumbs from "@/components/shared/utilities/Breadcrumb"
 import { generateCategoryListingSEOData } from "@/lib/seo"
 import { Page } from "@/types/Page"
 import PostGrid from "@/components/features/Blog/PostGrid"
+import { groupPostsByYears } from "@/lib/postHelpers"
+import ListingPage from "@/components/features/Blog/ListingPage"
 
 export async function generateStaticParams() {
   const categories = await getAllCategories()
@@ -21,23 +23,27 @@ export async function generateMetadata({ params }: Page) {
   return metadata
 }
 
-export default async function BlogCategoryPage({ params }: Page) {
+export default async function BlogCategoryPage({ params, searchParams }: Page) {
   if (!params) return <></>
-  const { slug } = params
 
+  const { slug } = params
   const { title } = await getCategoryBySlug(slug)
   const posts = await getPostsByCategory(slug)
-
   const breadcrumbs = [
     { href: "/blog", title: "Blog" },
     { href: "/blog/categories", title: "Categories" },
     { href: slug, title },
   ]
 
+  const groupedPosts = groupPostsByYears(posts)
+  const isReversed = searchParams?.sort === "asc"
+
   return (
-    <div className="relative flex-grow mx-auto max-w-7xl">
-      <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <PostGrid title={title} posts={posts} />
-    </div>
+    <ListingPage
+      title={`All ${title} Posts`}
+      breadcrumbs={breadcrumbs}
+      groupedPosts={groupedPosts}
+      isReversed={isReversed}
+    />
   )
 }

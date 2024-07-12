@@ -51,7 +51,7 @@ const ContactCard = () => {
                   <span className="sr-only">LinkedIn</span>
                 </a>
                 <a
-                  href="https://twitter.com/Design4TheWeb"
+                  href="https://twitter.com/Dev4TheWeb"
                   target="_blank"
                   className="px-4 transition duration-300 ease-in-out delay-150 hover:text-twitter hover:-translate-y-1 hover:scale-110"
                   rel="noreferrer"

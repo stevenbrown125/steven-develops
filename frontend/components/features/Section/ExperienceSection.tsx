@@ -10,7 +10,7 @@ const ExperienceSection: React.FC = () => {
       <article className="text-center lg:text-left pt-4">
         <div className="px-8 mx-auto my-2 leading-7 max-w-7xl mt-4">
           <h3 className="pb-1">
-            System Engineer / SIGINT & EW Subject Matter Expert
+            System Engineer / SIGINT &amp; EW Subject Matter Expert
           </h3>
           <div className="flex justify-between pb-2 border-b border-neutral-300 px-4">
             <h4>AIT Engineering | Orlando, Florida</h4>
@@ -74,7 +74,7 @@ const ExperienceSection: React.FC = () => {
           href="/blog"
           className="flex items-center justify-center px-4 py-3 font-semibold tracking-wide rounded-md shadow-xl gap-x-1 bg-primary hover:opacity-90 text-zinc-50"
         >
-          <FaEnvelope className="mt-0.5" /> Let's get in touch
+          <FaEnvelope className="mt-0.5" /> Let&apos;s get in touch
         </Link>
       </div>
     </section>

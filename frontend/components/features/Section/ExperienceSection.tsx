@@ -71,7 +71,7 @@ const ExperienceSection: React.FC = () => {
       </article>
       <div className="flex justify-center pb-6 mt-12">
         <Link
-          href="/blog"
+          href="/contact"
           className="flex items-center justify-center px-4 py-3 font-semibold tracking-wide rounded-md shadow-xl gap-x-1 bg-primary hover:opacity-90 text-zinc-50"
         >
           <FaEnvelope className="mt-0.5" /> Let&apos;s get in touch

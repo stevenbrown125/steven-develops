@@ -5,6 +5,7 @@ import WorkSection from "@/components/features/Section/WorkSection"
 import BlogSection from "@/components/features/Section/BlogSection"
 import SkillsSection from "@/components/features/Section/SkillsSection"
 import ContactCard from "@/components/shared/utilities/ContactCard"
+import ExperienceSection from "@/components/features/Section/ExperienceSection"
 
 export default async function Home() {
   const posts = await getAllPosts()
@@ -18,6 +19,7 @@ export default async function Home() {
       <AboutSection />
       <WorkSection />
       <BlogSection posts={latestPosts} />
+      <ExperienceSection />
       <SkillsSection />
       <ContactCard />
     </div>

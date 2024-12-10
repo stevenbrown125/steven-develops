@@ -10,7 +10,7 @@ export async function generateMetadata() {
   // };
 }
 
-export default async function AllTechnologiesPage(): Promise<JSX.Element> {
+export default async function AllTechnologiesPage() {
   const technologies = await getAllTechnologies()
 
   const breadcrumbs = [

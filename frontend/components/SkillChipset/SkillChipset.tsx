@@ -11,17 +11,18 @@ import {
   SiMysql,
   SiTailwindcss,
   SiGit,
-  SiCsharp,
-  SiVisualstudiocode,
   SiAdobe,
   SiAdobexd,
   SiFigma,
-  SiMicrosoftword,
-  SiMicrosoftpowerpoint,
   SiSlack,
 } from "react-icons/si"
-import { TbBrandNextjs } from "react-icons/tb"
+import { TbBrandCSharp, TbBrandNextjs } from "react-icons/tb"
 import Chip from "../shared/utilities/Chip"
+import { VscVscode } from "react-icons/vsc"
+import {
+  PiMicrosoftPowerpointLogoFill,
+  PiMicrosoftWordLogoFill,
+} from "react-icons/pi"
 
 const basePath = "/portfolio/technologies/"
 
@@ -51,9 +52,9 @@ const technologies = {
     slug: `${basePath}tailwindcss`,
   },
   git: { Icon: SiGit, title: "Git", slug: `${basePath}git` },
-  csharp: { Icon: SiCsharp, title: "C#", slug: `${basePath}csharp` },
+  csharp: { Icon: TbBrandCSharp, title: "C#", slug: `${basePath}csharp` },
   vscode: {
-    Icon: SiVisualstudiocode,
+    Icon: VscVscode,
     title: "Visual Studio Code",
     slug: `${basePath}visual-studio-code`,
   },
@@ -69,9 +70,13 @@ const technologies = {
   },
   adobexd: { Icon: SiAdobexd, title: "Adobe XD", slug: `${basePath}adobe-xd` },
   figma: { Icon: SiFigma, title: "Figma", slug: `${basePath}figma` },
-  word: { Icon: SiMicrosoftword, title: "Word", slug: `${basePath}word` },
+  word: {
+    Icon: PiMicrosoftWordLogoFill,
+    title: "Word",
+    slug: `${basePath}word`,
+  },
   powerpoint: {
-    Icon: SiMicrosoftpowerpoint,
+    Icon: PiMicrosoftPowerpointLogoFill,
     title: "PowerPoint",
     slug: `${basePath}powerpoint`,
   },

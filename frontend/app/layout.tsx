@@ -6,6 +6,7 @@ import Footer from "@/components/shared/layout/Footer"
 import Providers from "@/providers"
 import Header from "@/components/shared/layout/Header"
 import { Layout } from "@/types"
+import { GoogleAnalytics } from "@next/third-parties/google"
 
 const notoSans = Noto_Sans({
   subsets: ["latin"],
@@ -48,7 +49,7 @@ export default async function RootLayout({ children }: Layout) {
         <Providers>
           <div className="relative flex min-h-screen">
             <Sidebar />
-            <div className="relative z-0 ml-0 md:ml-[325px] 2xl:ml-[550px] flex-1 bg-zinc-100 dark:bg-zinc-800 flex flex-col h-screen transition transition-all ease-in-out duration-300 mt-[80px] md:mt-0 ">
+            <div className="relative z-0 ml-0 md:ml-[325px] 2xl:ml-[550px] flex-1 bg-zinc-100 dark:bg-zinc-800 flex flex-col h-screen  transition-all ease-in-out duration-300 mt-[80px] md:mt-0 ">
               <Header />
               <main className="flex-1">{children}</main>
               <Footer />
@@ -56,6 +57,7 @@ export default async function RootLayout({ children }: Layout) {
           </div>
         </Providers>
       </body>
+      <GoogleAnalytics gaId="G-7KRD71YV07" />
     </html>
   )
 }

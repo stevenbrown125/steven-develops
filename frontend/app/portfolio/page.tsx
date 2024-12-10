@@ -12,7 +12,7 @@ export async function generateMetadata() {
   // };
 }
 
-export default async function PortfolioPage(): Promise<JSX.Element> {
+export default async function PortfolioPage() {
   const projects = await getAllProjects()
 
   const breadcrumbs = [{ href: "/portfolio", title: "Portfolio" }]

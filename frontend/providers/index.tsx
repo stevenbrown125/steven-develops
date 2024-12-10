@@ -3,11 +3,7 @@ import { SidebarProvider } from "./SidebarProvider"
 import { ThemeProvider } from "./ThemeProvider"
 import { RecaptchaProvider } from "./RecaptchaProvider"
 
-export default function Providers({
-  children,
-}: {
-  children: React.ReactNode
-}): JSX.Element {
+export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <RecaptchaProvider
       siteKey="6LejZ3cpAAAAADIfalTrAbN1wXrbW_s3cMOxI9rv"

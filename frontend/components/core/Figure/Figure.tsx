@@ -1,8 +1,8 @@
 import Image from "next/image"
-import { Figure } from "@/types/Figure"
+import { Figure as FigureType } from "@/types/Figure"
 
 interface FigureProps {
-  figure: Figure
+  figure: FigureType
 }
 
 const Figure = ({ figure: { href, alt, classes } }: FigureProps) => {

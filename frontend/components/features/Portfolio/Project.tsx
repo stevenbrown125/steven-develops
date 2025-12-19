@@ -67,7 +67,7 @@ const Project: React.FC<Props> = ({ project, children }) => {
         />
 
         {liveURL && (
-          <div className="mt-22 sm:mt-4 lg:mt-12">
+          <div className="mt-22 sm:mt-4 lg:mt-12 relative z-20">
             <ExternalLink
               href={liveURL}
               title={liveURL}

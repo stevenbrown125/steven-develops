@@ -1,51 +1,58 @@
-import { Contact, ContactFormValues } from "@/types/Contact"
-import { NextRequest } from "next/server"
-import { verifyCaptcha } from "../helpers/verifyCaptcha"
-import { sanitizeContactData } from "@/lib/sanitization"
-import { contactSchema } from "@/lib/validation"
-import { createSendContactEmailTemplateCommand } from "@/lib/aws/createSendContactEmailTemplateCommand"
-import { sesClient } from "@/lib/aws/sesClient"
+// app/api/contact/route.ts
+
+import { NextRequest } from "next/server";
+import { ContactRequest, ContactFormValues } from "@/types/Contact";
+import { verifyCaptcha } from "../helpers/verifyCaptcha";
+import { sanitizeContactData, validateContactData } from "@/lib/sanitization";
+import { createSendContactEmailTemplateCommand } from "@/lib/aws/createSendContactEmailTemplateCommand";
+import { sesClient } from "@/lib/aws/sesClient";
 
 export async function POST(request: NextRequest) {
-  const req: Contact = await request.json()
+  let req: ContactRequest;
 
   try {
-    const { gRecaptchaToken } = req
-
-    if (!gRecaptchaToken) {
-      return Response.json(
-        { error: "reCAPTCHA token is missing" },
-        { status: 422 },
-      )
-    }
-    const captchaResult = await verifyCaptcha(gRecaptchaToken)
-
-    if (!captchaResult.success) {
-      return Response.json(
-        {
-          error: "Invalid reCAPTCHA token",
-          details: captchaResult["error-codes"],
-        },
-        { status: 422 },
-      )
-    }
-
-    const sanitizedData = sanitizeContactData(req)
-
-    const validatedData = await contactSchema.validate(sanitizedData, {
-      abortEarly: false,
-    })
-
-    const sendEmailCommand = createSendContactEmailTemplateCommand(
-      validatedData as ContactFormValues,
-    )
-
-    const response = await sesClient.send(sendEmailCommand)
-
-    console.log(response)
-  } catch (error) {
-    console.error("EMAIL ERROR - ", error)
-    return Response.json({ error: "Failed to send email" }, { status: 500 })
+    req = await request.json();
+  } catch {
+    return Response.json({ ok: true });
   }
-  return Response.json({ req }, { status: 200 })
+
+  try {
+    const { gRecaptchaToken, city, startedAt, ...userInput } = req;
+
+    // Honeypot
+    if (city) return Response.json({ ok: true });
+
+    // Timing heuristic
+    if (typeof startedAt === "number" && Date.now() - startedAt < 3000) {
+      return Response.json({ ok: true });
+    }
+
+    const captchaResult = await verifyCaptcha(gRecaptchaToken);
+
+    if (
+      !captchaResult.success ||
+      captchaResult.action !== "contactFormSubmit" ||
+      (captchaResult.score ?? 1) < 0.5
+    ) {
+      return Response.json({ ok: true });
+    }
+
+    if (userInput.message.length > 2000) {
+      return Response.json({ ok: true });
+    }
+
+    const sanitized = sanitizeContactData(userInput);
+    validateContactData(sanitized);
+    await sesClient.send(
+      createSendContactEmailTemplateCommand(sanitized as ContactFormValues)
+    );
+
+    return Response.json(
+      { ok: true },
+      { headers: { "Cache-Control": "no-store" } }
+    );
+  } catch (error) {
+    console.error("CONTACT FORM ERROR", error);
+    return Response.json({ ok: true });
+  }
 }

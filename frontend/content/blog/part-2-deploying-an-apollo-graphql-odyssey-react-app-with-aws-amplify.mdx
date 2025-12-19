@@ -1,0 +1,99 @@
+export const metadata = {
+  title:
+    "Part 2: Deploying an Apollo GraphQL Odyssey React App with AWS Amplify",
+  excerpt:
+    "Welcome to Part 2 of deploying our Apollo GraphQL Castronaut App with Amazon Web Services. In this post, we deploy the React client using AWS Amplify to complete the full-stack journey.",
+  author: "Steven Brown",
+  image:
+    "https://cdn.sanity.io/images/i80c8qr5/production/56237b830464af1ace1d821257c87126114823eb-1705x847.png",
+  alt: "Deploying Apollo GraphQL to AWS Amplify",
+  category: "software-engineering",
+  tags: ["GraphQL", "AWS"],
+  publishedAt: "2022-04-24T06:32:00.000Z",
+};
+
+---
+
+Welcome to **Part 2** of deploying our **Apollo GraphQL Castronaut App** with **Amazon Web Services**. In **Part 1**, we deployed our Apollo GraphQL server using **AWS Lambda**. In this article, we’ll deploy the **React client** using **AWS Amplify**, completing the full-stack deployment.
+
+## Prerequisites
+
+Before continuing, make sure you’ve completed the following:
+
+- Complete **Apollo GraphQL – Lift Off Part 5 (Deploying Apollo Server)**
+- Complete [**Part 1: Deploying the Apollo GraphQL Server with AWS Lambda**](/blog/post/part-1-deploying-an-apollo-graphql-odyssey-server-with-aws-lambda)
+- Create an **AWS account**
+- Install the **AWS CLI**
+- Configure AWS CLI credentials
+- Commit your updated Apollo Client URI changes to GitHub
+
+## Configuring AWS Amplify
+
+To get started, log into the **AWS Console** and navigate to **AWS Amplify**.
+
+1. Click **Get Started** under _Amplify Hosting_
+2. Choose **GitHub** as your repository provider
+3. Authorize GitHub access (limit permissions to the required repository)
+4. Select your client repository (`odyssey-lift-off-part5-client`)
+5. Choose the `main` branch and continue
+
+AWS Amplify will automatically detect your React application and prepare it for deployment.
+
+⚠️ **Important**: Ensure your GraphQL backend from Part 1 is still running. If you previously removed it, redeploy it before proceeding:
+
+```bash
+serverless deploy
+```
+
+## Deploying the React Application
+
+Once your repository is connected, AWS Amplify will:
+
+- Provision hosting infrastructure
+- Install dependencies
+- Build the React application
+- Deploy it to a public URL
+
+This process may take a few minutes. Amplify enables **continuous deployment** by default, meaning every push to the selected branch triggers a new build.
+
+When deployment completes, Amplify provides a public URL to your live application.
+
+## Verifying the Deployment
+
+Visit the Amplify-hosted URL and verify:
+
+- The application loads successfully
+- Apollo Client connects to the deployed GraphQL endpoint
+- Queries and mutations function as expected
+
+If everything works, your **full-stack Apollo GraphQL application is now live**.
+
+## Cleaning Up AWS Resources
+
+Once you’re finished experimenting or demonstrating the application, it’s important to clean up resources to avoid unexpected costs.
+
+### Remove the React app
+
+From the **AWS Amplify Console**:
+
+- Select **Actions → Delete app**
+- Confirm deletion
+
+### Remove the GraphQL backend
+
+From your server project root:
+
+```bash
+npx serverless remove
+```
+
+This removes the Lambda function, CloudFormation stack, and S3 artifacts.
+
+## Conclusion
+
+You’ve now completed the **Apollo Odyssey** by deploying both:
+
+- A **GraphQL server** using AWS Lambda
+- A **React client** using AWS Amplify
+
+This setup replaces Heroku with a scalable, production-ready AWS solution while preserving a clean developer workflow with continuous deployment and managed infrastructure.

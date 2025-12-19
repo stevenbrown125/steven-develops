@@ -1,25 +1,31 @@
-import { getAllProjects } from "@/lib/sanityQueries"
-import Breadcrumbs from "@/components/shared/utilities/Breadcrumb"
-import ProjectCard from "@/components/features/Portfolio/ProjectCard"
-import ProjectGrid from "@/components/shared/layout/ProjectGrid"
+// File: /app/portfolio/page.tsx
 
-export async function generateMetadata() {
-  // const { title, description } = await getSiteMetaData();
-  // const pageTitle = `${title} | All Blog Posts`;
-  // return {
-  //   title: pageTitle,
-  //   description,
-  // };
-}
+import type { Metadata } from "next";
 
-export default async function PortfolioPage() {
-  const projects = await getAllProjects()
+import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
+import ProjectGrid from "@/components/features/Portfolio/ProjectGrid";
+import { getAllProjectData } from "@/lib/mdx-utils";
+import { Page } from "@/types";
+import { generateSEO, seoContent } from "@/lib/seo";
 
-  const breadcrumbs = [{ href: "/portfolio", title: "Portfolio" }]
+export const metadata: Metadata = generateSEO(seoContent.portfolio).metadata;
+
+export default async function PortfolioPage({ searchParams }: Page) {
+  const projects = await getAllProjectData();
+
+  const resolvedSearchParams = await searchParams;
+  const isAscending = resolvedSearchParams?.sort === "asc";
+
+  const breadcrumbs = [{ href: "/portfolio", title: "Portfolio" }];
+
   return (
-    <div className="relative flex-grow px-4 py-4 mx-auto max-w-7xl lg:px-8">
+    <div className="relative mx-auto flex-grow max-w-7xl px-4 py-4 lg:px-8">
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <ProjectGrid title="Portfolio" projects={projects} />
+      <ProjectGrid
+        title="Portfolio"
+        projects={projects}
+        isAscending={isAscending}
+      />
     </div>
-  )
+  );
 }

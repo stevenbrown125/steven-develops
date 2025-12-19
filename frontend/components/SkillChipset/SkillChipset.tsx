@@ -15,16 +15,13 @@ import {
   SiAdobexd,
   SiFigma,
   SiSlack,
-} from "react-icons/si"
-import { TbBrandCSharp, TbBrandNextjs } from "react-icons/tb"
-import Chip from "../shared/utilities/Chip"
-import { VscVscode } from "react-icons/vsc"
-import {
-  PiMicrosoftPowerpointLogoFill,
-  PiMicrosoftWordLogoFill,
-} from "react-icons/pi"
+  SiDotnet,
+} from "react-icons/si";
+import { TbBrandNextjs, TbBrandVisualStudio } from "react-icons/tb";
+import Chip from "../shared/utilities/Chip";
+import { PiMicrosoftPowerpointLogo, PiMicrosoftWordLogo } from "react-icons/pi";
 
-const basePath = "/portfolio/technologies/"
+const basePath = "/portfolio/technologies/";
 
 const technologies = {
   html5: { Icon: SiHtml5, title: "HTML5", slug: `${basePath}html5` },
@@ -52,12 +49,15 @@ const technologies = {
     slug: `${basePath}tailwindcss`,
   },
   git: { Icon: SiGit, title: "Git", slug: `${basePath}git` },
-  csharp: { Icon: TbBrandCSharp, title: "C#", slug: `${basePath}csharp` },
+
+  // FIXED
+  csharp: { Icon: SiDotnet, title: "C#", slug: `${basePath}csharp` },
   vscode: {
-    Icon: VscVscode,
+    Icon: TbBrandVisualStudio,
     title: "Visual Studio Code",
     slug: `${basePath}visual-studio-code`,
   },
+
   photoshop: {
     Icon: SiAdobe,
     title: "Photoshop",
@@ -70,18 +70,20 @@ const technologies = {
   },
   adobexd: { Icon: SiAdobexd, title: "Adobe XD", slug: `${basePath}adobe-xd` },
   figma: { Icon: SiFigma, title: "Figma", slug: `${basePath}figma` },
+
   word: {
-    Icon: PiMicrosoftWordLogoFill,
-    title: "Word",
+    Icon: PiMicrosoftWordLogo,
+    title: "Microsoft Word",
     slug: `${basePath}word`,
   },
   powerpoint: {
-    Icon: PiMicrosoftPowerpointLogoFill,
-    title: "PowerPoint",
+    Icon: PiMicrosoftPowerpointLogo,
+    title: "Microsoft PowerPoint",
     slug: `${basePath}powerpoint`,
   },
+
   slack: { Icon: SiSlack, title: "Slack", slug: `${basePath}slack` },
-}
+};
 
 const SkillChipset: React.FC = () => {
   return (
@@ -95,7 +97,7 @@ const SkillChipset: React.FC = () => {
         />
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default SkillChipset
+export default SkillChipset;

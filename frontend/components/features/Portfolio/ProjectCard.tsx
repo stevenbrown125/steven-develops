@@ -1,58 +1,85 @@
-import { ProjectProps } from "@/types"
+// components/features/Portfolio/ProjectCard.tsx
+
+"use client";
+
+import { motion, type Variants } from "motion/react";
+import { ProjectProps } from "@/types";
 import {
   Card,
   CardBody,
   CardHeader,
   CardLink,
-} from "@/components/core/Card/Card"
-import Figure from "@/components/core/Figure/Figure"
-import { format } from "date-fns"
+} from "@/components/core/Card/Card";
+import Figure from "@/components/core/Figure/Figure";
+import { formatDate } from "@/lib/formatDate";
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+  },
+};
 
 const ProjectCard: React.FC<ProjectProps> = ({ project }) => {
-  const { title, description, slug, image, startDate, technologies } = project
-  const date = new Date(startDate)
-  const { href, alt } = image
-
-  const cardLinkSchema = {
-    itemProp: "url",
-  }
-  const cardSchema = {
-    itemProp: "itemListElement",
-    itemScope: true,
-    itemType: "http://schema.org/Article",
-  }
+  const { title, description, slug, image, startDate } = project;
 
   return (
-    <CardLink href={`/portfolio/project/${slug}`} schemaProps={cardLinkSchema}>
-      <Card schemaProps={cardSchema}>
-        <CardHeader>
-          <Figure figure={{ href, alt, classes: "listing" }} />
-          <h3
-            itemType="headline"
-            className="mx-4 text-center hover:text-primary heading-hr"
-          >
-            {title}
-          </h3>
-          <p className="px-2 pt-1 text-xs text-center md:text-sm">
-            Started on
-            <time dateTime={startDate} itemType="dateCreated">
-              {format(date, "EEEE MMMM do, yyyy")}
-            </time>
-          </p>
-        </CardHeader>
-        <CardBody>
-          <p itemProp="description">
-            {description}..{" "}
-            <span className="text-sm italic border-b border-dotted border-primary hover:text-primary">
-              Read more
-            </span>
-          </p>
-        </CardBody>
-      </Card>
-    </CardLink>
-  )
-}
+    <motion.div
+      variants={cardVariants}
+      whileHover={{ y: -6 }}
+      transition={{ type: "spring", stiffness: 320, damping: 22 }}
+    >
+      <CardLink
+        href={`/portfolio/project/${slug}`}
+        schemaProps={{ itemProp: "url" }}
+      >
+        <Card
+          schemaProps={{
+            itemScope: true,
+            itemType: "https://schema.org/CreativeWork",
+            itemProp: "itemListElement",
+          }}
+        >
+          <CardHeader>
+            <div className="overflow-hidden rounded-t-md">
+              <Figure
+                figure={{ href: image, alt: title, classes: "listing" }}
+              />
+            </div>
 
-// TODO
-//  <p itemProp="keywords">tech, tech<p/>
-export default ProjectCard
+            <h3
+              itemProp="headline"
+              className="mx-4 mt-3 text-center text-lg font-semibold heading-hr transition-colors group-hover:text-primary"
+            >
+              {title}
+            </h3>
+
+            <p className="mt-1 px-2 text-center text-xs text-zinc-500 dark:text-zinc-400">
+              Started on{" "}
+              <time dateTime={startDate} itemProp="dateCreated">
+                {formatDate(startDate)}
+              </time>
+            </p>
+          </CardHeader>
+
+          <CardBody>
+            <p
+              itemProp="description"
+              className="text-sm leading-relaxed text-zinc-700 dark:text-zinc-300"
+            >
+              {description}
+            </p>
+
+            <span className="mt-3 inline-block text-sm italic text-primary border-b border-dotted border-primary/50 transition-colors group-hover:text-primary-dark">
+              Read more →
+            </span>
+          </CardBody>
+        </Card>
+      </CardLink>
+    </motion.div>
+  );
+};
+
+export default ProjectCard;

@@ -1,47 +1,79 @@
-import {
-  getAllCategories,
-  getCategoryBySlug,
-  getPostsByCategory,
-} from "@/lib/sanityQueries"
-import { generateCategoryListingSEOData } from "@/lib/seo"
-import { Page } from "@/types/Page"
-import { groupPostsByYears } from "@/lib/postHelpers"
-import ListingPage from "@/components/features/Blog/ListingPage"
+// File: /app/blog/categories/[slug]/page.tsx
 
-export async function generateStaticParams() {
-  const categories = await getAllCategories()
-  return categories.map(({ slug }) => ({ slug }))
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+
+import { getAllListablePosts } from "@/lib/getAllListablePosts";
+import { getCategoryBySlug } from "@/lib/category-utils";
+import { groupPostsByYears, sortPostYears } from "@/lib/postHelpers";
+import ListingPage from "@/components/features/Blog/ListingPage";
+import { generateSEO, seoContent } from "@/lib/seo";
+import { formatCategoryTitle } from "@/lib/buildCategoryIndex";
+
+type Params = { slug: string };
+type SearchParams = { sort?: "asc" | "desc" };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<Params>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  const items = await getAllListablePosts();
+  const category = getCategoryBySlug(slug, items);
+
+  if (!category) return {};
+
+  return generateSEO(
+    seoContent.blogCategory.build({
+      title: formatCategoryTitle(category.slug),
+      slug: category.slug,
+      description: category.description,
+    })
+  ).metadata;
 }
 
-export async function generateMetadata({ params }: Page) {
-  if (!params) return {}
-  const { slug } = params
-  const category = await getCategoryBySlug(slug)
-  const metadata = generateCategoryListingSEOData(category)
-  return metadata
-}
+export default async function BlogCategoryPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<Params>;
+  searchParams?: Promise<SearchParams>;
+}) {
+  const { slug } = await params;
+  const resolvedSearchParams = await searchParams;
 
-export default async function BlogCategoryPage({ params, searchParams }: Page) {
-  if (!params) return <></>
+  const isAscending = resolvedSearchParams?.sort === "asc";
 
-  const { slug } = params
-  const { title } = await getCategoryBySlug(slug)
-  const posts = await getPostsByCategory(slug)
-  const breadcrumbs = [
-    { href: "/blog", title: "Blog" },
-    { href: "/blog/categories", title: "Categories" },
-    { href: slug, title },
-  ]
+  const items = await getAllListablePosts();
+  const category = getCategoryBySlug(slug, items);
 
-  const groupedPosts = groupPostsByYears(posts)
-  const isReversed = searchParams?.sort === "asc"
+  if (!category) return notFound();
+
+  const groupedPosts = groupPostsByYears(category.posts, isAscending);
+  const years = sortPostYears(groupedPosts, isAscending);
 
   return (
     <ListingPage
-      title={`All ${title} Posts`}
-      breadcrumbs={breadcrumbs}
+      title={`All ${category.title} Posts`}
+      breadcrumbs={[
+        { href: "/blog", title: "Blog" },
+        { href: "/blog/categories", title: "Categories" },
+        {
+          href: `/blog/categories/${category.slug}`,
+          title: category.title,
+        },
+      ]}
+      years={years}
       groupedPosts={groupedPosts}
-      isReversed={isReversed}
+      isAscending={isAscending}
+      isEmpty={groupedPosts.size === 0}
+      emptyState={
+        <p className="text-neutral-500 dark:text-neutral-400">
+          No posts have been published in <strong>{category.title}</strong> yet.
+        </p>
+      }
     />
-  )
+  );
 }

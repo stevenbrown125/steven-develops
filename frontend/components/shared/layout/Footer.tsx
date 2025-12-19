@@ -1,14 +1,26 @@
+// components/shared/layout/Footer.tsx
+
+import Link from "next/link";
+
 const Footer: React.FC = () => {
   return (
-    <>
-      <div className="relative flex-shrink-0 py-2 text-xs text-center shadow-inner text-zinc-800 dark:text-zinc-200 bg-amber-100 dark:bg-zinc-900">
-        <p>
-          Copyright &copy; {new Date().getFullYear()} Steven Develops. All
-          Rights Reserved.
+    <footer className="mt-auto border-t border-zinc-200/70 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+      <div className="mx-auto max-w-7xl px-4 py-6 flex flex-col items-center gap-3 text-center text-xs text-zinc-700 dark:text-zinc-400 sm:flex-row sm:justify-between sm:text-left">
+        <p className="leading-relaxed">
+          © {new Date().getFullYear()} Steven Develops. All rights reserved.
         </p>
-      </div>
-    </>
-  )
-}
 
-export default Footer
+        <nav aria-label="Footer navigation" className="flex items-center gap-4">
+          <Link
+            href="/sitemap.xml"
+            className="px-2 py-1 rounded-md transition-colors hover:text-primary dark:hover:text-primary-soft"
+          >
+            Sitemap
+          </Link>
+        </nav>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

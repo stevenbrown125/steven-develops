@@ -1,53 +1,55 @@
-import Link from "next/link"
-import { FaHeart } from "react-icons/fa6"
+// components/features/Section/AboutSection.tsx
+
+"use client";
+
+import { ABOUT } from "@/content/data";
+import { motion, useReducedMotion } from "motion/react";
+
+const EASE_TEXT: [number, number, number, number] = [0.25, 0.1, 0.25, 1];
 
 const AboutSection: React.FC = () => {
+  const prefersReducedMotion = useReducedMotion();
+
+  const textTransition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: 0.35, ease: EASE_TEXT };
+
   return (
-    <section className="px-4 py-4 mb-4">
-      <header className="flex px-8 mx-auto max-w-7xl">
-        <h2 className="px-12 leading-10 heading-hr">About</h2>
+    <section className="mb-4 px-4 py-4">
+      <header className="mx-auto flex max-w-7xl px-8">
+        <h2 className="px-12 leading-10 heading-hr">{ABOUT.title}</h2>
       </header>
-      <article className="text-center lg:text-left">
-        <div className="px-8 mx-auto my-2 leading-7 max-w-7xl">
-          <p className="py-2">
-            I am a Software Engineer based in the United States, passionate
-            about writing code and developing applications. My journey into tech
-            followed a unique path, beginning with a 9-year enlistment as a
-            Russian Cryptologic Linguist in the US Army. This experience has
-            fueled my unwavering commitment to excel in all aspects of software
-            engineering.
-          </p>
-          <p className="pb-4">
-            My technical proficiency spans both front-end and back-end
-            development with a particular emphasis on Javascript libraries and
-            frameworks to include React, Angular, and NestJS. I have my AWS
-            Solutions Architect and CompTia SEC+ Certifications and work almost
-            daily in the cloud. Regarding DevOps, I love building effective
-            CI/CD pipelines using Github Actions and Jenkins to streamline
-            development workflows and enhance productivity. In my current role
-            as a Systems Engineer and SIGINT/EW Subject Matter Expert (SME) for
-            General Dynamics Mission Systems, I bring a Model-Based Systems
-            Engineering (MBSE) approach to developing and improving the
-            Army&apos;s Intelligence Electronic Warfare Tactical Proficiency
-            Trainer (IEWTPT).
-          </p>
-          <p>
-            I believe in being part of something bigger than myself, so
-            let&#39;s connect! If you are interested in knowing more about my
-            professional skills, take a gander at my{" "}
-            <Link href="/portfolio">portfolio</Link>, or{" "}
-            <Link href="/contact">contact</Link> me for my resume. I built this
-            site with{" "}
-            <span className="inline-flex items-center">
-              <FaHeart className="text-red-500"></FaHeart>
-              <span className="sr-only">love</span>
-            </span>{" "}
-            using NextJS, Sanity, and Tailwind CSS. I hope you like it!
-          </p>
+
+      <article className="text-center lg:text-left mx-2">
+        <div className="mx-auto my-2 max-w-7xl leading-7">
+          {ABOUT.paragraphs.map((p, index) => (
+            <motion.p
+              key={p.key}
+              className={
+                index === 0 ? "py-2" : index === 1 ? "pb-4" : undefined
+              }
+              initial={
+                index === 0
+                  ? { opacity: 0, lineHeight: "1.9rem" }
+                  : { opacity: 0 }
+              }
+              animate={
+                index === 0
+                  ? { opacity: 1, lineHeight: "1.75rem" }
+                  : { opacity: 1 }
+              }
+              transition={{
+                ...textTransition,
+                delay: prefersReducedMotion ? 0 : p.delay,
+              }}
+            >
+              {p.content}
+            </motion.p>
+          ))}
         </div>
       </article>
     </section>
-  )
-}
+  );
+};
 
-export default AboutSection
+export default AboutSection;

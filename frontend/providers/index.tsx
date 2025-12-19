@@ -1,7 +1,7 @@
-"use client"
-import { SidebarProvider } from "./SidebarProvider"
-import { ThemeProvider } from "./ThemeProvider"
-import { RecaptchaProvider } from "./RecaptchaProvider"
+"use client";
+import { SidebarProvider } from "./SidebarProvider";
+import { ThemeProvider } from "./ThemeProvider";
+import { RecaptchaProvider } from "./RecaptchaProvider";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -13,5 +13,5 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <SidebarProvider>{children}</SidebarProvider>
       </ThemeProvider>
     </RecaptchaProvider>
-  )
+  );
 }

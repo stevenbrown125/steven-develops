@@ -1,0 +1,63 @@
+export const metadata = {
+  title: "A Brief Look at MVC Architecture in React",
+  excerpt:
+    "Today I am exploring what MVC Architecture is, and how we can apply some of those concepts to a React Application.",
+  author: "Steven Brown",
+  image:
+    "https://cdn.sanity.io/images/i80c8qr5/production/1706f32ac47004f9a71561b34ac595fc18ff46a8-6000x4000.jpg",
+  alt: "Photo by Clement Helardot on Unsplash",
+  category: "software-engineering",
+  tags: ["MVC", "Software Design"],
+  publishedAt: "2023-10-18T23:29:00.000Z",
+};
+
+MVC architecture separates applications into the **Model**, **View**, and **Controller** layers. Below is the converted Markdown version of your post.
+
+---
+
+In software engineering, MVC is a long‑standing architectural pattern that divides an application into three interconnected components: **Model**, **View**, and **Controller**. Though it originated in Smalltalk, it’s widely used today across frameworks like Spring (Java), Django (Python), Rails (Ruby), Angular (MVVM variant), and React (with supporting libraries). Here's how each piece works — and how these concepts map to a React codebase.
+
+## Model: The Data and Business Logic
+
+The **Model** is responsible for anything data‑centric. In React applications, this layer is often implemented with tools like **Redux**, **MobX**, or the **Context API**.
+
+### What the Model manages
+
+- **Database Records** — retrieving, storing, and updating structured or unstructured data.
+- **HTTP Requests/Responses** — calling APIs and handling returned data.
+- **Data Transformation Logic** — reshaping or filtering data for display.
+- **Business Rules** — validations and constraints such as “a user must verify email before purchasing.”
+
+## View: User Interface and Presentation
+
+React components make up the **View**, controlling how information is visually rendered. The View should focus solely on presentation, not business logic.
+
+### What the View handles
+
+- **HTML** structure that defines layout.
+- **CSS** styling rules.
+- **Templated Data** injected through JSX and component state.
+
+## Controller: Mediator for Model and View
+
+React does not have a formal “Controller,” but several patterns serve this role:
+
+- **Custom Hooks**
+- **Higher‑Order Components (HOCs)**
+- **State management libraries**
+
+### What the Controller manages
+
+- **User Actions** — clicks, form submissions, keyboard interactions.
+- **Application State** — interpreting events and updating Model state.
+- **View State** — controlling what is shown and how it’s formatted.
+
+## Conclusion
+
+Using MVC concepts in a React application creates cleaner separation of concerns:
+
+- The **Model** handles data and business rules.
+- The **View** handles UI and presentation.
+- The **Controller** orchestrates state and user interaction.
+
+This structure increases maintainability, testability, scalability, and overall software quality, especially as applications grow in complexity.

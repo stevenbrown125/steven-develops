@@ -1,0 +1,251 @@
+export const metadata = {
+  title: "Linked Lists in Systems: Structure, Context, and Practical Insight",
+  excerpt:
+    "A grounded exploration of how linked lists behave in real systems, where they’re still useful, and what they reveal about memory, performance, and data layout.",
+  author: { name: "Steven Brown", url: "https://stevendevelops.com" },
+  image:
+    "https://images.unsplash.com/photo-1482841628122-9080d44bb807?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1171a",
+  alt: "Conceptual visualization of linked list data structures and memory layout",
+  category: "software-engineering",
+  tags: [
+    "Linked Lists",
+    "Data Structures",
+    "Memory Layout",
+    "Software Engineering",
+  ],
+  publishedAt: "2025-10-25T00:00:00.000Z",
+  canonical: {
+    url: "https://bliztek.com/blog/post/linked-lists-in-systems",
+    siteName: "Bliztek, LLC Blog",
+  },
+  kind: "excerpt",
+};
+
+## Introduction
+
+Linked lists are simple: a way to connect pieces of data without worrying about where they live in memory. Most developers meet them early, but they still show up in real systems when you need predictable inserts, stable references, or control over allocation. They’re not about nostalgia — they’re about control and layout.
+
+Arrays dominate because they’re fast and cache-friendly. Linked lists trade that speed for flexibility, which can matter when the cost of moving memory is higher than the cost of chasing pointers.
+
+## Structure and Behavior
+
+A linked list stores elements as separate nodes connected by pointers. Each node holds a value and a reference to the next node:
+
+```
+graph LR
+A[Head] --> B[Node A | next ->]
+B --> C[Node B | next ->]
+C --> D[Node C | null]
+```
+
+This gives constant-time insertion or deletion when you already have a reference. But finding an element means walking one node at a time. That’s the trade — O(1) updates, O(n) lookups.
+
+Because the nodes live separately in memory, the CPU can’t predict what comes next. This design affects how caches behave, and in large datasets it becomes the dominant performance factor.
+
+## Memory and Hardware Implications
+
+Modern CPUs depend on **spatial locality** — data close together gets loaded together. Arrays work with that; linked lists don’t. Every pointer dereference can land in a new cache line or even trigger a trip to main memory. Each of those misses adds latency measured in hundreds of cycles.
+
+{" "}
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation</th>
+      <th>Array</th>
+      <th>Linked List</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Index Lookup</td>
+      <td>O(1), contiguous offset</td>
+      <td>O(n), pointer traversal</td>
+    </tr>
+    <tr>
+      <td>Insertion (known position)</td>
+      <td>O(n), shift elements</td>
+      <td>O(1), update pointers</td>
+    </tr>
+    <tr>
+      <td>Cache Locality</td>
+      <td>Excellent</td>
+      <td>Poor</td>
+    </tr>
+    <tr>
+      <td>Memory Overhead</td>
+      <td>Low</td>
+      <td>High (extra pointer per node)</td>
+    </tr>
+  </tbody>
+</table>
+
+In other words: arrays win when you need throughput; linked lists win when you need control. The hardware doesn’t care about Big O — it cares about memory layout.
+
+<img
+  src="/assets/blog/linked-lists/memory-access-comparison.png"
+  alt="Memory Access Comparison Flowchart"
+/>
+
+## How Linked Lists Appear in Real Systems
+
+Linked lists still live in real systems where low-level control matters.
+
+- **Operating Systems:** The Linux kernel’s `list_head` manages process queues and timers. Small, frequently updated, predictable memory regions make linked lists effective here.
+- **Memory Allocators:** Free lists track reusable memory blocks. Merging and splitting blocks works cleanly with pointer-based chains.
+- **LRU Caches:** Combining a hash map with a doubly linked list provides O(1) lookups and predictable eviction. Systems like Redis rely on this pattern.
+- **Networking:** Packet buffers are linked together, avoiding copies while allowing ownership handoff between layers.
+
+In these systems, the pattern isn’t about abstraction — it’s about control. Engineers use linked lists where pointer arithmetic and predictable mutation are more important than iteration speed.
+
+## Practical Alternatives and Design Trade-offs
+
+Most user-facing software prefers data structures that keep memory contiguous. They’re simpler to reason about and better for cache-heavy workloads.
+
+{" "}
+
+<table>
+  <thead>
+    <tr>
+      <th>Structure</th>
+      <th>When to Use</th>
+      <th>Strength</th>
+      <th>Trade-offs</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <b>Dynamic Array / Slice</b>
+      </td>
+      <td>General-purpose storage, heavy iteration.</td>
+      <td>Great cache locality, amortized O(1) append.</td>
+      <td>Occasional reallocations on resize.</td>
+    </tr>
+    <tr>
+      <td>
+        <b>Deque / Ring Buffer</b>
+      </td>
+      <td>Push/pop from both ends, task queues.</td>
+      <td>O(1) operations at both ends, contiguous memory.</td>
+      <td>Fixed size unless explicitly resized.</td>
+    </tr>
+    <tr>
+      <td>
+        <b>Skip List</b>
+      </td>
+      <td>Ordered data, balanced insertion speed.</td>
+      <td>O(log n) lookup, simple to implement.</td>
+      <td>Extra memory for additional pointer layers.</td>
+    </tr>
+  </tbody>
+</table>
+
+In short: when iteration dominates, arrays win. When allocation and mutation dominate, lists still hold their ground. In between, modern systems often use hybrids — array-backed queues or slab allocators — that take the best from both.
+
+## Example: Linked List in Go
+
+Go’s pointer semantics make this example close to real use. This pattern appears in schedulers and resource pools where nodes are frequently added or removed, but traversal is limited.
+
+```go
+// src/data/linkedlist.go
+package data
+
+type Node[T any] struct {
+    Value T
+    Next  *Node[T]
+}
+
+type LinkedList[T any] struct {
+    Head *Node[T]
+}
+
+func (l *LinkedList[T]) Insert(v T) {
+    node := &Node[T]{Value: v}
+    if l.Head == nil {
+        l.Head = node
+        return
+    }
+    current := l.Head
+    for current.Next != nil {
+        current = current.Next
+    }
+    current.Next = node
+}
+
+func (l *LinkedList[T]) Delete(v T) {
+    if l.Head == nil {
+        return
+    }
+    if l.Head.Value == v {
+        l.Head = l.Head.Next
+        return
+    }
+    current := l.Head
+    for current.Next != nil && current.Next.Value != v {
+        current = current.Next
+    }
+    if current.Next != nil {
+        current.Next = current.Next.Next
+    }
+}
+```
+
+This structure makes pointer relationships explicit. Each operation is predictable — no hidden memory movement, no reallocation.
+
+## Example: Linked List in TypeScript
+
+In JavaScript or TypeScript, linked lists mostly serve to explain memory behavior conceptually. Arrays already handle resizing and memory management efficiently, so lists like this are about understanding how object references form chains under the hood.
+
+```typescript
+// src/data/LinkedList.ts
+class Node<T> {
+  constructor(public value: T, public next: Node<T> | null = null) {}
+}
+
+export class LinkedList<T> {
+  private head: Node<T> | null = null;
+
+  insert(value: T): void {
+    const newNode = new Node(value);
+    if (!this.head) {
+      this.head = newNode;
+      return;
+    }
+    let current = this.head;
+    while (current.next) current = current.next;
+    current.next = newNode;
+  }
+
+  delete(value: T): void {
+    if (!this.head) return;
+    if (this.head.value === value) {
+      this.head = this.head.next;
+      return;
+    }
+    let current = this.head;
+    while (current.next && current.next.value !== value) {
+      current = current.next;
+    }
+    if (current.next) current.next = current.next.next;
+  }
+
+  find(value: T): Node<T> | null {
+    let current = this.head;
+    while (current) {
+      if (current.value === value) return current;
+      current = current.next;
+    }
+    return null;
+  }
+}
+```
+
+The logic is simple, but it mirrors what happens in systems code — chains of references, each forming a link in a managed memory graph.
+
+## Key Takeaways
+
+- Linked lists are about pointer control and predictable mutation, not speed.
+- They’re still used in kernels, allocators, and network stacks where memory movement must be explicit.
+- Arrays, slices, and other contiguous structures dominate most workloads because of how hardware caches data.
+- The real value of understanding lists is knowing how layout affects cost — when chasing a pointer is cheaper than moving memory.

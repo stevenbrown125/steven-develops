@@ -1,0 +1,234 @@
+export const metadata = {
+  title: "How to Generate an SSL Certificate for Development",
+  excerpt:
+    "Learn how to create a self-signed SSL certificate for local development, avoid browser warnings, and test HTTPS with Nginx and Docker Compose.",
+  author: { name: "Steven Brown", url: "https://stevendevelops.com" },
+  image:
+    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  alt: "Secure web development and HTTPS certificate setup",
+  category: "development",
+  tags: ["SSL", "HTTPS", "Web Development", "Docker", "Nginx"],
+  publishedAt: "2024-12-24T00:00:00.000Z",
+  canonical: {
+    url: "https://bliztek.com/blog/post/how-to-generate-an-ssl-certificate-for-development",
+    siteName: "Bliztek, LLC Blog",
+  },
+  kind: "excerpt",
+};
+
+# How to Generate an SSL Certificate for Development
+
+Generating an SSL certificate for local development is essential when working with HTTPS-enabled applications. This guide explains how to create a self-signed SSL certificate using OpenSSL and highlights its usefulness when testing HTTPS-enabled applications, including with Nginx on Docker Compose.
+
+## Step 1: Create a Configuration File
+
+Create a file named `openssl.cnf` to specify the certificate details. Below is an example configuration:
+
+```plaintext
+[req]
+default_bits       = 2048
+prompt             = no
+# Use SHA-256 for secure hashing
+default_md         = sha256
+# Refer to the [dn] section for certificate details
+distinguished_name = dn
+# Add extensions from the [req_ext] section
+req_extensions     = req_ext
+
+[dn]
+# Certificate subject details
+C  = US               # Country
+ST = State            # State or province
+L  = City             # Locality (e.g., city)
+O  = Organization     # Organization name
+OU = Development      # Organizational unit
+CN = localhost        # Common name (e.g., domain)
+
+[req_ext]
+# Define Subject Alternative Names (SANs)
+subjectAltName = @alt_names
+
+[alt_names]
+# Alternative names for the certificate
+DNS.1 = localhost     # Domain name
+IP.1  = 127.0.0.1     # IP address
+```
+
+Update the fields (`C`, `ST`, `L`, `O`, `OU`, and `CN`) as necessary.
+
+---
+
+## Step 2: Generate a Private Key
+
+Run the following command to generate a private key:
+
+```bash
+openssl genrsa -out privkey.pem 2048
+```
+
+- `genrsa`: Generate an RSA private key.
+- `-out privkey.pem`: Save the key to a file named `privkey.pem`.
+- `2048`: Specify a 2048-bit key size for security.
+
+---
+
+## Step 3: Create a Certificate Signing Request (CSR)
+
+Use the configuration file to create a CSR:
+
+```bash
+openssl req -new -key privkey.pem -out cert.csr -config openssl.cnf
+```
+
+- `req -new`: Create a new certificate request.
+- `-key privkey.pem`: Use the previously generated private key.
+- `-out cert.csr`: Save the CSR to a file named `cert.csr`.
+- `-config openssl.cnf`: Use the `openssl.cnf` configuration file.
+
+---
+
+## Step 4: Generate a Self-Signed Certificate
+
+Generate a self-signed certificate with Subject Alternative Names (SANs):
+
+```bash
+openssl x509 -req -in cert.csr -signkey privkey.pem -out fullchain.pem -days 365 -extensions req_ext -extfile openssl.cnf
+```
+
+- `x509 -req`: Generate an X.509 certificate from a CSR.
+- `-in cert.csr`: Use the CSR file.
+- `-signkey privkey.pem`: Sign the certificate with the private key.
+- `-out fullchain.pem`: Save the certificate to a file named `fullchain.pem`.
+- `-days 365`: Set the certificate validity to 365 days.
+- `-extensions req_ext -extfile openssl.cnf`: Include extensions from the `req_ext` section in the `openssl.cnf` file.
+
+---
+
+## Step 5: Verify the Certificate
+
+Check the generated certificate to ensure it includes the correct SAN entries:
+
+```bash
+openssl x509 -in fullchain.pem -text -noout
+```
+
+- `x509 -in fullchain.pem`: Read the certificate file.
+- `-text`: Display detailed information.
+- `-noout`: Suppress output of the encoded certificate.
+
+Look for the `Subject Alternative Name` field to confirm `localhost` and `127.0.0.1` are listed.
+
+---
+
+## Adding the Certificate to Your Browser
+
+To avoid browser security warnings when using a self-signed certificate, you need to manually add it as a trusted certificate in your browser.
+
+### Step 1: Export the Certificate
+
+Use the `fullchain.pem` file you generated as your certificate.
+
+### Step 2: Add the Certificate to Your Operating System's Trust Store
+
+#### On Windows:
+
+1. Open the **Run** dialog (`Win + R`) and type `certmgr.msc`.
+2. Navigate to **Trusted Root Certification Authorities > Certificates**.
+3. Right-click and select **All Tasks > Import**.
+4. Select the `fullchain.pem` file and follow the wizard to complete the import.
+
+#### On macOS:
+
+1. Open **Keychain Access**.
+2. Drag and drop the `fullchain.pem` file into the **System** or **Login** keychain.
+3. Right-click the imported certificate, select **Get Info**, and set it to **Always Trust**.
+
+#### On Linux:
+
+1. Copy the `fullchain.pem` file to `/usr/local/share/ca-certificates/`.
+2. Run `sudo update-ca-certificates` to update the system's trusted certificates.
+
+### Step 3: Restart Your Browser
+
+Restart your browser to ensure it picks up the changes.
+
+---
+
+## Using the Certificate with Nginx on Docker Compose
+
+### Step 1: Set Up an Nginx Configuration
+
+Create an Nginx configuration file named `nginx.conf`:
+
+```plaintext
+server {
+    listen 443 ssl;                        # Listen on port 443 for HTTPS
+    server_name localhost;                 # Server name
+
+    ssl_certificate     /etc/nginx/ssl/fullchain.pem; # Path to the certificate
+    ssl_certificate_key /etc/nginx/ssl/privkey.pem;   # Path to the private key
+
+    location / {
+        proxy_pass http://your_application:3000;      # Forward requests to the application
+        proxy_set_header Host $host;                 # Preserve the host header
+        proxy_set_header X-Real-IP $remote_addr;     # Forward the real client IP
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; # Add forwarded client IPs
+        proxy_set_header X-Forwarded-Proto $scheme;  # Forward the protocol (HTTP/HTTPS)
+    }
+}
+```
+
+### Step 2: Set Up a `docker-compose.yml` File
+
+Create a `docker-compose.yml` file to define your services:
+
+```yaml
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-ssl
+    ports:
+      - "443:443" # Map host port 443 to container port 443
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro # Mount Nginx config
+      - ./nginx/certs/fullchain.pem:/etc/nginx/ssl/fullchain.pem:ro # Mount certificate
+      - ./nginx/certs/privkey.pem:/etc/nginx/ssl/privkey.pem:ro # Mount private key
+
+  your_application:
+    image: your-application-image
+    container_name: your-application
+    ports:
+      - "3000:3000" # Expose application port
+```
+
+### File Structure
+
+For the above example to work with minimal modifications, use the following folder structure:
+
+```
+project-root/
+├── docker-compose.yml
+├── nginx/
+│   ├── nginx.conf
+│   └── certs/
+│       ├── fullchain.pem
+│       └── privkey.pem
+```
+
+- `docker-compose.yml`: Defines the services for Docker Compose.
+- `nginx/nginx.conf`: Contains the Nginx configuration.
+- `nginx/certs/`: Directory for the SSL certificate and private key.
+
+### Step 3: Run Docker Compose
+
+Start the services with:
+
+```bash
+docker compose up
+```
+
+Your Nginx server will now serve HTTPS traffic using the self-signed certificate and proxy requests to your application.
+
+---
+
+With this setup, you can test HTTPS-enabled applications locally using Nginx on Docker Compose. The self-signed SSL certificate ensures secure connections without needing a CA-signed certificate during development.

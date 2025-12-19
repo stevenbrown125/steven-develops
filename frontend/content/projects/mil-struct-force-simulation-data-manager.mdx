@@ -1,0 +1,52 @@
+export const metadata = {
+  title: "Mil Struct – Force: Order of Battle Management Platform",
+  description:
+    "Mil Struct – Force is a full-stack application designed to model, manage, and export military Order of Battle (OOB) hierarchies. The platform provides a structured interface for defining high-fidelity unit models and command relationships, enabling downstream use in simulations, training, and strategic analysis tools.",
+  author: "Steven Brown",
+  image:
+    "/images/projects/milstructforce/milstructforce_desktop_screenshot.webp",
+  alt: "Mil Struct – Force military order of battle management platform",
+  technologies: [
+    "NextJS",
+    "TailwindCSS",
+    "Golang",
+    "GraphQL",
+    "MongoDB",
+    "Auth0",
+    "Docker",
+    "Docker Compose",
+    "Kubernetes",
+  ],
+  startDate: "2024-03-01",
+  completionDate: "2024-10-15",
+};
+
+**Challenge:**
+Modeling a military Order of Battle (OOB) is inherently complex, requiring strict hierarchical relationships, accurate unit representations, and secure access control. Existing tools are often rigid, difficult to integrate, or unsuitable for modern simulation and analytics pipelines.
+
+**Solution:**
+Mil Struct – Force was designed as a modular, API-first platform that allows users to define, edit, and manage military force structures through an intuitive web interface. The system enables users to create detailed unit hierarchies and export those models for use in simulations, training environments, and analytical software.
+
+The frontend was built with Next.js and TailwindCSS for clarity and usability, while the backend leverages a Golang GraphQL API for performance, strong typing, and flexible data access. MongoDB was used to persist hierarchical data structures efficiently.
+
+Authentication and authorization are handled through Auth0, supporting both user-based access and machine-to-machine workflows. The entire stack is containerized with Docker and orchestrated locally via Docker Compose, with Kubernetes deployment artifacts under active development.
+
+**Outcomes:**
+
+- **High-Fidelity OOB Modeling:** Structured tools for defining realistic military unit hierarchies and command relationships.
+- **API-First Architecture:** GraphQL enables flexible consumption of force models by external applications.
+- **Secure by Design:** Auth0 integration supports JWT-based authentication for both users and services.
+- **Scalable Infrastructure:** Containerized services designed for local development, CI/CD, and future Kubernetes deployment.
+- **Operational Tooling:** Logging, environment-based configuration, and service separation support real-world operational use.
+
+Mil Struct – Force demonstrates systems-level thinking, secure API design, and the ability to build complex, domain-specific tooling intended for analytical and operational environments rather than consumer-facing applications.
+
+---
+
+### Project Showcase Video
+
+<Tweet id="1832210631434412245" />
+
+### Detailed Demo Video
+
+<YouTube id="ZqsmVS_0g_s" title="Mil Struct – Force Demo" />

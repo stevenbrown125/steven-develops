@@ -1,6 +1,66 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* -------------------------------------------------------------------------- */
+/* Dark mode variant                                                          */
+/* -------------------------------------------------------------------------- */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* -------------------------------------------------------------------------- */
+/* Theme tokens (Tailwind v4 API)                                              */
+/* -------------------------------------------------------------------------- */
+@theme {
+  /* Brand colors */
+  --color-primary: #e95f47;
+  --color-primary-soft: #f7b2a6;
+  --color-primary-muted: #f2a193;
+  --color-primary-dark: #c44630;
+
+  /* Social */
+  --color-twitter: #459ccf;
+  --color-linkedin: #3972bd;
+  --color-github: #f0842c;
+
+  /* Breakpoints */
+  --breakpoint-xs: 475px;
+  --breakpoint-3xl: 1600px;
+  --breakpoint-4xl: 1920px;
+
+  /* Shadows */
+  --shadow-heavy-right: 8px 0 15px -3px rgba(0, 0, 0, 0.1),
+    4px 0 6px -2px rgba(0, 0, 0, 0.05);
+
+  /* Animations */
+  --animate-fade-in-slide-down: fadeInSlideDown 1s ease-out forwards;
+}
+
+@theme inline {
+  --font-content: var(--font-noto-sans);
+  --font-heading: var(--font-roboto-slab);
+}
+
+/* -------------------------------------------------------------------------- */
+/* Keyframes                                                                  */
+/* -------------------------------------------------------------------------- */
+@keyframes fadeInSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Base styles                                                                 */
+/* -------------------------------------------------------------------------- */
+html,
+body {
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+}
 
 @layer base {
   body,
@@ -26,33 +86,11 @@
   h4,
   h5,
   h6 {
-    @apply font-heading dark:text-zinc-200;
-  }
-
-  a,
-  p {
-    @apply font-content;
-  }
-
-  figure.listing div {
-    @apply md:h-72;
-  }
-
-  figure.listing img {
-    @apply rounded-none rounded-t-md;
+    @apply dark:text-zinc-200;
   }
 
   time {
     @apply px-1;
-  }
-
-  article a,
-  main p a {
-    @apply border-b border-dashed border-primary hover:text-primary;
-  }
-
-  article footer ul li svg {
-    @apply mt-1;
   }
 
   input,
@@ -64,46 +102,38 @@
     @apply mt-1;
   }
 
-  button {
-    @apply mt-2;
-  }
-
   ul.qualifications li {
     @apply ml-4;
   }
 }
 
-@layer components {
-  .fade-transition {
-    @apply transition-opacity duration-1000 ease-in-out;
-  }
-}
-
+/* -------------------------------------------------------------------------- */
+/* Utilities                                                                  */
+/* -------------------------------------------------------------------------- */
 @layer utilities {
+  /* Headings */
   .heading-hr {
-    @apply border-b-2 border-primary;
+    @apply border-b-2 border-primary/60;
   }
 
+  .prose hr {
+    @apply my-4;
+  }
+
+  /* Underlines */
   .title-link-underline::after,
   .content-link-underline::after {
-    @apply absolute bg-zinc-800 dark:bg-zinc-200 h-[2px] shadow-md z-20 left-0 right-0 mx-auto;
     content: "";
+    @apply absolute left-0 right-0 mx-auto z-20 h-[2px]
+      bg-zinc-800 dark:bg-zinc-200 shadow-md;
     transition: all 0.3s ease;
   }
 
-  .title-link-underline::after:hover,
-  .content-link-underline::after:hover {
-    @apply bg-primary;
-  }
-
-  .title-link-underline::after {
-    @apply w-[100px] bg-primary -bottom-1;
-  }
-
   .content-link-underline::after {
-    @apply bottom-0 w-auto;
+    @apply bottom-0;
   }
 
+  /* Prose */
   .prose a {
     @apply no-underline;
   }
@@ -112,20 +142,31 @@
     @apply mx-auto lg:max-w-2xl;
   }
 
-  .engraved {
-    text-shadow: rgba(0, 0, 0, 0.2) 2px 4px 2px;
+  /* Media */
+  figure.listing div {
+    @apply md:h-72;
   }
 
-  /* Hide scrollbar for Chrome, Safari and Opera */
+  figure.listing img {
+    @apply rounded-none rounded-t-md;
+  }
+
+  .breadcrumb-item:last-child {
+    @apply text-zinc-500;
+  }
+
+  .disabled {
+    @apply pointer-events-none;
+  }
+
+  /* Scrollbars */
   .no-scrollbar::-webkit-scrollbar {
     @apply hidden;
   }
 
   .no-scrollbar {
     -ms-overflow-style: none;
-    /* IE and Edge */
     scrollbar-width: none;
-    /* Firefox */
   }
 
   .scrollbar::-webkit-scrollbar {
@@ -136,29 +177,15 @@
     @apply bg-zinc-800;
   }
 
-  .scrollbar::-webkit-scrollbar-thumb {
-    @apply rounded-md bg-gradient-to-b from-primary to-yellow-600;
-  }
-
-  .scrollbar::-webkit-scrollbar-thumb:hover {
-    @apply bg-primary;
-  }
-
-  .breadcrumb-item:last-child {
-    @apply text-zinc-500 dark:text-zinc-500 disabled;
-  }
-
-  .disabled {
-    @apply pointer-events-none;
-  }
-
+  /* Layout helpers */
   .vertical-hr {
     @apply relative;
   }
 
   .vertical-hr::before {
     content: "";
-    @apply absolute hidden 2xl:block -left-4 top-10 bottom-10 w-[1px] bg-zinc-600;
+    @apply absolute hidden 2xl:block
+      -left-4 top-10 bottom-10 w-[1px] bg-zinc-600;
   }
 
   .modal-content {
@@ -168,7 +195,7 @@
   .slanted-div {
     @apply relative px-4 py-8;
     clip-path: polygon(0 5%, 100% 0, 100% 100%, 0 95%);
-    box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.25) inset;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.25);
   }
 
   .profile {
@@ -188,6 +215,50 @@
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/* Third-party overrides                                                      */
+/* -------------------------------------------------------------------------- */
 .grecaptcha-badge {
   @apply invisible;
+}
+/* ---------------------------------------------------------------------- */
+/* Document scrollbar (extra slim)                                         */
+/* ---------------------------------------------------------------------- */
+
+/* Firefox */
+html {
+  scrollbar-width: thin; /* already the smallest Firefox supports */
+  scrollbar-color: var(--color-primary) rgb(63 63 70);
+}
+
+.dark html {
+  scrollbar-color: var(--color-primary-soft) rgb(39 39 42);
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+html::-webkit-scrollbar {
+  width: 4px; /* ↓ from 6px */
+  height: 4px;
+}
+
+html::-webkit-scrollbar-track {
+  background-color: rgb(63 63 70); /* zinc-700 */
+}
+
+.dark html::-webkit-scrollbar-track {
+  background-color: rgb(39 39 42); /* zinc-800 */
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary);
+  border-radius: 9999px;
+}
+
+.dark html::-webkit-scrollbar-thumb {
+  background-color: var(--color-primary-soft);
+  opacity: 0.85;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary-dark);
 }

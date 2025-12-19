@@ -1,0 +1,71 @@
+export const metadata = {
+  title: "A Quick Glance at Golang for API Development",
+  excerpt:
+    "Reflecting on some of the strengths and weaknesses of the Go programming language and its use in API development.",
+  author: "Steven Brown",
+  image:
+    "https://cdn.sanity.io/images/i80c8qr5/production/2bfbc23a44210efd9272ddf20c69847e0fb55cc7-6000x4000.jpg",
+  alt: "Photo by Ferenc Almasi on Unsplash",
+  category: "software-engineering",
+  tags: ["Golang", "Software Development"],
+  publishedAt: "2023-10-01T16:21:00.000Z",
+};
+
+When evaluating Go (Golang) for API development, two themes stand out clearly: **performance** and **simplicity**. Below is the converted Markdown version of your post.
+
+---
+
+Go offers powerful advantages in backend engineering, particularly for API workloads. Its built-in concurrency model, static typing, and cohesive standard library make it a strong candidate for modern microservice architectures.
+
+## Strengths of Go
+
+### Concurrency with Goroutines
+
+Go’s native concurrency model is one of its standout features. Goroutines allow functions to run independently with extremely low overhead, enabling highly scalable APIs without complex threading logic.
+
+### Compile-time Safety and Performance
+
+Go’s static typing enables the compiler to catch type errors early and optimize the final binary. This leads to:
+
+- faster executables
+- fewer runtime surprises
+- predictable, stable performance
+
+### Simplicity and Cohesion
+
+The language philosophy emphasizes minimalism:
+
+- A small, consistent set of features
+- A clean, readable syntax
+- A standard library that covers networking, HTTP, cryptography, and more without requiring extra packages
+
+This reduces cognitive load and speeds up onboarding for teams.
+
+## Weaknesses of Go
+
+### Larger Executables & Higher Memory Use
+
+Go produces relatively large binaries and allocates more memory up front compared to other languages. This matters in contexts like:
+
+- microservices at scale
+- serverless platforms where memory affects billing
+
+### Smaller Ecosystem
+
+While Go’s ecosystem is growing, it’s not as expansive as ecosystems for JavaScript, Python, or Java. You may find yourself:
+
+- writing utilities that exist elsewhere
+- handling more boilerplate in certain areas
+
+### More Manual Work for Advanced Features
+
+Some features, like automatic load balancing or sophisticated middleware pipelines, often require:
+
+- third-party libraries
+- custom implementations
+
+## Conclusion
+
+Go is a strong option for API development, especially when performance, concurrency, and clarity are priorities. However, the trade-offs around binary size, ecosystem maturity, and manual effort should factor into project planning.
+
+By weighing these pros and cons, you can better determine whether Go is the right fit for your next API project.

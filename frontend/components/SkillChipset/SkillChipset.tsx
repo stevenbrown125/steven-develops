@@ -71,7 +71,6 @@ const technologies = {
   adobexd: { Icon: SiAdobexd, title: "Adobe XD", slug: `${basePath}adobe-xd` },
   figma: { Icon: SiFigma, title: "Figma", slug: `${basePath}figma` },
 
-  // FIXED — Word & PowerPoint map to Microsoft Office icon
   word: {
     Icon: PiMicrosoftWordLogo,
     title: "Microsoft Word",

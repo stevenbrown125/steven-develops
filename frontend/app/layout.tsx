@@ -3,6 +3,7 @@ import { Noto_Sans, Roboto_Slab } from "next/font/google";
 import Providers from "@/providers";
 import AppShell from "@/components/shared/layout/AppShell";
 import { ReactNode } from "react";
+import { GoogleAnalytics } from "@next/third-parties/google"
 
 // fonts
 const notoSans = Noto_Sans({
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <AppShell>{children}</AppShell>
         </Providers>
       </body>
+      <GoogleAnalytics gaId="G-7KRD71YV07" />
     </html>
   );
 }

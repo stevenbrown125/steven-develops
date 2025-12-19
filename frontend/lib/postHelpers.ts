@@ -1,17 +1,39 @@
-import { Post } from "@/types"
+// lib/postHelpers.ts
 
-export const groupPostsByYears = (posts: Post[]) =>
-  posts.reduce((acc, post) => {
-    const year = new Date(post.publishedAt).getFullYear()
-    if (!acc.has(year)) {
-      acc.set(year, [])
-    }
-    const yearPosts = acc.get(year)
-    if (yearPosts) {
-      yearPosts.push(post)
-    }
-    return acc
-  }, new Map<number, Post[]>())
+import { Chronological } from "@/types";
 
-export const sortPostYears = (posts: Map<number, Post[]>) =>
-  Array.from(posts.keys()).sort((a, b) => b - a)
+export const groupPostsByYears = <T extends Chronological>(
+  posts: T[],
+  isAscending: boolean
+): Map<number, T[]> => {
+  const map = new Map<number, T[]>();
+
+  for (const post of posts) {
+    const year = new Date(post.publishedAt).getFullYear();
+
+    if (!map.has(year)) {
+      map.set(year, []);
+    }
+
+    map.get(year)!.push(post);
+  }
+
+  // Sort posts within each year
+  for (const yearPosts of map.values()) {
+    yearPosts.sort((a, b) => {
+      const aTime = new Date(a.publishedAt).getTime();
+      const bTime = new Date(b.publishedAt).getTime();
+      return isAscending ? aTime - bTime : bTime - aTime;
+    });
+  }
+
+  return map;
+};
+
+export const sortPostYears = <T>(
+  posts: Map<number, T[]>,
+  isAscending: boolean
+): number[] => {
+  const years = Array.from(posts.keys()).sort((a, b) => a - b);
+  return isAscending ? years : years.reverse();
+};

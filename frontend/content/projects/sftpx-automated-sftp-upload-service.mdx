@@ -1,0 +1,31 @@
+export const metadata = {
+  title: "SFTPX – Automated SFTP Upload Service",
+  description:
+    "I designed and built SFTPX, a lightweight cross-platform Go application that monitors a local directory and automatically uploads new files and folders to a remote SFTP server. The tool focuses on reliability, large-file handling, and zero-maintenance configuration for operational environments.",
+  author: "Steven Brown",
+  image: "/images/projects/sftpx/sftpx_desktop.webp",
+  alt: "SFTPX automated SFTP upload service",
+  technologies: ["Go", "SFTP", "SSH", "GitHub"],
+  liveURL: "https://github.com/stevenbrown125/sftpx",
+  startDate: "2025-10-05",
+  completionDate: "2025-10-15",
+};
+
+**Challenge:**
+Many teams rely on manual or brittle scripts to move files into SFTP servers—often failing with large files, partial writes, or unstable network conditions. Existing tools were either overly complex, required constant supervision, or lacked reliable support for high-volume, unattended uploads.
+
+**Solution:**
+I built SFTPX as a focused, single-purpose service in Go that runs as a standalone binary on Windows, macOS, or Linux. The application watches a configured directory for new files or subfolders, waits for them to settle, and uploads them efficiently over SFTP using concurrent workers.
+
+All behavior is controlled through a JSON configuration file—allowing operational changes without recompilation. SFTPX supports both password-based and SSH key authentication and is designed to handle large files (up to 4GB) with predictable performance and detailed logging.
+
+**Outcomes:**
+
+- **Operational Reliability:** Automated uploads with configurable delays prevent partial or corrupted transfers.
+- **Large File Support:** Efficient streaming uploads handle multi-gigabyte files without excessive memory usage.
+- **Concurrency Control:** Worker-based upload system balances throughput with server stability.
+- **Cross-Platform Delivery:** Distributed as native binaries for Windows, macOS, and Linux.
+- **Zero-Touch Configuration:** JSON-based config enables environment changes without rebuilding.
+- **Observability:** Timestamped log files provide clear audit trails and fast troubleshooting.
+
+SFTPX delivers a production-ready, no-frills solution for teams that need dependable, unattended SFTP uploads—bridging the gap between ad-hoc scripts and heavyweight managed services.

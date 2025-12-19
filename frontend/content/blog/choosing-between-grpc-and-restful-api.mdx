@@ -1,0 +1,141 @@
+export const metadata = {
+  title: "Choosing between gRPC and RESTful API",
+  excerpt:
+    "As I prepare to build an application using gRPC, I figured the best way to start is finding out what it is and how it is different from a RESTful API.",
+  author: "Steven Brown",
+  image:
+    "https://cdn.sanity.io/images/i80c8qr5/production/1d63597369bc5c85b02aeeff710ffd6bd65e72d9-4272x2848.jpg",
+  alt: "Photo by Christopher Robin Ebbinghaus on Unsplash",
+  category: "software-engineering",
+  tags: ["gRPC", "REST", "API"],
+  publishedAt: "2023-10-07T22:49:00.000Z",
+};
+
+Before building my first gRPC service, I wanted to get a clearer understanding of how it differs from the RESTful APIs I'm used to. Below is the converted Markdown version of your post.
+
+---
+
+## What Are gRPC and RESTful APIs?
+
+### **gRPC**
+
+Initially developed by Google, **gRPC** is an open-source communication framework built on **HTTP/2**. It uses **Protocol Buffers** for messaging and includes built-in features such as authentication and load balancing.
+
+### **RESTful APIs**
+
+REST defines a set of principles for standardized, stateless communication between systems. REST APIs typically use **HTTP/1.1** and exchange data using JSON or XML.
+
+---
+
+## Messaging Format
+
+### **gRPC**
+
+gRPC uses **Protocol Buffers**, a compact binary serialization format that is:
+
+- smaller
+- faster
+- more efficient for service-to-service communication
+
+### **RESTful APIs**
+
+REST typically uses **JSON** (or XML), which is human-readable but slower to parse and larger in size.
+
+---
+
+## Underlying Protocols
+
+### **gRPC**
+
+Built on **HTTP/2**, gRPC benefits from:
+
+- multiplexing
+- header compression
+- server push
+
+### **RESTful APIs**
+
+Traditionally built on **HTTP/1.1**. While REST can run over HTTP/2, it doesn't inherently take advantage of its advanced capabilities.
+
+---
+
+## Real-time Communication
+
+### **gRPC**
+
+Supports multiple streaming types **natively**, allowing:
+
+- real-time updates
+- bi-directional communication
+
+### **RESTful APIs**
+
+REST is stateless and request-response based. Streaming is possible but requires workarounds.
+
+---
+
+## Performance
+
+### **gRPC**
+
+Offers high performance due to Protocol Buffers and HTTP/2 features.
+
+### **RESTful APIs**
+
+JSON’s size and parsing cost can introduce latency.
+
+---
+
+## Ecosystem and Tooling
+
+### **gRPC**
+
+Tools like **gRPC-Web** and **gRPC-Gateway** expand compatibility with browser clients and REST ecosystems.
+
+### **RESTful APIs**
+
+Has a massive ecosystem of tools, libraries, and best practices built up over many years.
+
+---
+
+## Design Methodologies
+
+### **gRPC**
+
+Follows a **contract-first** approach using `.proto` files to define service methods and message types upfront.
+
+### **RESTful APIs**
+
+More flexible with no enforced contract. This flexibility requires disciplined design to avoid inconsistencies.
+
+---
+
+## Versioning & Compatibility
+
+### **gRPC**
+
+Protocol Buffers support **backward and forward compatibility** natively.
+
+### **RESTful APIs**
+
+Versioning approaches include:
+
+- URL versioning (`/v1/`)
+- custom headers
+- version fields in payloads
+
+Each comes with trade-offs and must be chosen carefully.
+
+---
+
+## Conclusion
+
+Based on this research, gRPC shines in applications that demand:
+
+- high performance
+- real-time updates
+- efficient service-to-service communication
+
+Examples include trading platforms or collaborative tools (like Figma). With prior experience using WebSockets for chat apps, many concepts feel familiar.
+
+What will I build with gRPC next? Stay tuned…

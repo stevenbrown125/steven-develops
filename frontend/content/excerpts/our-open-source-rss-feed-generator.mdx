@@ -1,0 +1,184 @@
+export const metadata = {
+  title: "Our Open Source RSS Feed Generator",
+  excerpt:
+    "Discover how our open-source Node.js library simplifies RSS, Atom, and JSON Feed generation. A secure, zero-dependency solution for content syndication.",
+  author: { name: "Steven Brown", url: "https://stevendevelops.com" },
+  image:
+    "https://images.unsplash.com/photo-1496449903678-68ddcb189a24?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  alt: "Abstract representation of content syndication and RSS feeds",
+  category: "open-source",
+  tags: ["Open Source", "RSS", "Node.js", "Content Syndication"],
+  publishedAt: "2024-12-30T00:00:00.000Z",
+  canonical: {
+    url: "https://bliztek.com/blog/post/our-open-source-rss-feed-generator",
+    siteName: "Bliztek, LLC Blog",
+  },
+  kind: "excerpt",
+};
+
+# Our Open Source RSS Feed Generator
+
+As developers, we often rely on open-source libraries to simplify repetitive tasks, allowing us to focus on solving bigger problems. This philosophy inspired us to create and share [**@bliztek/feed-generator**](https://www.npmjs.com/package/@bliztek/feed-generator), a simple and lightweight Node.js library for generating RSS 2.0, Atom, and JSON feeds. By open-sourcing this project, we aim to give back to the developer community and help others implement feed generation without reinventing the wheel.
+
+## Why We Built This Library
+
+The need for standardized content syndication is everywhere: blogs, news sites, podcasts, or any content-driven platform. Existing solutions often came with unnecessary complexities or lacked support for multiple feed formats. We wanted something:
+
+- **Lightweight**: No external dependencies.
+- **Developer-Friendly**: Easy-to-use API with TypeScript support.
+- **Flexible**: Fully customizable feed metadata and entries.
+- **Reliable**: Valid outputs for RSS 2.0, Atom, and JSON Feed formats.
+
+Additionally, we are very cognizant of the risks associated with supply chain attacks. By striving to develop zero-dependency solutions for simple problems, we minimize vulnerabilities and offer a more secure library. As of now, this is the **only RSS feed generator that operates with zero external dependencies**.
+
+Seeing this gap, we decided to build a solution that meets these criteria and share it with the open-source community.
+
+## Features
+
+- **Support for Multiple Formats**: Generate RSS 2.0, Atom, and JSON feeds.
+- **Type-Safe Development**: Built with TypeScript for improved reliability and developer experience.
+- **Validation-Ready Outputs**: All feeds pass online validators like W3C Feed Validator and JSON Feed Validator.
+- **Customizable**: Configure feed metadata and entries to fit your platform's needs.
+- **No External Dependencies**: Lightweight and easy to integrate.
+- **Well-Tested**: Includes tests and snapshots for all supported formats to prevent regressions.
+
+## Installation
+
+You can quickly install the library using npm or Yarn:
+
+```bash
+npm install @bliztek/feed-generator
+```
+
+Or:
+
+```bash
+yarn add @bliztek/feed-generator
+```
+
+## How to Use @bliztek/feed-generator
+
+### Step 1: Import the Feed Generators
+
+```typescript
+import {
+  generateRSSFeed,
+  generateAtomFeed,
+  generateJSONFeed,
+} from "@bliztek/feed-generator";
+```
+
+### Step 2: Define Your Feed Data
+
+Each feed type requires specific metadata. For example, an RSS feed:
+
+```typescript
+const rssFeedData = {
+  title: "My Blog Feed",
+  link: "https://example.com",
+  description: "The latest articles from my blog.",
+  items: [
+    {
+      title: "First Post",
+      link: "https://example.com/post-1",
+      description: "A summary of the first post.",
+      pubDate: "2024-12-14T10:00:00Z",
+    },
+  ],
+};
+```
+
+### Step 3: Generate Feeds
+
+Use the provided methods to generate your desired feed format:
+
+#### RSS Feed
+
+```typescript
+const rss = generateRSSFeed(rssFeedData);
+console.log(rss);
+```
+
+#### Atom Feed
+
+For Atom feeds, the structure differs slightly:
+
+```typescript
+const atomFeedData = {
+  title: { type: "text", value: "My Blog Feed" },
+  updated: "2024-12-14T12:00:00Z",
+  id: "https://example.com/atom",
+  link: [
+    {
+      href: "https://example.com/atom",
+      rel: "self",
+      type: "application/atom+xml",
+    },
+  ],
+  entries: [
+    {
+      title: { type: "text", value: "First Post" },
+      id: "https://example.com/post-1",
+      updated: "2024-12-14T10:00:00Z",
+      summary: { type: "text", value: "A summary of the first post." },
+    },
+  ],
+};
+
+const atom = generateAtomFeed(atomFeedData);
+console.log(atom);
+```
+
+#### JSON Feed
+
+```typescript
+const jsonFeedData = {
+  version: "https://jsonfeed.org/version/1.1",
+  title: "My Blog Feed",
+  home_page_url: "https://example.com",
+  feed_url: "https://example.com/feed.json",
+  items: [
+    {
+      id: "https://example.com/post-1",
+      title: "First Post",
+      content_html: "<p>The full content of the first post.</p>",
+      date_published: "2024-12-14T10:00:00Z",
+    },
+  ],
+};
+
+const json = generateJSONFeed(jsonFeedData);
+console.log(json);
+```
+
+## Validating Your Feeds
+
+To ensure the generated feeds are valid, you can use:
+
+- **RSS/Atom Validator**: [W3C Feed Validator](https://validator.w3.org/feed/)
+- **JSON Feed Validator**: [JSON Feed Validator](https://jsonfeed.org/)
+
+## Benefits of Having an RSS Feed
+
+RSS feeds offer numerous benefits for both content creators and readers. They allow your audience to stay updated with your latest posts without needing to check your site manually. For creators, RSS feeds provide a standardized way to distribute content across multiple platforms, increase audience engagement, and improve visibility. Whether for blogs, news sites, or podcasts, having an RSS feed is a powerful tool for syndication and user convenience.
+
+### Enhancing SEO with RSS Feeds
+
+- **Increased Indexing**: RSS feeds ensure search engines quickly discover new content as they frequently crawl the feed for updates.
+- **Backlink Opportunities**: When platforms or readers subscribe and share, they may create backlinks, indirectly improving domain authority.
+- **Improved Engagement**: Subscribers are more likely to revisit and share your content, signaling relevance to search engines.
+- **Content Syndication**: Your feed enables broader distribution of your articles, increasing exposure and traffic.
+
+### Subscribing to Our RSS Feed
+
+We use our **@bliztek/feed-generator** package in conjunction with MDX for Bliztek's website. If you are interested in subscribing to our RSS feed, you can use the following link: [https://bliztek.com/rss.xml](https://bliztek.com/rss.xml). Stay updated with the latest content and developments from our blog!
+
+## Get Involved
+
+Open source thrives on collaboration. Whether you want to report a bug, suggest a feature, or contribute code, we welcome your involvement! Check out the [GitHub repository](https://github.com/bliztek/feed-generator) for details.
+
+Let's build something amazing together.
+
+## Conclusion
+
+We're proud to contribute to the open-source ecosystem with a tool that simplifies feed generation for developers worldwide. By prioritizing security and simplicity, [**@bliztek/feed-generator**](https://www.npmjs.com/package/@bliztek/feed-generator) is a dependable solution for modern developers. We hope this library makes your projects easier and more efficient. Try it out today, and let us know what you think!

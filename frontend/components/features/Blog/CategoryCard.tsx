@@ -1,42 +1,65 @@
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  CardLink,
-} from "@/components/core/Card/Card"
-import Figure from "@/components/core/Figure/Figure"
-import { CategegoryProps } from "@/types"
+// components/features/Blog/CategoryCard.tsx
 
-const CategoryCard: React.FC<CategegoryProps> = ({ category }) => {
-  const { title, slug, image, alt } = category
+import Link from "next/link";
 
-  const cardLinkSchema = {
-    itemProp: "url",
-  }
-  const cardSchema = {
-    itemProp: "itemListElement",
-    itemScope: true,
-    itemType: "http://schema.org/Article",
-  }
-
-  return (
-    <CardLink href={`/blog/categories/${slug}`} schemaProps={cardLinkSchema}>
-      <Card schemaProps={cardSchema}>
-        <CardHeader>
-          <Figure figure={{ href: image, alt, classes: "listing" }} />
-          <h3
-            itemType="headline"
-            className="mx-4 text-center hover:text-primary heading-hr"
-          >
-            {title}
-          </h3>
-        </CardHeader>
-        <CardBody>
-          <p itemProp="description">{category.description}</p>
-        </CardBody>
-      </Card>
-    </CardLink>
-  )
+export interface Category {
+  title: string;
+  slug: string;
+  count: number;
 }
 
-export default CategoryCard
+/**
+ * Map post count → bar width (clamped).
+ */
+function widthFromCount(count: number) {
+  return Math.min(100, 20 + count * 4); // %
+}
+
+/**
+ * Map post count → theme intensity.
+ */
+function barColorFromCount(count: number) {
+  if (count >= 15) return "bg-primary";
+  if (count >= 8) return "bg-primary/60";
+  return "bg-primary/30";
+}
+
+const CategoryCard = ({ category }: { category: Category }) => {
+  const { title, slug, count } = category;
+
+  return (
+    <Link
+      href={`/blog/categories/${slug}`}
+      className="
+        group
+        block
+        py-3
+        transition-colors
+      "
+    >
+      {/* label row */}
+      <div className="mb-1 flex items-center justify-between">
+        <h3 className="font-medium group-hover:text-primary transition-colors">
+          {title}
+        </h3>
+
+        <span className="text-sm text-neutral-500">{count}</span>
+      </div>
+
+      {/* bar */}
+      <div className="h-1 w-full rounded bg-neutral-200 dark:bg-neutral-800 overflow-hidden">
+        <div
+          className={`
+            h-1
+            rounded
+            transition-all
+            ${barColorFromCount(count)}
+          `}
+          style={{ width: `${widthFromCount(count)}%` }}
+        />
+      </div>
+    </Link>
+  );
+};
+
+export default CategoryCard;

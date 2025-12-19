@@ -1,0 +1,635 @@
+export const metadata = {
+  title: "Heaps for Event-Driven Systems: A Deep Dive",
+  excerpt:
+    "A practical, production-oriented deep dive into heaps, explained through event-driven design: from mental models to a robust TypeScript scheduler, duplicates, cancellation, and performance trade-offs.",
+  author: { name: "Steven Brown", url: "https://stevendevelops.com" },
+  image:
+    "https://images.unsplash.com/photo-1684758135817-513b6916edcc?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1194",
+  alt: "Priority queue and heap-based event scheduling visualization",
+  category: "software-engineering",
+  tags: ["Heaps", "Priority Queue", "Event-Driven Systems", "Algorithms"],
+  publishedAt: "2025-11-14T00:00:00.000Z",
+  canonical: {
+    url: "https://bliztek.com/blog/post/heaps-for-event-driven-systems",
+    siteName: "Bliztek, LLC Blog",
+  },
+  kind: "excerpt",
+};
+
+## Introduction
+
+Event-driven systems live or die by how efficiently they answer one question: **what should happen next?** Timers, retries, animation frames, message timeouts, deferred jobs, and simulation ticks all compete to run at specific times or priorities. You could scan a list to find the next item (cheap to write, slow to run), or you can use a **heap** — the data structure that makes _next_ a constant-time peek with logarithmic updates. (Note: the JavaScript runtime **memory heap** is unrelated to the **heap data structure** used here.)
+
+---
+
+## The Event Loop’s Core Problem
+
+**What the loop must guarantee** In every iteration, an event loop must:
+
+1. **Identify the next executable unit** — the item with the **minimum deadline** (earliest `runAtMs`) or the **highest urgency** (smallest priority key).
+2. **Block or yield efficiently** until that item is due (or run immediately if overdue).
+3. **Execute** the item and **enqueue follow‑ups** (retries, recurring tasks, chained work) with new deadlines.
+
+This repeats forever while items keep arriving at **arbitrary times** and in **arbitrary order**.
+
+**Why naïve lists fall over** With an unsorted array you must linearly scan to find the minimum key on every tick:
+
+- Find next: **O(n)**
+- Pop next: **O(n)** (since you also shift/compact or search by index)
+- Under churn (many inserts + pops), this turns the loop into a search problem.
+
+**What a min‑heap fixes** A min‑heap keyed by `runAtMs` (or priority) maintains just enough structure so the **minimum** is always at the root:
+
+- Peek next (root): **O(1)**
+- Insert: **O(log n)** (bubble‑up)
+- Pop next: **O(log n)** (swap + bubble‑down)
+- **Insertion order and duplicates do not matter** — the local heap invariant reorders as needed.
+
+**Mental model** Think of a constantly changing timeline of deadlines. Each time a new item arrives, the heap places it so that the **soonest deadline** rises to the top; everything else only needs to be "ordered enough" beneath it. You don’t pay the cost to fully sort the world, only to keep the correct answer available instantly.
+
+**Concrete timeline example**
+
+```
+Now = 10_000ms
+Enqueue: (runAt=20_000, id=A)
+Enqueue: (runAt=12_000, id=B)
+Enqueue: (runAt=15_000, id=C)
+Heap root after each insert → B (12_000)
+Tick 1: sleep ~2s, pop B, run B
+Reenqueue: (runAt=22_000, id=B')  // retry or recurring
+Heap root → C (15_000)
+Tick 2: sleep ~5s, pop C, run C
+Heap root → A (20_000)
+...
+```
+
+Order of arrival was A, B, C; **order of execution is B, C, A** — exactly what we want.
+
+**Why not sort each time?** Sorting every iteration is **O(n log n)** even when only one or a few elements change. Heaps amortize the work to the **changed elements only**, keeping the steady‑state tick cheap.
+
+**Choosing the key**
+
+- **Time‑driven loops**: key by absolute time `runAtMs = Date.now() + delay`.
+- **Priority‑driven loops**: key by numeric priority (smaller = higher). For mixed semantics, use a tuple key `(runAtMs, priority, seq)`.
+- Always include a **monotonic `seq`** to break ties deterministically.
+
+**Behavior with duplicates** If multiple items share the same `runAtMs`, the heap returns them in **FIFO order** when paired with a sequence number. This preserves fairness and makes runs reproducible.
+
+**Back‑pressure considerations** Since `insert`/`pop` are **O(log n)**, the scheduler scales to large queues. If callbacks enqueue floods of near‑term work, add batching or a worker pool; the heap remains the right primitive for picking the next due item.
+
+**Alternatives in context**
+
+<table>
+  <thead>
+    <tr>
+      <th>Structure</th>
+      <th>Find next</th>
+      <th>Insert</th>
+      <th>Remove next</th>
+      <th>When to prefer</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Unsorted array</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+      <td>Tiny queues; trivial code</td>
+    </tr>
+    <tr>
+      <td>Sorted array</td>
+      <td>O(1)</td>
+      <td>O(n)</td>
+      <td>O(1)</td>
+      <td>Mostly static data</td>
+    </tr>
+    <tr>
+      <td>Balanced tree</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>O(log n)</td>
+      <td>Need ordered iteration</td>
+    </tr>
+    <tr>
+      <td>
+        <b>Binary heap</b>
+      </td>
+      <td>
+        <b>O(1)</b>
+      </td>
+      <td>
+        <b>O(log n)</b>
+      </td>
+      <td>
+        <b>O(log n)</b>
+      </td>
+      <td>
+        <b>High‑churn schedulers</b>
+      </td>
+    </tr>
+    <tr>
+      <td>Timing wheel</td>
+      <td>O(1) avg</td>
+      <td>O(1) avg</td>
+      <td>O(1) avg</td>
+      <td>Coarse, bucketed deadlines</td>
+    </tr>
+  </tbody>
+</table>
+
+**Takeaway** Heaps don’t fully sort your queue; they **continuously maintain the correct answer at the top** with minimal work. That is exactly the contract an event loop needs.
+
+---
+
+## Minimal Mental Model
+
+- Use a **min-heap** where each element is `(runAtMs, seq, task)`.
+- `runAtMs` is an absolute timestamp (`Date.now() + delay`).
+- `seq` is a monotonic counter to break ties deterministically (stable order for equal times).
+- The heap maintains the **heap property**: every parent’s key ≤ children’s keys. Therefore, `root` is _always_ the earliest task.
+
+---
+
+## A Generic Heap You Can Trust
+
+**Context** This is the low-level primitive that everything else builds on. It’s a binary heap with a caller-supplied comparator so it can serve as a min-heap, max-heap, or custom priority heap. You use it when you need **fast access to the next item** and **logarithmic inserts/removals** under churn (e.g., schedulers, priority queues, pathfinding).
+
+**Design goals**
+
+- Generic over `T` with a **pure comparator**: `(a, b) => number` returning `<0`, `0`, `>0`.
+- **Local invariants** only (heap property), not a fully sorted structure.
+- **Array-backed** for cache locality; no node objects or pointers.
+- **Single responsibility**: no policy (no time, no retries) — just ordering.
+
+**API contract**
+
+- `peek()` is **O(1)** and never mutates.
+- `push()` / `pop()` are **O(log n)** and maintain the heap property.
+- `replaceTop(v)` is a fast **pop+push** specialized for the hot path of "remove top, add one".
+- Comparator must be **antisymmetric and transitive**; if you need stable ordering for duplicates, provide a tie-breaker in the payload (e.g., include a sequence number in `T`).
+
+**When _not_ to use** If you need random lookups/removals by ID, use an **indexed heap** (heap + index map) or a different structure. If you need a one-off full order, use `Array.sort()`.
+
+```ts
+// /lib/datastructures/Heap.ts
+export class Heap<T> {
+  private storage: T[] = [];
+  private readonly compare: (a: T, b: T) => number;
+
+  constructor(compare: (a: T, b: T) => number) {
+    this.compare = compare;
+  }
+
+  public size(): number {
+    return this.storage.length;
+  }
+  public isEmpty(): boolean {
+    return this.storage.length === 0;
+  }
+  public peek(): T | undefined {
+    return this.storage[0];
+  }
+
+  public push(value: T): void {
+    this.storage.push(value);
+    this.bubbleUp(this.storage.length - 1);
+  }
+
+  public pop(): T | undefined {
+    const n = this.storage.length;
+    if (n === 0) return undefined;
+    this.swap(0, n - 1);
+    const top = this.storage.pop()!;
+    if (this.storage.length > 0) this.bubbleDown(0);
+    return top;
+  }
+
+  public replaceTop(value: T): T | undefined {
+    if (this.isEmpty()) {
+      this.storage.push(value);
+      return undefined;
+    }
+    const top = this.storage[0];
+    this.storage[0] = value;
+    this.bubbleDown(0);
+    return top;
+  }
+
+  private bubbleUp(index: number): void {
+    while (index > 0) {
+      const parent = Math.floor((index - 1) / 2);
+      if (this.compare(this.storage[index], this.storage[parent]) < 0) {
+        this.swap(index, parent);
+        index = parent;
+      } else {
+        break;
+      }
+    }
+  }
+
+  private bubbleDown(index: number): void {
+    const n = this.storage.length;
+    while (true) {
+      const left = 2 * index + 1;
+      const right = 2 * index + 2;
+      let best = index;
+
+      if (left < n && this.compare(this.storage[left], this.storage[best]) < 0)
+        best = left;
+      if (
+        right < n &&
+        this.compare(this.storage[right], this.storage[best]) < 0
+      )
+        best = right;
+      if (best === index) break;
+
+      this.swap(index, best);
+      index = best;
+    }
+  }
+
+  private swap(a: number, b: number): void {
+    [this.storage[a], this.storage[b]] = [this.storage[b], this.storage[a]];
+  }
+}
+```
+
+---
+
+## A Deterministic Priority Queue
+
+**Context** This wraps the raw `Heap` to give you a stable **priority queue**. Stability matters for reproducibility and fairness in event systems: when two items have identical keys, the one enqueued first should run first.
+
+**How it achieves stability** Each entry is `(key, seq, value)`. We compare by `key` first; when equal, we compare by monotonic `seq` — yielding FIFO among ties.
+
+**Use cases**
+
+- Event/timer queues keyed by `runAtMs`.
+- Work schedulers keyed by cost/priority.
+- Algorithmic queues (Dijkstra/A\*), where you may perform **lazy decrease-key** by reinserting with a better key.
+
+**Complexity** `peek` O(1), `push`/`pop` O(log n). All determinism flows from the `seq` tie-breaker.
+
+```ts
+// /lib/datastructures/PriorityQueue.ts
+import { Heap } from "./Heap";
+
+type Entry<K, V> = { key: K; seq: number; value: V };
+
+export class PriorityQueue<K, V> {
+  private readonly heap: Heap<Entry<K, V>>;
+  private seqCounter = 0;
+
+  constructor(compareKeys: (a: K, b: K) => number) {
+    this.heap = new Heap<Entry<K, V>>((x, y) => {
+      const c = compareKeys(x.key, y.key);
+      return c !== 0 ? c : x.seq - y.seq; // stable tiebreak: FIFO
+    });
+  }
+
+  public isEmpty(): boolean {
+    return this.heap.peek() === undefined;
+  }
+  public peek(): V | undefined {
+    return this.heap.peek()?.value;
+  }
+
+  public push(key: K, value: V): void {
+    this.heap.push({ key, seq: this.seqCounter++, value });
+  }
+
+  public pop(): V | undefined {
+    const e = this.heap.pop();
+    return e?.value;
+  }
+}
+```
+
+---
+
+## A Real Scheduler: One-Shot, Recurring, Cancellation
+
+**Context** This is the concrete **event-driven** application of the heap. It schedules one-shot and recurring tasks by absolute timestamps and drives a run loop that always executes the earliest-due task next.
+
+**Mental model**
+
+- Each task becomes `(runAtMs, seq, item)` inside the priority queue.
+- The **soonest timestamp** always lives at the root; insertion order doesn’t matter.
+- The loop `peek`s, sleeps until due, `pop`s, runs, and reschedules if recurring.
+
+**Behavioral guarantees**
+
+- Executes tasks in nondecreasing `runAtMs` order; duplicates are **FIFO** via sequence.
+- Recurring tasks are rescheduled based on **current** `now` (simple) — switch to fixed-period (based on previous `runAtMs`) if you need drift-free cadence.
+- **Lazy cancellation** injects a tombstone; the run loop discards it at peek/pop time. For eager O(log n) cancel or true decrease-key, use an **indexed heap** variant.
+
+**Operational concerns**
+
+- **Clock & sleeping:** uses `Date.now()`; clamps sleeps to `2_147_483_647`ms to avoid platform limits and re-checks afterward.
+- **Back-pressure:** if callbacks enqueue many near-term tasks, inserts remain O(log n); consider batching or a worker pool that pulls from this scheduler.
+- **Observability:** instrument enqueue/pop/latency; log the `(token, runAtMs, seq)` triplet for reproducibility.
+
+**Test plan**
+
+- Deterministic tests with a fake clock; assert execution order under (1) out-of-order inserts, (2) duplicates, (3) cancellations, (4) recurring drift.
+- Fuzz tests generating random schedules; validate monotonicity of executed `runAtMs` and FIFO among equals.
+
+```ts
+// /lib/scheduling/EventScheduler.ts
+import { PriorityQueue } from "../datastructures/PriorityQueue";
+
+export type ScheduledToken = number;
+
+type ScheduledItem = {
+  token: ScheduledToken;
+  runAtMs: number;
+  callback: () => void | Promise<void>;
+  intervalMs?: number; // if present => recurring
+  cancelled?: boolean; // lazy cancel flag
+};
+
+export class EventScheduler {
+  private readonly pq = new PriorityQueue<number, ScheduledItem>(
+    (a, b) => a - b
+  );
+  private running = false;
+  private nextToken: number = 1;
+
+  public schedule(
+    delayMs: number,
+    callback: () => void | Promise<void>
+  ): ScheduledToken {
+    const token = this.nextToken++;
+    const runAtMs = Date.now() + delayMs;
+    this.pq.push(runAtMs, { token, runAtMs, callback });
+    this.ensureRunLoop();
+    return token;
+  }
+
+  public scheduleRecurring(
+    intervalMs: number,
+    callback: () => void | Promise<void>
+  ): ScheduledToken {
+    const token = this.nextToken++;
+    const runAtMs = Date.now() + intervalMs;
+    this.pq.push(runAtMs, { token, runAtMs, callback, intervalMs });
+    this.ensureRunLoop();
+    return token;
+  }
+
+  public cancel(token: ScheduledToken): void {
+    // Lazy cancellation: inject a tombstone entry so peek/pop notices and discards.
+    this.pq.push(Number.POSITIVE_INFINITY, {
+      token,
+      runAtMs: Infinity,
+      callback: () => {},
+      cancelled: true,
+    });
+  }
+
+  private async ensureRunLoop(): Promise<void> {
+    if (this.running) return;
+    this.running = true;
+    try {
+      while (!this.pq.isEmpty()) {
+        const next = this.pq.peek()!;
+        if (next.cancelled) {
+          this.pq.pop();
+          continue;
+        }
+
+        const now = Date.now();
+        if (next.runAtMs > now) {
+          await new Promise((r) =>
+            setTimeout(r, Math.min(2147483647, next.runAtMs - now))
+          );
+          continue;
+        }
+
+        this.pq.pop();
+        try {
+          await next.callback();
+        } catch {
+          /* log as needed */
+        }
+
+        if (next.intervalMs && !next.cancelled) {
+          const rescheduled: ScheduledItem = {
+            ...next,
+            runAtMs: now + next.intervalMs,
+          };
+          this.pq.push(rescheduled.runAtMs, rescheduled);
+        }
+      }
+    } finally {
+      this.running = false;
+    }
+  }
+}
+```
+
+---
+
+## Indexed Heap (Optional)
+
+If you need eager `cancel(token)` or true `decreaseKey(id,newKey)` in **O(log n)**, maintain an index map from token → heap index and update in place (bubble up/down). This adds memory and bookkeeping in exchange for deterministic targeted updates. The lazy approach above is often sufficient and simpler.
+
+---
+
+## Behavior Under Real Workloads
+
+- **Out-of-order scheduling**: schedule 10s, then 2s, then 5s — the heap bubbles 2s to root immediately.
+- **Duplicates**: equal `runAtMs` are fine; the `seq` tie-breaker yields deterministic FIFO among equals.
+- **Clock drift & long sleeps**: use absolute times; clamp sleep to platform max and re-check.
+- **Fairness**: stable tie-breakers provide FIFO; weighted fairness can be encoded into the key or applied post-pop.
+- **Back-pressure**: each insert/pop is O(log n). If callbacks enqueue floods, batch, or shard workers that draw from the same heap.
+
+---
+
+## Why a Heap Beats Alternatives Here
+
+- **Unsorted array**: find min O(n), remove O(n) → collapses at scale.
+- **Sorted array**: find/remove min O(1), insert O(n) → expensive under churn.
+- **Balanced tree**: O(log n) everywhere but with higher constants.
+- **Binary heap**: **O(1) peek**, **O(log n) insert/pop** — exactly matches the event loop access pattern.
+
+Timing wheels can outperform heaps when times are quantized and clustered; for arbitrary millisecond-precision deadlines, heaps are the pragmatic default.
+
+---
+
+## Adjacent Uses in Event-Driven Systems
+
+- **Retry/backoff queues**: reschedule with exponential delays.
+- **Rate limiters / token buckets**: key by next-permitted time.
+- **Animation/physics**: schedule next frames/ticks by predicted times.
+
+---
+
+## JavaScript Specifics & Gotchas
+
+**Memory vs. data structure** The **JavaScript memory heap** is where objects live; our **heap data structure** is just one such object. Similar name, unrelated concepts.
+
+**Time sources (and why it matters)**
+
+- `Date.now()` returns the wall‑clock epoch milliseconds. It can jump if the system time changes (NTP sync, manual adjust, DST transitions don’t change UTC but local conversions can surprise logs).
+- `performance.now()` is **monotonic** and high‑resolution, but **not epoch‑based**. It’s ideal for measuring intervals and avoiding time going “backwards.” For absolute scheduling, pick one of:
+
+  1. **Epoch model**: use `Date.now()` directly (simple, may jump).
+  2. **Monotonic model**: map `performance.now()` to an epoch **once** at boot and stick with it.
+
+```ts
+// /lib/time/monotonicEpoch.ts
+export const MONOTONIC_EPOCH_MS = Date.now() - performance.now();
+export function nowMonotonicEpoch(): number {
+  // Monotonic (perf.now) + fixed offset gives an epoch-like, non-decreasing clock
+  return MONOTONIC_EPOCH_MS + performance.now();
+}
+```
+
+Use one clock consistently throughout the scheduler (timestamps, comparisons, logging). Mixing sources causes drift and reordering.
+
+**Timer clamping and resolution**
+
+- Browsers clamp large sleeps and also **coarsen** timers in background tabs (often to ≥1000ms). Nested timers may clamp to ≥4ms minimum.
+- Node.js timers are typically ~1ms resolution but not hard‑real‑time; event‑loop back‑pressure can delay callbacks.
+- Our run loop **clamps waits** to `2_147_483_647`ms (the max 32‑bit signed delay many hosts accept) and then rechecks.
+
+```ts
+// /lib/time/sleep.ts
+export async function sleepMs(ms: number): Promise<void> {
+  const MAX = 2_147_483_647; // ~24.8 days
+  let remaining = Math.max(0, ms);
+  while (remaining > 0) {
+    const chunk = Math.min(remaining, MAX);
+    await new Promise((r) => setTimeout(r, chunk));
+    remaining -= chunk;
+  }
+}
+```
+
+**Number limits & IDs**
+
+- JavaScript integers are precise up to **2^53−1 (~9e15)**. A simple `seq` counter is safe for the lifetime of most processes. If you’re worried, wrap at some margin and rely on timestamps to keep order.
+- Timestamps in ms also fit comfortably; avoid arithmetic that risks exceeding `Number.MAX_SAFE_INTEGER`.
+
+**Deterministic testing** Inject the clock and the sleeper so you can drive time manually:
+
+```ts
+// /lib/testing/FakeClock.ts
+export interface Clock {
+  now(): number;
+}
+export interface Sleeper {
+  sleep(ms: number): Promise<void>;
+}
+
+export class FakeClock implements Clock, Sleeper {
+  private t = 0;
+  now(): number {
+    return this.t;
+  }
+  async sleep(ms: number): Promise<void> {
+    this.t += ms;
+  }
+}
+```
+
+Wire your scheduler to `Clock`/`Sleeper` for unit tests; assert order with out‑of‑order inserts, duplicates, cancellation, and recurring drift. Avoid relying solely on framework fake timers if your code mixes `Date.now()` with `performance.now()`.
+
+**Foreground vs background (browsers)** Background tabs drastically throttle timers; periodic tasks can bunch up on resume. Choose a **fixed‑delay** policy (next run = now + interval) to avoid catch‑up storms, or explicitly cap how many backlogged runs you process per wake.
+
+**Drift control: fixed‑rate vs fixed‑delay**
+
+- _Fixed‑rate_ (a.k.a. cron‑like): next = previousScheduled + interval ⇒ lower long‑term drift, but if you overrun, you may need to **skip** runs to catch up.
+- _Fixed‑delay_: next = `now + interval` ⇒ simpler, never tries to catch up; total elapsed time may drift.
+  Pick per task; you can support both with a flag.
+
+```ts
+// /lib/scheduling/nextRun.ts
+export function nextFixedRate(prevScheduled: number, interval: number): number {
+  const now = Date.now();
+  // Advance in whole intervals to avoid multi-fire catch-up
+  const missed = Math.max(0, Math.ceil((now - prevScheduled) / interval));
+  return prevScheduled + (missed + 1) * interval;
+}
+export function nextFixedDelay(now: number, interval: number): number {
+  return now + interval;
+}
+```
+
+**Microtasks vs macrotasks** Promise callbacks (microtasks) run **before** timers (macrotasks) on each turn of the loop. A heap‑based scheduler uses timers (or an internal loop). Avoid spawning unbounded microtasks in callbacks or you can starve timers. If you must sequence microtasks, yield with a timer or `queueMicrotask` judiciously.
+
+**Cancellation semantics** Lazy cancellation (tombstones) is simple and amortized O(log n) on pop; if you must reclaim memory immediately or remove thousands of pending items, use an **indexed heap** to delete by token in O(log n).
+
+**Security & clocks** High‑res timers can be reduced by the platform for side‑channel mitigation. Don’t assume sub‑millisecond precision is available; code defensively with tolerance windows.
+
+---
+
+## Usage Demo
+
+```ts
+// /examples/scheduling/demo.ts
+import { EventScheduler } from "../lib/scheduling/EventScheduler";
+
+const scheduler = new EventScheduler();
+
+scheduler.schedule(3000, () => console.log("Runs ~3s"));
+scheduler.schedule(1000, () => console.log("Runs ~1s"));
+scheduler.schedule(2000, () => console.log("Runs ~2s"));
+
+const token = scheduler.scheduleRecurring(1500, () =>
+  console.log("Recurring ~1.5s")
+);
+
+scheduler.schedule(5200, () => {
+  console.log("Cancel recurring");
+  scheduler.cancel(token);
+});
+
+// Starts automatically when tasks are present
+```
+
+Expected order (approx):
+
+```
+~1s
+~2s
+~1.5s
+~3s
+~1.5s
+Cancel recurring
+```
+
+---
+
+## Complexity Recap (Event-Loop Aligned)
+
+- **peek next due**: O(1)
+- **insert new event**: O(log n)
+- **pop & run**: O(log n)
+- **recurring**: pop + insert = O(log n) amortized per period
+
+---
+
+## When Not to Use a Heap
+
+- You need frequent **random lookups by ID** → Map + indexed heap (or a different structure).
+- You need **one-off full order** → just `array.sort`.
+- You can accept coarse **tick granularity** and extreme throughput → consider a timing wheel.
+
+---
+
+## What to Build Next
+
+- An **IndexedHeap** drop-in with O(log n) cancel / decrease-key.
+- A **worker pool** that consumes from the heap with back-pressure policies.
+- A **virtual clock** to simulate time deterministically for tests and replay.
+
+---
+
+## Final Takeaway
+
+Heaps make event‑driven systems scale because they turn “what’s next?” into a constant‑time peek and keep updates cheap — even when you schedule out of order, with duplicates, and at high volume. If your system lives on timers, retries, or periodic work, a heap‑backed scheduler is the right foundation.
+
+If this matched—or contradicted—your experience, share a quick example, good or bad. Seeing where the design bends is as useful as where it works. What did you learn the hard way?

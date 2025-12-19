@@ -1,0 +1,583 @@
+export const metadata = {
+  title: "Greedy Algorithms and Priority Queues in JavaScript Systems",
+  excerpt:
+    "A systems-focused guide to greedy algorithms, how they relate to heaps and priority queues, and how to apply them effectively in JavaScript.",
+  author: { name: "Steven Brown", url: "https://stevendevelops.com" },
+  image:
+    "https://images.unsplash.com/photo-1710981855156-1dd4b48e668d?q=80&w=1473&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  alt: "Greedy algorithm decision flow with priority queue abstraction",
+  category: "software-engineering",
+  tags: ["Greedy Algorithms", "Priority Queues", "Heaps", "JavaScript"],
+  publishedAt: "2025-11-21T00:00:00.000Z",
+  canonical: {
+    url: "https://bliztek.com/blog/post/greedy-algorithms-priority-queues-js",
+    siteName: "Bliztek, LLC Blog",
+  },
+  kind: "excerpt",
+};
+
+## Introduction
+
+In the previous article, we treated heaps as a systems primitive: a way to make **“what should run next?”** efficient in event-driven JavaScript systems. We focused on the mechanics of binary heaps, their complexity, and how they underpin timer queues and schedulers.
+
+This article shifts the emphasis from the data structure to the **algorithmic pattern that naturally sits on top of it**: greedy algorithms.
+
+At a high level, a binary heap gives us a priority queue with three key properties:
+
+- The best element (by some key) is always available at the root.
+- Peeking at that best element is `O(1)`.
+- Inserting or removing elements is `O(log n)`.
+
+That is exactly what most greedy algorithms require. They repeatedly:
+
+1. Maintain a set of **candidates**.
+2. Select the **best available** candidate according to a priority key.
+3. Update the state and candidate set.
+4. Continue until a stopping condition is met.
+
+Where last week’s discussion answered “how do we efficiently find the next event to run?”, this article asks “how do we systematically use that same capability to solve broader optimization problems?”
+
+We will:
+
+- Revisit the core greedy pattern and when it is theoretically sound.
+- Show how heaps and priority queues act as the execution engine for greedy strategies.
+- Connect these ideas to concrete JavaScript use cases: scheduling, ranking/top‑k, and routing.
+- Highlight failure modes when a greedy approach or priority definition is inappropriate.
+
+The objective is to move from seeing heaps as an isolated data structure to understanding them as **infrastructure for greedy decision-making** in JavaScript systems.
+
+## Greedy Algorithms: The Core Pattern
+
+<div className="lg:flex items-start justify-center">
+  <div className="lg:w-1/2">
+    A greedy algorithm follows a recurring template:
+    <ol>
+      <li>Maintain a set of **candidates** (things we might choose next).</li>
+      <li>
+        each step, pick the **best available** candidate according to some key.
+      </li>
+      <li>
+        Update the state: extend the solution, remove/modify candidates,
+        possibly add new ones.
+      </li>
+      <li> Repeat until a stopping condition is satisfied.</li>
+    </ol>
+  </div>
+  <figure>
+    <img
+      src="/assets/blog/greedy-algorithm/greedy-algorithm-core-pattern.png"
+      alt="Greedy Algorithm Core Pattern"
+      className="max-h-[600px]"
+    />
+    <figcaption className="text-center">
+      Greedy Algorithm Core Pattern
+    </figcaption>
+  </figure>
+</div>
+
+We can write this template in almost pseudocode:
+
+```ts
+// src/algorithms/greedy/template.ts
+
+// Pseudocode-style template: not a concrete implementation.
+export function runGreedy<State, Candidate>(
+  initialState: State,
+  seedCandidates: Candidate[],
+  selectKey: (c: Candidate, state: State) => number,
+  step: (
+    state: State,
+    candidate: Candidate
+  ) => {
+    state: State;
+    newCandidates: Candidate[];
+  },
+  shouldStop: (state: State, candidates: Candidate[]) => boolean
+): State {
+  let state = initialState;
+  let candidates = [...seedCandidates];
+
+  while (!shouldStop(state, candidates)) {
+    // Conceptual: pick best by key every iteration
+    let bestIndex = 0;
+    for (let i = 1; i < candidates.length; i++) {
+      if (
+        selectKey(candidates[i], state) <
+        selectKey(candidates[bestIndex], state)
+      ) {
+        bestIndex = i;
+      }
+    }
+
+    const [best] = candidates.splice(bestIndex, 1);
+    const result = step(state, best);
+    state = result.state;
+    candidates.push(...result.newCandidates);
+  }
+
+  return state;
+}
+```
+
+The unoptimized detail is the linear scan through `candidates` each iteration. This directly controls the time complexity of the algorithm in practice.
+
+Common real algorithms fit this pattern:
+
+- Dijkstra's shortest path: candidates are frontier vertices; key is current distance.
+- Prim's algorithm for minimum spanning tree: candidates are edges crossing the cut; key is edge weight.
+- Interval scheduling: candidates are remaining intervals; key is finish time.
+
+The power of a greedy algorithm is that **we never reconsider old choices**. That is also its main risk.
+
+## When Greedy Works (and When It Fails)
+
+Greedy algorithms are not magic; they work when the problem structure has certain properties. Two important ones:
+
+1. **Greedy-choice property**: there exists an optimal solution with a particular locally optimal choice at the first step.
+2. **Optimal substructure**: after making that choice, the remaining subproblem has the same form, and optimal solutions to subproblems compose into a global optimum.
+
+If either of these fails, a greedy strategy may look reasonable but produce arbitrarily bad results.
+
+Examples where greedy **does** work:
+
+- Activity selection by earliest finish time (interval scheduling).
+- Building Huffman codes by merging least frequent symbols.
+- Some routing and scheduling variants that resemble shortest-path problems.
+
+Examples where greedy **does not** work:
+
+- 0/1 knapsack (taking items by highest value/weight greedily can be far from optimal).
+- General graph coloring.
+- Many global optimization problems where early decisions constrain later choices in complex ways.
+
+In system terms: think carefully before encoding a greedy choice into production scheduling or prioritization. If you pick the wrong key or problem class, you can starve important work or waste capacity.
+
+But when the problem _is_ well-suited, greediness shines: it is often simpler, faster, and more cache-friendly than dynamic programming or backtracking.
+
+## Greedy Algorithms Need a Data Structure
+
+The core operation of a greedy algorithm is **select-best**, repeated many times:
+
+- "Give me the candidate with minimum key right now."
+
+If the candidate set has size `n` and we execute `k` steps:
+
+- Naive array scan:
+  - Select-best: `O(n)`
+  - Total: `O(k * n)`
+- With a better data structure, we aim for:
+  - Select-best: `O(log n)` or `O(1)`
+  - Total: `O(k log n)` or better.
+
+As `n` grows and `k` approaches `n` or more, this asymptotic difference dominates runtime.
+
+### Options for select-best
+
+Let us compare a few structures for candidate management:
+
+- **Unsorted array**
+
+  - Insert: `O(1)`
+  - Select-best: `O(n)` linear scan.
+  - Good for tiny `n` or when we only pick best once.
+
+- **Sorted array**
+
+  - Insert: `O(n)` (place + shift).
+  - Select-best: `O(1)` at one end.
+  - Good for mostly static data.
+
+- **Balanced tree (e.g., red-black tree)**
+
+  - Insert: `O(log n)`
+  - Select-best: `O(log n)`
+  - Supports in-order traversal and range queries.
+
+- **Binary heap (priority queue)**
+  - Insert: `O(log n)`
+  - Select-best (peek): `O(1)`
+  - Extract-best (pop): `O(log n)`
+
+Most greedy algorithms only care about the best element at each step. They do not need full sorted order or range queries. That is exactly the scenario where heaps shine.
+
+This is the bridge from last week's article: the **same heap that powers event loops also powers greedy algorithms**. The pattern "pick the minimum deadline" vs. "pick the minimum tentative distance" is almost identical.
+
+## Heaps and Priority Queues as the Engine
+
+We usually do not expose a heap directly to the rest of a codebase. Instead, we wrap it in a **priority queue** abstraction:
+
+- `push(key, value)`
+- `peek(): value | undefined`
+- `pop(): value | undefined`
+
+Internally, a binary heap maintains the **heap property**:
+
+- For a min-heap: each node's key is less than or equal to its children's keys.
+- The global minimum is always at the root (array index `0`).
+
+Because of this, greedy algorithms can:
+
+- Treat the priority queue as an opaque component.
+- Focus on defining the correct **key** for "best".
+
+Key design is where domain knowledge lives:
+
+- Shortest path: key is path cost so far.
+- Job scheduling: key is deadline or priority.
+- Cache eviction: key is last access time or cost to recompute.
+
+As long as the data structure respects the key ordering efficiently, we can reason about the algorithm at a higher level.
+
+## Greedy Patterns in JavaScript Systems
+
+Where do greedy algorithms show up in JavaScript work, beyond textbook exercises?
+
+### 1. Scheduling and rate limiting
+
+Backed by a heap-based priority queue (as in last week's article), a scheduler can implement greedy policies such as:
+
+- Always run the job with the earliest deadline.
+- Always process the request with the highest priority score.
+- Always fire the timeout that will expire first.
+
+The greedy choice is: among all pending work, pick the one with minimum key. The heap makes that cheap; the correctness argument is that we are approximating or achieving an optimal schedule for the chosen metric.
+
+### 2. Top-k selection in analytics or feeds
+
+When computing a top-k list (heaviest users, slowest endpoints, most expensive queries), we often:
+
+- See a stream of items.
+- Want to maintain the top `k` by some score.
+
+Greedy strategy:
+
+- Keep a **min-heap of size k** keyed by score.
+- For each new item:
+  - If heap size < k: push.
+  - Else compare with heap minimum; if larger, pop min and push new item.
+
+This is a greedy choice: always keep the current k best items and discard anything that cannot beat the current minimum. Complexity:
+
+- Per item: `O(log k)`
+- Total over `n` items: `O(n log k)`
+
+For large `n` and small `k`, this is significantly cheaper than sorting all items: `O(n log n)`.
+
+### 3. Pathfinding and routing in Node services
+
+In service meshes, game servers, or any routing logic, Dijkstra-like algorithms appear:
+
+- Nodes are states or servers.
+- Edges are transitions with costs.
+
+Greedy choice:
+
+- Always expand the node with smallest tentative distance so far.
+
+The priority queue ensures the frontier is always ordered by distance; the heap provides logarithmic updates when we discover better paths.
+
+### 4. Local optimization in UIs
+
+On the frontend, we sometimes:
+
+- Schedule rendering work by user-visible importance.
+- Decide which components to hydrate first.
+- Choose which images to load first.
+
+These are often greedy: "render the most important or visible work first". Under the hood, we can model them as a priority queue keyed by importance and deadline.
+
+## Implementing a Priority Queue for Greedy Algorithms
+
+We reuse the heap abstraction from last week but present a focused `PriorityQueue` tailored to greedy algorithms.
+
+```ts
+// src/datastructures/PriorityQueue.ts
+
+export type PriorityComparator<K> = (a: K, b: K) => number;
+
+type PriorityEntry<K, V> = {
+  key: K;
+  seq: number; // tie-breaker for stability
+  value: V;
+};
+
+export class PriorityQueue<K, V> {
+  private storage: PriorityEntry<K, V>[] = [];
+  private readonly compareKeys: PriorityComparator<K>;
+  private sequenceCounter = 0;
+
+  constructor(compareKeys: PriorityComparator<K>) {
+    this.compareKeys = compareKeys;
+  }
+
+  public size(): number {
+    return this.storage.length;
+  }
+
+  public isEmpty(): boolean {
+    return this.storage.length === 0;
+  }
+
+  public peek(): V | undefined {
+    return this.storage[0]?.value;
+  }
+
+  public push(key: K, value: V): void {
+    const entry: PriorityEntry<K, V> = {
+      key,
+      seq: this.sequenceCounter++,
+      value,
+    };
+    this.storage.push(entry);
+    this.bubbleUp(this.storage.length - 1);
+  }
+
+  public pop(): V | undefined {
+    const n = this.storage.length;
+    if (n === 0) return undefined;
+
+    this.swap(0, n - 1);
+    const top = this.storage.pop()!;
+    if (this.storage.length > 0) {
+      this.bubbleDown(0);
+    }
+    return top.value;
+  }
+
+  private bubbleUp(index: number): void {
+    while (index > 0) {
+      const parentIndex = Math.floor((index - 1) / 2);
+      if (this.isHigherPriority(index, parentIndex)) {
+        this.swap(index, parentIndex);
+        index = parentIndex;
+      } else {
+        break;
+      }
+    }
+  }
+
+  private bubbleDown(index: number): void {
+    const n = this.storage.length;
+    while (true) {
+      const left = 2 * index + 1;
+      const right = 2 * index + 2;
+      let best = index;
+
+      if (left < n && this.isHigherPriority(left, best)) {
+        best = left;
+      }
+      if (right < n && this.isHigherPriority(right, best)) {
+        best = right;
+      }
+      if (best === index) break;
+
+      this.swap(index, best);
+      index = best;
+    }
+  }
+
+  private isHigherPriority(i: number, j: number): boolean {
+    const a = this.storage[i];
+    const b = this.storage[j];
+    const primary = this.compareKeys(a.key, b.key);
+    if (primary !== 0) return primary < 0; // smaller key = higher priority
+    return a.seq < b.seq; // earlier insertion wins ties
+  }
+
+  private swap(i: number, j: number): void {
+    [this.storage[i], this.storage[j]] = [this.storage[j], this.storage[i]];
+  }
+}
+```
+
+This is essentially the same engine we used for event scheduling, but expressed in a way that is easy to reuse in greedy algorithms:
+
+- Keys are arbitrary (distances, scores, deadlines).
+- Values are arbitrary (nodes, jobs, items).
+- Stability via `seq` helps with reproducibility and fairness.
+
+Complexity:
+
+- `push`: `O(log n)`
+- `pop`: `O(log n)`
+- `peek`: `O(1)`
+
+## Worked Example: Top-k Selection
+
+As a concrete greedy algorithm, consider computing the **top-k items** by score from a large stream. This shows up in analytics, ranking feeds, and reporting.
+
+### Problem
+
+Given a stream of items with scores, maintain the `k` highest-scoring items seen so far.
+
+<p>Constraints:</p>
+<ul>
+  <li>
+    <code>n</code> (total items) can be large.
+  </li>
+  <li>
+    <code>k</code> is relatively small (e.g., 10, 100, 1_000).
+  </li>
+  <li>We want to process the stream in one pass.</li>
+</ul>
+
+<div className="lg:flex items-start justify-start">
+  <div className="lg:w-1/2">
+    <h3>Greedy idea</h3>
+
+    We maintain a min-heap of size at most <code>k</code>:
+    <ul>
+      <li>The heap contains the current top-k items.</li>
+      <li>The minimum in the heap is the <em>worst</em> of the top-k.</li>
+      <li>For each new item:</li>
+      </ul>
+
+    <ul>
+        <li>If heap size &lt; <code>k</code>: insert it.</li>
+        <li>Else if the new score is &lt;= heap minimum: discard it.</li>
+        <li>Else: pop the heap minimum and insert the new item.</li>
+    </ul>
+
+    At any point, the heap holds exactly the greedy choice:
+    &quot;the best k items we have seen so far&quot;. Once the stream
+    ends, that set is our answer.
+
+  </div>
+
+  <figure>
+    <img
+      src="/assets/blog/greedy-algorithm/top-k-greedy.png"
+      alt="Top K Greedy"
+      className="max-h-[900px]"
+    />
+    <figcaption className="text-center">
+     Top K Greedy Algorithm
+    </figcaption>
+  </figure>
+</div>
+
+### Complexity comparison
+
+- Greedy + heap: `O(n log k)`
+- Full sort: `O(n log n)`
+
+When `k << n`, `log k` is much smaller than `log n`, and we avoid touching most of the data beyond simple comparisons.
+
+### Implementation in TypeScript
+
+```ts
+// src/algorithms/greedy/topK.ts
+
+import { PriorityQueue } from "../datastructures/PriorityQueue";
+
+export interface ScoredItem<T> {
+  item: T;
+  score: number;
+}
+
+export function topK<T>(
+  items: Iterable<ScoredItem<T>>,
+  k: number
+): ScoredItem<T>[] {
+  if (k  0) return [];
+
+  // Min-heap: smallest score at the top
+  const pq = new PriorityQueue<number, ScoredItem<T>>((a, b) => a - b);
+
+  for (const entry of items) {
+    if (pq.size() < k) {
+      pq.push(entry.score, entry);
+      continue;
+    }
+
+    const currentMin = pq.peek();
+    if (!currentMin) {
+      pq.push(entry.score, entry);
+      continue;
+    }
+
+    // If the new score is better than the current worst of the top-k, replace it
+    if (entry.score > currentMin.score) {
+      pq.pop();
+      pq.push(entry.score, entry);
+    }
+  }
+
+  const result: ScoredItem<T>[] = [];
+  while (!pq.isEmpty()) {
+    const value = pq.pop();
+    if (value) result.push(value);
+  }
+
+  // result currently unordered; sort descending by score for presentation
+  result.sort((a, b) => b.score - a.score);
+  return result;
+}
+```
+
+This is a typical greedy-plus-heap pattern with real-world behavior:
+
+- It processes the stream in a single pass (good for large or infinite streams).
+- It uses `O(k)` extra space.
+- It gives a measurable time complexity improvement over full sorting when `k << n`.
+
+In a Node service collecting metrics or logs, this form is often enough to compute top offenders without materializing or sorting the full dataset in memory.
+
+## Failure Modes and Misuses
+
+Greedy plus heaps is not a universal solution. A few common failure modes:
+
+### 1. Using a greedy heuristic where it is not valid
+
+If the problem does not have the greedy-choice property or optimal substructure, then choosing the locally best candidate can be arbitrarily bad.
+
+Example: selecting features for a model, or choosing servers for placement with complex constraints. A simple "take the cheapest available" heuristic may:
+
+- Fill up capacity with small, low-value items.
+- Starve high-value items that arrive later.
+
+The system shows high utilization but poor outcomes.
+
+### 2. Wrong key definition
+
+The priority key encodes what "best" means. If the key is mis-specified:
+
+- Shortest path with incorrect edge weights yields incorrect routing.
+- A scheduler keyed only by deadline may starve long-running jobs.
+- A cache eviction policy keyed only by last-access time may thrash.
+
+In JavaScript systems, it is easy to change the key by changing a comparator, but that does not guarantee correctness. Treat key design as a domain modeling problem, not just an implementation detail.
+
+### 3. Overusing priority queues when simple structures suffice
+
+Priority queues carry a logarithmic overhead and nontrivial constants. For small `n` or very simple workloads:
+
+- A plain array + occasional `sort` can be faster and simpler.
+- A FIFO queue or LIFO stack may match the behavior you actually want.
+
+As a rule of thumb:
+
+- If `n` rarely exceeds a few dozen, prioritize clarity.
+- If `n` can grow to hundreds or thousands and you call select-best frequently, a heap-backed priority queue is likely justified.
+
+### 4. Ignoring system-level effects
+
+Even if the algorithm is asymptotically better, system-level issues can dominate:
+
+- GC pressure if you allocate many small objects per candidate.
+- Hidden `O(n)` work in serialization, logging, or copying.
+- Interaction with event loop: starved timers or microtasks.
+
+Always profile in context. The heap-based greedy algorithm reduces comparisons and structural operations, but the win must be considered in the whole pipeline.
+
+## Key Takeaways
+
+- Greedy algorithms are about repeatedly taking the **locally best choice** and never revisiting old decisions.
+- The core operation is **select-best**, which becomes a bottleneck without a supporting data structure.
+- **Heaps and priority queues** are the natural engine for greedy algorithms: they give `O(1)` peek and `O(log n)` updates.
+- Many JavaScript system behaviors—scheduling, rate limiting, top-k analytics, pathfinding—fit the greedy template when modeled carefully.
+- Implementing a reusable `PriorityQueue` in TypeScript lets us express greedy algorithms in terms of key design, not structural details.
+- Complexity matters: switching from repeated full sorts `O(n log n)` to heap-backed selection `O(n log k)` or `O((V + E) log V)` can produce meaningful latency and throughput improvements.
+- Greedy methods are powerful but brittle: they require the right problem class and priority key to be correct and fair.
+
+The practical skill is not just implementing heaps; it is recognizing when the behavior of a system can be seen as a greedy process—and then using the right priority data structure to make that behavior efficient and predictable.

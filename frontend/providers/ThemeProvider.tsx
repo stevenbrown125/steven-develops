@@ -1,46 +1,44 @@
-"use client"
-import React, {
-  createContext,
-  useContext,
-  ReactNode,
-  useState,
-  useEffect,
-} from "react"
+// /providers/ThemeProvider.tsx
+"use client";
 
-type Theme = "light" | "dark"
-interface ThemeContextType {
-  theme: Theme
-  toggleTheme: () => void
-}
+import { createContext, useContext, useEffect, useState } from "react";
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
+type Theme = "light" | "dark";
 
-interface ThemeProviderProps {
-  children: ReactNode
-}
+const ThemeContext = createContext<{
+  theme: Theme;
+  toggleTheme: () => void;
+} | null>(null);
 
-export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>("dark")
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof document === "undefined") return "light";
+    return document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
+  });
 
   useEffect(() => {
-    document.documentElement.className = theme
-  }, [theme])
-
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"))
-  }
+    const root = document.documentElement;
+    root.classList.toggle("dark", theme === "dark");
+    root.style.colorScheme = theme;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider
+      value={{
+        theme,
+        toggleTheme: () => setTheme((t) => (t === "dark" ? "light" : "dark")),
+      }}
+    >
       {children}
     </ThemeContext.Provider>
-  )
+  );
 }
 
-export const useTheme = (): ThemeContextType => {
-  const context = useContext(ThemeContext)
-  if (context === undefined) {
-    throw new Error("useTheme must be used within a ThemeProvider")
-  }
-  return context
-}
+export const useTheme = () => {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error("useTheme must be used within ThemeProvider");
+  return ctx;
+};

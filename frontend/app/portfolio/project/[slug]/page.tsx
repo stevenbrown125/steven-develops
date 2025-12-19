@@ -1,40 +1,70 @@
-import { getAllProjects, getProjectBySlug } from "@/lib/sanityQueries"
-import { Page } from "@/types/Page"
-import Project from "@/components/features/Portfolio/Project"
-import Breadcrumbs from "@/components/shared/utilities/Breadcrumb"
+// File: /app/portfolio/[slug]/page.tsx
+
+import type { Metadata } from "next";
+
+import Project from "@/components/features/Portfolio/Project";
+import ProjectNavigation from "@/components/features/Portfolio/ProjectNavigation";
+import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
+import { getAllProjectData, getProjectMetadata } from "@/lib/mdx-utils";
+import { getAdjacentProjects } from "@/lib/projectNavigation";
+import { generateSEO, seoContent } from "@/lib/seo";
+
+type RouteParams = {
+  slug: string;
+};
 
 export async function generateStaticParams() {
-  const projects = await getAllProjects()
-  return projects.map(({ slug }) => ({ slug }))
+  const projects = await getAllProjectData();
+  return projects.map(({ slug }) => ({ slug }));
 }
 
-export async function generateMetadata({ params }: Page) {
-  if (!params) return {}
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<RouteParams>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await getProjectMetadata(slug);
 
-  const { slug } = params
-  const project = await getProjectBySlug(slug)
-  // const { title, description } = await getSiteMetaData();
-  // const pageTitle = `${title} | ${post.title}`;
-  // const pageDescription = post.excerpt ? post.excerpt : description;
-  return {}
+  return generateSEO(
+    seoContent.portfolioProject.build({
+      title: project.title,
+      slug,
+      description: project.description,
+      image: project.image,
+      technologies: project.technologies,
+    })
+  ).metadata;
 }
 
-export default async function ProjectPage({ params }: Page) {
-  if (!params) return <></>
+export default async function ProjectPage({
+  params,
+}: {
+  params: Promise<RouteParams>;
+}) {
+  const { slug } = await params;
 
-  const project = await getProjectBySlug(params.slug)
+  const projects = await getAllProjectData();
+  const project = await getProjectMetadata(slug);
 
-  const { title, slug } = project
+  const { prev, next } = getAdjacentProjects(projects, slug);
+
+  const MDXContent = (await import(`@/content/projects/${slug}.mdx`)).default;
 
   const breadcrumbs = [
     { href: "/portfolio", title: "Portfolio" },
-    { href: slug, title },
-  ]
+    { href: `/portfolio/${slug}`, title: project.title },
+  ];
 
   return (
-    <div className="relative flex-grow px-4 py-4 mx-auto max-w-7xl lg:px-8">
+    <div className="relative mx-auto mt-4 flex-grow max-w-7xl px-4 py-4 lg:px-8">
       <Breadcrumbs breadcrumbs={breadcrumbs} />
-      <Project project={project}></Project>
+
+      <Project project={project}>
+        <MDXContent />
+      </Project>
+
+      <ProjectNavigation previous={prev} next={next} />
     </div>
-  )
+  );
 }

@@ -11,19 +11,17 @@ import {
   SiMysql,
   SiTailwindcss,
   SiGit,
-  SiCsharp,
-  SiVisualstudiocode,
   SiAdobe,
   SiAdobexd,
   SiFigma,
-  SiMicrosoftword,
-  SiMicrosoftpowerpoint,
   SiSlack,
-} from "react-icons/si"
-import { TbBrandNextjs } from "react-icons/tb"
-import Chip from "../shared/utilities/Chip"
+  SiDotnet,
+} from "react-icons/si";
+import { TbBrandNextjs, TbBrandVisualStudio } from "react-icons/tb";
+import Chip from "../shared/utilities/Chip";
+import { PiMicrosoftPowerpointLogo, PiMicrosoftWordLogo } from "react-icons/pi";
 
-const basePath = "/portfolio/technologies/"
+const basePath = "/portfolio/technologies/";
 
 const technologies = {
   html5: { Icon: SiHtml5, title: "HTML5", slug: `${basePath}html5` },
@@ -51,12 +49,15 @@ const technologies = {
     slug: `${basePath}tailwindcss`,
   },
   git: { Icon: SiGit, title: "Git", slug: `${basePath}git` },
-  csharp: { Icon: SiCsharp, title: "C#", slug: `${basePath}csharp` },
+
+  // FIXED
+  csharp: { Icon: SiDotnet, title: "C#", slug: `${basePath}csharp` },
   vscode: {
-    Icon: SiVisualstudiocode,
+    Icon: TbBrandVisualStudio,
     title: "Visual Studio Code",
     slug: `${basePath}visual-studio-code`,
   },
+
   photoshop: {
     Icon: SiAdobe,
     title: "Photoshop",
@@ -69,14 +70,21 @@ const technologies = {
   },
   adobexd: { Icon: SiAdobexd, title: "Adobe XD", slug: `${basePath}adobe-xd` },
   figma: { Icon: SiFigma, title: "Figma", slug: `${basePath}figma` },
-  word: { Icon: SiMicrosoftword, title: "Word", slug: `${basePath}word` },
+
+  // FIXED — Word & PowerPoint map to Microsoft Office icon
+  word: {
+    Icon: PiMicrosoftWordLogo,
+    title: "Microsoft Word",
+    slug: `${basePath}word`,
+  },
   powerpoint: {
-    Icon: SiMicrosoftpowerpoint,
-    title: "PowerPoint",
+    Icon: PiMicrosoftPowerpointLogo,
+    title: "Microsoft PowerPoint",
     slug: `${basePath}powerpoint`,
   },
+
   slack: { Icon: SiSlack, title: "Slack", slug: `${basePath}slack` },
-}
+};
 
 const SkillChipset: React.FC = () => {
   return (
@@ -90,7 +98,7 @@ const SkillChipset: React.FC = () => {
         />
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default SkillChipset
+export default SkillChipset;

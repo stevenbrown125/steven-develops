@@ -1,0 +1,95 @@
+export const metadata = {
+  title: "Securing your API: Defense in Layers",
+  excerpt:
+    "In this article, I explore different strategies of implementing security controls at various levels of the OSI model.",
+  author: "Steven Brown",
+  image:
+    "https://cdn.sanity.io/images/i80c8qr5/production/1d7ac8294c78c1e00021d44feb8dfda41c1fe8c4-4556x3072.jpg",
+  alt: "Photo by Privecstasy on Unsplash",
+  category: "security",
+  tags: ["API", "Security", "OSI Model"],
+  publishedAt: "2023-10-15T08:26:00.000Z",
+};
+
+In today’s world, where everything is interconnected, the need for securing your application is paramount, and APIs are no exception. Oftentimes, APIs provide direct access to private or proprietary data. Any leak or compromise of this data can have serious consequences for both you and your users.
+
+When it comes to properly securing your API, it's best to use a defense‑in‑layers approach. The Open Systems Interconnection (OSI) model provides a conceptual framework that standardizes the functions of a computing system into seven layers. By understanding the model and making security‑conscious design decisions, we can effectively minimize attack vectors on our API.
+
+---
+
+## Network Layer (Layer 3)
+
+**_Focus: DDoS Attacks, IP Spoofing, Unauthorized Access_**
+
+With most APIs hosted on cloud infrastructure, securing the network layer is generally the lowest layer we need to worry about. Physical (L1) and Data Link (L2) layers are abstracted away by the cloud provider.
+
+At this layer, we can:
+
+- **Configure firewalls and IP whitelists** to block unauthorized access.
+- **Implement rate limits** to mitigate DDoS attacks.
+- **Filter ingress/egress packets** to prevent IP spoofing.
+- **Isolate your API in a VPC** and allow only controlled access.
+
+---
+
+## Transport Layer (Layer 4)
+
+**_Focus: Man‑in‑the‑Middle Attacks, Eavesdropping, Session Hijacking_**
+
+This layer ensures data integrity, security, and authenticity.
+
+Key practices:
+
+- **Enforce HTTPS** instead of HTTP.
+- **Use the latest TLS version** to reduce vulnerabilities.
+- **Enable certificate pinning** to detect fraudulent certificates.
+
+---
+
+## Session Layer (Layer 5)
+
+**_Focus: Session Hijacking, XSS, CSRF, Unauthorized Access_**
+
+The Session Layer is responsible for establishing and managing connections between applications.
+
+Security controls:
+
+- **Session timeouts** to limit unauthorized access from compromised devices.
+- **Secure cookies** using flags: `HttpOnly`, `Secure`, `SameSite`.
+
+---
+
+## Presentation Layer (Layer 6)
+
+**_Focus: XSS, SQL Injection, Unauthorized Access_**
+
+This layer translates data between application and transport layers.
+
+Best practices:
+
+- **Data encoding & validation** — never trust user input.
+- **OAuth 2.0 authentication** for controlled access.
+- **Web Application Firewall (WAF)** rules to filter malicious requests.
+- **Content Security Policy (CSP)** to reduce XSS exposure.
+
+---
+
+## Application Layer (Layer 7)
+
+**_Focus: Session Hijacking, SQL Injection, XSS, Unauthorized Access_**
+
+The core of your API—business logic and UI communication—lives here.
+
+Recommendations:
+
+- **Role‑Based Access Control (RBAC)** to restrict functionality.
+- **Repeat sanitization & validation** at this layer.
+- **Use JWTs** to prevent session hijacking.
+
+---
+
+## Conclusion
+
+Security is about reducing surface area and implementing controls to minimize vulnerabilities, detect unauthorized access, and ensure data integrity and confidentiality.
+
+There is no truly impenetrable system. A well‑defined incident‑response plan and a proactive approach ensure you minimize impact on users and your organization.

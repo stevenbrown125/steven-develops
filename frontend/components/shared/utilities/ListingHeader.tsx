@@ -1,9 +1,9 @@
-import Link from "next/link"
-import { FaSortAmountUp, FaSortAmountDown } from "react-icons/fa"
+import Link from "next/link";
+import { FaSortAmountUp, FaSortAmountDown } from "react-icons/fa";
 
 interface ListingHeaderProps {
-  title: string
-  isAscending: boolean
+  title: string;
+  isAscending: boolean;
 }
 
 const ListingHeader: React.FC<ListingHeaderProps> = ({
@@ -20,10 +20,10 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
         href: "?sort=asc",
         ariaLabel: "Sort ascending",
         Icon: FaSortAmountDown,
-      }
+      };
 
   return (
-    <h2 className="flex items-center justify-between px-2 heading-hr">
+    <h2 className="flex items-center justify-between px-2 heading-hr capitalize">
       {title}
       <Link
         href={sortLinkProps.href}
@@ -34,7 +34,7 @@ const ListingHeader: React.FC<ListingHeaderProps> = ({
         <sortLinkProps.Icon />
       </Link>
     </h2>
-  )
-}
+  );
+};
 
-export default ListingHeader
+export default ListingHeader;

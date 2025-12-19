@@ -1,55 +1,71 @@
+// components/features/Section/ProfileSection.tsx
+
+"use client";
+
+import { PROFILE } from "@/content/data";
+import { motion, useReducedMotion } from "motion/react";
+
+const EASE_OUT: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
 const ProfileSection: React.FC = () => {
+  const prefersReducedMotion = useReducedMotion();
+
+  const transition = prefersReducedMotion
+    ? { duration: 0 }
+    : { duration: 0.35, ease: EASE_OUT };
+
   return (
-    <section className="flex flex-row w-full">
-      <div className="flex flex-wrap justify-center w-full py-4 pb-8 md:py-8 bg-zinc-200 dark:bg-zinc-900 h-min">
-        <div className="px-8 sm:flex gap-x-5 max-w-7xl md:block lg:inline-flex">
-          <figure className="shrink-0 ">
-            <div className="relative mb-2 profile-wrap">
+    <motion.section
+      className="flex w-full"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={transition}
+    >
+      <div className="flex w-full flex-wrap justify-center bg-zinc-200/50 py-4 pb-8 h-min dark:bg-zinc-900 md:py-8">
+        <div className="max-w-7xl px-8 sm:flex gap-x-5 md:block lg:inline-flex">
+          <motion.figure
+            className="shrink-0"
+            initial={{ opacity: 0, scale: prefersReducedMotion ? 1 : 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ ...transition, delay: 0.05 }}
+          >
+            <div className="profile-wrap relative mb-2">
               <img
-                src="https://pbs.twimg.com/profile_images/1614466022932680705/YK824Gte_400x400.jpg"
-                className="w-auto h-56 mx-auto profile "
-                alt="Steven Brown, Software Engineer"
+                src={PROFILE.image.src}
+                alt={PROFILE.image.alt}
+                className="profile mx-auto h-56 w-auto"
               />
             </div>
-            <figcaption className="sr-only">Steven Brown</figcaption>
-          </figure>
-          <div className="text-center sm:text-left md:text-center lg:text-left">
-            <h1 className="heading-hr">Steven Brown</h1>
-            <h3 className="pb-4">Software Engineer | Cloud Architect</h3>
-            <p className="text-base">
-              Self-motivated team lead seeking to develop efficient, effective,
-              and innovative solutions to modern problems. Passionate about
-              constructing intuitive interfaces that meet project requirements
-              in less interactions. Proven ability to think critically in fast
-              paced environments.
-            </p>
-            <ul className="flex-wrap items-center justify-center hidden gap-2 px-2 pt-4 text-sm list-disc lg:justify-start qualifications lg:flex ">
-              <li>Top Secret / SCI Clearance</li>
-              <li>AWS Solutions Architect</li>
-              <li>CompTIA Security+</li>
-              <li>AGILE / SCRUM Mindset</li>
-              <li>Excellent Communication</li>
-              <li>Lifetime Learner</li>
-              <li>Equal Opportunity Leader</li>
-              <li>Technical Instructor</li>
-              <li>English / Russian</li>
+            <figcaption className="sr-only">{PROFILE.name}</figcaption>
+          </motion.figure>
+
+          <motion.div
+            className="text-center sm:text-left md:text-center lg:text-left"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ ...transition, delay: 0.12 }}
+          >
+            <h1 className="heading-hr">{PROFILE.name}</h1>
+            <h3 className="pb-4">{PROFILE.title}</h3>
+
+            <p className="text-base">{PROFILE.bio}</p>
+
+            <ul className="qualifications hidden list-disc flex-wrap items-center justify-center gap-2 px-2 pt-4 text-sm lg:flex lg:justify-start">
+              {PROFILE.qualifications.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
             </ul>
-          </div>
+          </motion.div>
         </div>
-        <ul className="flex flex-wrap items-center justify-center gap-2 px-2 pt-4 text-sm list-disc lg:justify-start qualifications lg:hidden ">
-          <li>Top Secret / SCI Clearance</li>
-          <li>AWS Solutions Architect</li>
-          <li>CompTIA Security+</li>
-          <li>AGILE / SCRUM Mindset</li>
-          <li>Excellent Communication</li>
-          <li>Lifetime Learner</li>
-          <li>Equal Opportunity Leader</li>
-          <li>Technical Instructor</li>
-          <li>English / Russian</li>
+
+        <ul className="qualifications flex list-disc flex-wrap items-center justify-center gap-2 px-2 pt-4 text-sm lg:hidden">
+          {PROFILE.qualifications.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
         </ul>
       </div>
-    </section>
-  )
-}
+    </motion.section>
+  );
+};
 
-export default ProfileSection
+export default ProfileSection;

@@ -1,16 +1,14 @@
 // app/portfolio/technologies/[slug]/page.tsx
 
 import Breadcrumbs from "@/components/shared/utilities/Breadcrumb";
-import ProjectGrid from "@/components/features/Portfolio/ProjectGrid";
+import ProjectGridClient from "@/components/features/Portfolio/ProjectGridClient";
 import { getAllProjectTechnologies } from "@/lib/mdx-utils";
 
 type RouteParams = {
   slug: string;
 };
 
-type SearchParams = {
-  sort?: "asc" | "desc";
-};
+export const dynamic = "force-static";
 
 export async function generateStaticParams() {
   const technologies = await getAllProjectTechnologies();
@@ -23,6 +21,7 @@ export async function generateMetadata({
   params: Promise<RouteParams>;
 }) {
   const { slug } = await params;
+
   const technologies = await getAllProjectTechnologies();
   const technology = technologies.find((t) => t.slug === slug);
 
@@ -36,21 +35,16 @@ export async function generateMetadata({
 
 export default async function TechnologyPage({
   params,
-  searchParams,
 }: {
   params: Promise<RouteParams>;
-  searchParams?: Promise<SearchParams>;
 }) {
   const { slug } = await params;
-  const resolvedSearchParams = await searchParams;
-
-  const isAscending = resolvedSearchParams?.sort === "asc";
 
   const technologies = await getAllProjectTechnologies();
   const technology = technologies.find((t) => t.slug === slug);
 
   if (!technology) {
-    // ONLY 404 if the slug itself is unknown
+    // ONLY 404/null if the slug itself is unknown
     return null;
   }
 
@@ -64,14 +58,13 @@ export default async function TechnologyPage({
   ];
 
   return (
-    <div className="relative flex-grow px-4 py-4 mx-auto max-w-7xl lg:px-8">
+    <div className="relative mx-auto flex-grow max-w-7xl px-4 py-4 lg:px-8">
       <Breadcrumbs breadcrumbs={breadcrumbs} />
 
       {technology.items.length > 0 ? (
-        <ProjectGrid
+        <ProjectGridClient
           title={`Projects using ${technology.tag}`}
-          projects={technology.items}
-          isAscending={isAscending}
+          initialProjects={technology.items}
         />
       ) : (
         <section className="mt-8 text-center">

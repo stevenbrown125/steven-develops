@@ -1,9 +1,9 @@
-// File: app/portfolio/ProjectGridClient.tsx
+// File: components/features/Portfolio/ProjectGridClient.tsx
 "use client";
 
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import ProjectGrid from "@/components/features/Portfolio/ProjectGrid";
+import ProjectGrid from "./ProjectGrid";
 import type { Project } from "@/types";
 
 type ProjectGridClientProps = {
@@ -20,13 +20,13 @@ export default function ProjectGridClient({
   const isAscending = sortParam === "asc";
 
   const projects = useMemo(() => {
-    const copy = [...initialProjects];
-    copy.sort((a, b) => {
+    const sorted = [...initialProjects];
+    sorted.sort((a, b) => {
       const aDate = new Date(a.startDate).getTime();
       const bDate = new Date(b.startDate).getTime();
       return isAscending ? aDate - bDate : bDate - aDate;
     });
-    return copy;
+    return sorted;
   }, [initialProjects, isAscending]);
 
   return (

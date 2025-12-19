@@ -1,17 +1,17 @@
-// File: /app/blog/categories/[slug]/page.tsx
+// File: app/blog/categories/[slug]/page.tsx
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { getAllListablePosts } from "@/lib/getAllListablePosts";
 import { getCategoryBySlug } from "@/lib/category-utils";
-import { groupPostsByYears, sortPostYears } from "@/lib/postHelpers";
 import ListingPage from "@/components/features/Blog/ListingPage";
 import { generateSEO, seoContent } from "@/lib/seo";
 import { formatCategoryTitle } from "@/lib/buildCategoryIndex";
 
 type Params = { slug: string };
-type SearchParams = { sort?: "asc" | "desc" };
+
+export const dynamic = "force-static";
 
 export async function generateMetadata({
   params,
@@ -36,23 +36,15 @@ export async function generateMetadata({
 
 export default async function BlogCategoryPage({
   params,
-  searchParams,
 }: {
   params: Promise<Params>;
-  searchParams?: Promise<SearchParams>;
 }) {
   const { slug } = await params;
-  const resolvedSearchParams = await searchParams;
-
-  const isAscending = resolvedSearchParams?.sort === "asc";
 
   const items = await getAllListablePosts();
   const category = getCategoryBySlug(slug, items);
 
   if (!category) return notFound();
-
-  const groupedPosts = groupPostsByYears(category.posts, isAscending);
-  const years = sortPostYears(groupedPosts, isAscending);
 
   return (
     <ListingPage
@@ -65,10 +57,7 @@ export default async function BlogCategoryPage({
           title: category.title,
         },
       ]}
-      years={years}
-      groupedPosts={groupedPosts}
-      isAscending={isAscending}
-      isEmpty={groupedPosts.size === 0}
+      posts={category.posts}
       emptyState={
         <p className="text-neutral-500 dark:text-neutral-400">
           No posts have been published in <strong>{category.title}</strong> yet.

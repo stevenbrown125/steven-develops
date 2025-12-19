@@ -1,36 +1,44 @@
-// components/features/Blog/ListingPage.tsx
+// File: components/features/Blog/ListingPage.tsx
 
 "use client";
+
+import { useMemo, type ReactNode } from "react";
+import { useSearchParams } from "next/navigation";
 
 import PostGrid from "./PostGrid";
 import Breadcrumbs, {
   BreadcrumbLink,
 } from "@/components/shared/utilities/Breadcrumb";
 import ListingHeader from "@/components/shared/utilities/ListingHeader";
-import { Listable } from "@/types";
-import type { ReactNode } from "react";
+import { groupPostsByYears, sortPostYears } from "@/lib/postHelpers";
+import type { Listable } from "@/types";
 
 type SortKey = "asc" | "desc";
 
 interface ListingPageProps<T extends Listable> {
   title: string;
   breadcrumbs: BreadcrumbLink[];
-  years: number[];
-  groupedPosts: Map<number, T[]>;
-  isAscending: boolean;
-  isEmpty: boolean;
+  posts: T[];
   emptyState?: ReactNode;
 }
 
 const ListingPage = <T extends Listable>({
   title,
   breadcrumbs,
-  years,
-  groupedPosts,
-  isAscending,
-  isEmpty,
+  posts,
   emptyState,
 }: ListingPageProps<T>) => {
+  const searchParams = useSearchParams();
+  const sortParam = searchParams.get("sort");
+  const isAscending = sortParam === "asc";
+
+  const { years, groupedPosts } = useMemo(() => {
+    const grouped = groupPostsByYears(posts, isAscending);
+    const sortedYears = sortPostYears(grouped, isAscending);
+    return { years: sortedYears, groupedPosts: grouped };
+  }, [posts, isAscending]);
+
+  const isEmpty = posts.length === 0;
   const sortKey: SortKey = isAscending ? "asc" : "desc";
 
   return (
@@ -48,8 +56,8 @@ const ListingPage = <T extends Listable>({
         </div>
       ) : (
         years.map((year) => {
-          const posts = groupedPosts.get(year);
-          if (!posts || posts.length === 0) return null;
+          const postsForYear = groupedPosts.get(year);
+          if (!postsForYear || postsForYear.length === 0) return null;
 
           return (
             <section key={year} className="relative">
@@ -57,7 +65,7 @@ const ListingPage = <T extends Listable>({
                 {year}
               </h3>
 
-              <PostGrid posts={posts} sortKey={sortKey} />
+              <PostGrid posts={postsForYear} sortKey={sortKey} />
             </section>
           );
         })

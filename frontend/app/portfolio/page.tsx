@@ -13,6 +13,7 @@ export const metadata: Metadata = generateSEO(seoContent.portfolio).metadata;
 export default async function PortfolioPage({ searchParams }: Page) {
   const projects = await getAllProjectData();
 
+  console.log("projects", projects);
   const resolvedSearchParams = await searchParams;
   const isAscending = resolvedSearchParams?.sort === "asc";
 

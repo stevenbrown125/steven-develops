@@ -9,8 +9,6 @@ import { getAllListablePosts } from "@/lib/getAllListablePosts";
 import { BreadcrumbLink } from "@/components/shared/utilities/Breadcrumb";
 import { generateSEO, seoContent } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = generateSEO(seoContent.blog).metadata;
 
 export default async function BlogPage({ searchParams }: Page) {
